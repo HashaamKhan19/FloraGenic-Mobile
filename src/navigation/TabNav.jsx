@@ -8,9 +8,7 @@ import Nurseries from '../screens/Nurseries';
 import Gardeners from '../screens/Gardeners';
 import dimensions from '../utils/Dimensions';
 import {StyleSheet} from 'react-native';
-import {View, Text} from 'react-native';
 import Colors from '../utils/Colors';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -24,7 +22,6 @@ function TabNavigator() {
           headerShown: false,
           tabBarStyle: {
             height: dimensions.Height / 14,
-            backgroundColor: 'white',
           },
           //   tabBarIcon: ({focused}) => {
           //     if (route.name === 'Store') {
