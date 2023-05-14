@@ -8,12 +8,12 @@ const {width: screenWidth} = Dimensions.get('window');
 const ProductListings = ({products}) => {
   const handleGestureEvent = ({nativeEvent}) => {
     if (nativeEvent.translationX > 50 && nativeEvent.state === State.ACTIVE) {
-      console.log('Swiped right');
+      console.log('Swiped right ->');
     } else if (
       nativeEvent.translationX < -50 &&
       nativeEvent.state === State.ACTIVE
     ) {
-      console.log('Swiped left');
+      console.log('Swiped left <-');
     }
   };
 
