@@ -1,25 +1,51 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet, Dimensions} from 'react-native';
+import {PanGestureHandler, State} from 'react-native-gesture-handler';
 import ProductCard from './ProductCard';
 
-const ProductListings = () => {
+const {width: screenWidth} = Dimensions.get('window');
+
+const ProductListings = ({products}) => {
+  const handleGestureEvent = ({nativeEvent}) => {
+    if (nativeEvent.translationX > 50 && nativeEvent.state === State.ACTIVE) {
+      console.log('Swiped right');
+    } else if (
+      nativeEvent.translationX < -50 &&
+      nativeEvent.state === State.ACTIVE
+    ) {
+      console.log('Swiped left');
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <ProductCard
-        imageSource="https://images.unsplash.com/photo-1528475563668-e15742001b92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-        name="Beautiful Plant"
-        ratings={4.5}
-        amountSold={120}
-        price={29.99}
-      />
-    </View>
+    <ScrollView
+      horizontal
+      contentContainerStyle={styles.container}
+      showsHorizontalScrollIndicator={false}>
+      {products.map((product, index) => (
+        <PanGestureHandler key={index} onGestureEvent={handleGestureEvent}>
+          <View style={styles.productContainer}>
+            <ProductCard
+              imageSource={product.image}
+              name={product.name}
+              ratings={product.rating}
+              amountSold={product.amountSold}
+              price={product.price}
+            />
+          </View>
+        </PanGestureHandler>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
+    paddingHorizontal: 10,
+  },
+  productContainer: {
+    width: screenWidth * 0.45,
+    marginHorizontal: 5,
   },
 });
 
