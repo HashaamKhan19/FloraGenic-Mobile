@@ -55,7 +55,10 @@ const Home = () => {
           <Text style={styles.mainText}>Special Offers</Text>
           <Text style={styles.secondaryText}>See All</Text>
         </View>
-        <View>
+        <View
+          style={{
+            marginBottom: 20,
+          }}>
           <ProductListings products={products} />
         </View>
 
@@ -63,7 +66,10 @@ const Home = () => {
           <Text style={styles.mainText}>Most Popular</Text>
           <Text style={styles.secondaryText}>See All</Text>
         </View>
-        <View>
+        <View
+          style={{
+            marginBottom: 20,
+          }}>
           <ProductListings products={products} />
         </View>
       </View>
