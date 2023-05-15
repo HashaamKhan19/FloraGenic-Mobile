@@ -15,6 +15,7 @@ import Scan from '../assets/svg/scan.svg';
 import Profile from '../assets/svg/profile.svg';
 import Nursery from '../assets/svg/nursery.svg';
 import Garden from '../assets/svg/garden.svg';
+import ProductDetails from '../components/Product/ProductDetails';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -159,6 +160,11 @@ function StackNavigator() {
       <stack.Screen
         name="TabNavigator"
         component={TabNavigator}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
         options={{headerShown: false}}
       />
     </stack.Navigator>

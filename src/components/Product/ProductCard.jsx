@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import Colors from '../../utils/Colors';
 import Star from '../../assets/svg/star.svg';
-import dimensions from '../../utils/Dimensions';
 
 const ProductCard = ({imageSource, name, ratings, amountSold, price}) => {
   return (

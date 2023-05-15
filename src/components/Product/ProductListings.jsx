@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet, Dimensions} from 'react-native';
-import {PanGestureHandler, State} from 'react-native-gesture-handler';
+import {ScrollView, StyleSheet, Dimensions} from 'react-native';
+import {
+  PanGestureHandler,
+  State,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 import ProductCard from './ProductCard';
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const ProductListings = ({products}) => {
+const ProductListings = ({products, navigation}) => {
   const handleGestureEvent = ({nativeEvent}) => {
     if (nativeEvent.translationX > 50 && nativeEvent.state === State.ACTIVE) {
       console.log('Swiped right ->');
@@ -24,7 +28,9 @@ const ProductListings = ({products}) => {
       showsHorizontalScrollIndicator={false}>
       {products.map((product, index) => (
         <PanGestureHandler key={index} onGestureEvent={handleGestureEvent}>
-          <View style={styles.productContainer}>
+          <TouchableOpacity
+            style={styles.productContainer}
+            onPress={() => navigation.navigate('ProductDetails')}>
             <ProductCard
               imageSource={product.image}
               name={product.name}
@@ -32,7 +38,7 @@ const ProductListings = ({products}) => {
               amountSold={product.amountSold}
               price={product.price}
             />
-          </View>
+          </TouchableOpacity>
         </PanGestureHandler>
       ))}
     </ScrollView>

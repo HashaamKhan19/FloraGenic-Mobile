@@ -7,7 +7,7 @@ import Colors from '../../utils/Colors';
 import ProductListings from '../Product/ProductListings';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const products = [
     {
       id: 1,
@@ -59,7 +59,7 @@ const Home = () => {
           style={{
             marginBottom: 20,
           }}>
-          <ProductListings products={products} />
+          <ProductListings products={products} navigation={navigation} />
         </View>
 
         <View style={styles.container}>
