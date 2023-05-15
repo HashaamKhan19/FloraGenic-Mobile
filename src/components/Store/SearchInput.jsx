@@ -8,7 +8,7 @@ const SearchInput = () => {
       {/* <SearchIcon width={20} height={20} /> */}
       <TextInput
         style={styles.input}
-        placeholder="Search"
+        placeholder="🔎︎ Search..."
         placeholderTextColor="darkgrey"
       />
     </View>

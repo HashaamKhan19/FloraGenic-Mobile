@@ -5,7 +5,7 @@ import Star from '../../assets/svg/star.svg';
 
 const NurseryCard = ({image, name, location, ratings}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <View style={styles.container}>
       <Image source={image} style={styles.image} />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{name}</Text>
@@ -15,7 +15,7 @@ const NurseryCard = ({image, name, location, ratings}) => {
           <Text style={styles.rating}>{ratings}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     shadowColor: '#000000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 2,
-    marginBottom: 10,
+    elevation: 3,
+    marginBottom: 20,
+    width: '100%',
   },
   image: {
     width: 80,

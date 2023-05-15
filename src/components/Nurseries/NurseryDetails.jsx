@@ -1,0 +1,157 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import Colors from '../../utils/Colors';
+import NurseryDetailsModal from './NurseryDetailsModal';
+
+const NurseryDetails = () => {
+  // const [modalVisible, setModalVisible] = useState(false);
+
+  const nursery = {
+    name: 'Happy Seeds Nursery',
+    image: require('../../assets/images/Nurseries/1.jpg'),
+    products: [
+      {id: 1, name: 'Product 1'},
+      {id: 2, name: 'Product 2'},
+      {id: 3, name: 'Product 3'},
+      // Add more products here
+    ],
+  };
+
+  const handleContactNursery = () => {
+    // Handle contact nursery action
+    console.log('Contact nursery');
+  };
+
+  const handleViewDetails = () => {
+    setModalVisible(true);
+  };
+
+  const handleSearch = text => {
+    // Handle search action
+    console.log('Search:', text);
+  };
+
+  const handleFilter = () => {
+    // Handle filter action
+    console.log('Filter');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Image source={nursery.image} style={styles.image} />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={handleContactNursery} style={styles.btns}>
+          <Text style={styles.btnsTxt}>Contact Nursery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleViewDetails} style={styles.btns}>
+          <Text style={styles.btnsTxt}>View Nursery Details</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="🔎︎ Search for a product..."
+          onChangeText={handleSearch}
+          placeholderTextColor="darkgrey"
+        />
+        <TouchableOpacity onPress={handleFilter} style={styles.filterBtn}>
+          <Text style={styles.btnsTxt}>Filter</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text style={styles.heading}>Products</Text>
+        <Text style={{color: Colors.black}}>Products of this nursery here</Text>
+        {/* <ProductListings products={nursery.products} /> */}
+      </View>
+    </View>
+  );
+};
+
+{
+  /* <NurseryDetailsModal
+  modalVisible={modalVisible}
+  setModalVisible={setModalVisible}
+/>; */
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: Colors.white,
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    gap: 10,
+  },
+  btns: {
+    flex: 1,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    backgroundColor: Colors.secondaryGreen,
+    borderRadius: 8,
+  },
+  btnsTxt: {
+    color: Colors.white,
+    fontSize: 16,
+  },
+  filterBtn: {
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    backgroundColor: Colors.secondaryGreen,
+    borderRadius: 8,
+    paddingHorizontal: 20,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 8,
+    marginRight: 10,
+    paddingHorizontal: 10,
+    color: Colors.black,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    color: Colors.black,
+  },
+  productItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC',
+  },
+});
+
+export default NurseryDetails;

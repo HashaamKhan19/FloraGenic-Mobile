@@ -25,7 +25,7 @@ const Home = ({navigation}) => {
             }}>
             Nurseries
           </Text>
-          <NurseryListings />
+          <NurseryListings navigation={navigation} />
         </View>
       </View>
     </ScrollView>
