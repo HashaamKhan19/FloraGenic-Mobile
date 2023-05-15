@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Star from '../../assets/svg/star.svg';
 import HeartIcon from '../../assets/svg/heartIcon.svg';
 import Colors from '../../utils/Colors';
+import ImageCarousel from './ImageCarousel';
 
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
@@ -22,12 +23,15 @@ const ProductDetails = () => {
     console.log('Product added to cart!');
   };
 
+  const images = [
+    require('../../assets/images/plant2.jpeg'),
+    require('../../assets/images/plant3.jpeg'),
+    require('../../assets/images/plant4.jpg'),
+  ];
+
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/images/plant.png')}
-        style={styles.image}
-      />
+      <ImageCarousel images={images} />
 
       <View style={styles.nameCont}>
         <Text style={styles.name}>Product Name</Text>

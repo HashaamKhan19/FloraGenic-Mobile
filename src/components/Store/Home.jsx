@@ -70,7 +70,7 @@ const Home = ({navigation}) => {
           style={{
             marginBottom: 20,
           }}>
-          <ProductListings products={products} />
+          <ProductListings products={products} navigation={navigation} />
         </View>
       </View>
     </ScrollView>

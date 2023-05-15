@@ -1,16 +1,34 @@
 import {View, Text} from 'react-native';
 import React from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
+import SearchInput from '../Store/SearchInput';
+import NurseryListings from './NurseryListings';
+import Colors from '../../utils/Colors';
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
-    <View>
-      <Text
+    <ScrollView>
+      <View
         style={{
-          color: 'red',
+          flex: 1,
+          backgroundColor: Colors.white,
         }}>
-        Home page of nurseries
-      </Text>
-    </View>
+        <SearchInput />
+
+        <View>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+              margin: 20,
+              color: Colors.black,
+            }}>
+            Nurseries
+          </Text>
+          <NurseryListings />
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import Home from '../components/Nurseries/Home';
 
-const Nurseries = () => {
+const Nurseries = ({navigation}) => {
   return (
     <>
-      <Home />
+      <Home navigation={navigation} />
     </>
   );
 };
