@@ -7,10 +7,12 @@ import {
   Pressable,
   View,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import Colors from '../../utils/Colors';
+import Colors from '../../../utils/Colors';
+import FilterContent from './FilterContent';
 
-const NurseryDetailsModal = ({modalVisible, setModalVisible}) => {
+const Filter = ({modalVisible, setModalVisible}) => {
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -22,20 +24,25 @@ const NurseryDetailsModal = ({modalVisible, setModalVisible}) => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Nursery Details</Text>
-            <View style={styles.contentView}>
-              <Text style={styles.contentTxtHeading}>Nursery Email: </Text>
-              <Text style={styles.contentTxt}>123465</Text>
+            {/* Filters */}
+            <Text style={styles.modalText}>Filters here</Text>
+            <FilterContent />
+
+            {/* Buttons */}
+            <View style={styles.btnsCont}>
+              <Pressable style={styles.apply}>
+                <Text style={styles.textStyle}>Apply Filter</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
             </View>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
           </View>
         </View>
       </Modal>
-      <Text style={styles.btnsTxt}>View Nursery Details</Text>
+      <Text style={styles.btnsTxt}>Filter</Text>
     </View>
   );
 };
@@ -63,6 +70,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: '80%',
   },
+  btnsCont: {
+    flexDirection: 'column',
+    gap: 20,
+    width: '100%',
+    marginTop: 30,
+  },
   contentView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -82,7 +95,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonClose: {
+    backgroundColor: Colors.red,
+  },
+  apply: {
     backgroundColor: Colors.floraGreen,
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
   },
   textStyle: {
     color: 'white',
@@ -100,8 +119,8 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
     height: 40,
-    // backgroundColor: 'red',
+    marginBottom: 3,
   },
 });
 
-export default NurseryDetailsModal;
+export default Filter;

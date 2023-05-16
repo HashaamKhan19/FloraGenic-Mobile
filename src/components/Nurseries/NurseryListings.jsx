@@ -41,7 +41,6 @@ const NurseryListings = ({navigation}) => {
           key={nursery.id}
           onPress={() => {
             navigation.navigate('NurseryDetails');
-            console.log('ajskdhakjsdhakd');
           }}>
           <NurseryCard
             key={nursery.id}

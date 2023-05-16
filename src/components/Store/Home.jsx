@@ -53,7 +53,11 @@ const Home = ({navigation}) => {
         <SearchInput />
         <View style={styles.container}>
           <Text style={styles.mainText}>Special Offers</Text>
-          <Text style={styles.secondaryText}>See All</Text>
+          <Text
+            style={styles.secondaryText}
+            onPress={() => navigation.navigate('AllProducts')}>
+            See All
+          </Text>
         </View>
         <View
           style={{
@@ -64,7 +68,11 @@ const Home = ({navigation}) => {
 
         <View style={styles.container}>
           <Text style={styles.mainText}>Most Popular</Text>
-          <Text style={styles.secondaryText}>See All</Text>
+          <Text
+            style={styles.secondaryText}
+            onPress={() => navigation.navigate('AllProducts')}>
+            See All
+          </Text>
         </View>
         <View
           style={{

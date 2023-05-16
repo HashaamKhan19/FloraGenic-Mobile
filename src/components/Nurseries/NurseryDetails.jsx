@@ -13,7 +13,7 @@ import Colors from '../../utils/Colors';
 import NurseryDetailsModal from './NurseryDetailsModal';
 
 const NurseryDetails = () => {
-  // const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const nursery = {
     name: 'Happy Seeds Nursery',
@@ -31,7 +31,7 @@ const NurseryDetails = () => {
     console.log('Contact nursery');
   };
 
-  const handleViewDetails = () => {
+  const handleViewNurseryDetails = () => {
     setModalVisible(true);
   };
 
@@ -52,8 +52,13 @@ const NurseryDetails = () => {
         <TouchableOpacity onPress={handleContactNursery} style={styles.btns}>
           <Text style={styles.btnsTxt}>Contact Nursery</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleViewDetails} style={styles.btns}>
-          <Text style={styles.btnsTxt}>View Nursery Details</Text>
+        <TouchableOpacity
+          onPress={handleViewNurseryDetails}
+          style={styles.btns}>
+          <NurseryDetailsModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.searchContainer}>
@@ -70,18 +75,10 @@ const NurseryDetails = () => {
       <View>
         <Text style={styles.heading}>Products</Text>
         <Text style={{color: Colors.black}}>Products of this nursery here</Text>
-        {/* <ProductListings products={nursery.products} /> */}
       </View>
     </View>
   );
 };
-
-{
-  /* <NurseryDetailsModal
-  modalVisible={modalVisible}
-  setModalVisible={setModalVisible}
-/>; */
-}
 
 const styles = StyleSheet.create({
   container: {

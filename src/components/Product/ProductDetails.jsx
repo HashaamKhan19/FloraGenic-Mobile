@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   reviews: {
-    color: 'black',
+    color: Colors.secondaryGreen,
   },
   rating: {
     marginRight: 8,
