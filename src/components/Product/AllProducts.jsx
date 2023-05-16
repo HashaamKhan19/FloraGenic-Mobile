@@ -26,6 +26,10 @@ const AllProducts = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <View style={{padding: 10}}>
+        <Text style={{color: Colors.black}}>All Products (9)</Text>
+      </View>
     </View>
   );
 };

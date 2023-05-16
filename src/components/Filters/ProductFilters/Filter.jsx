@@ -25,7 +25,6 @@ const Filter = ({modalVisible, setModalVisible}) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             {/* Filters */}
-            <Text style={styles.modalText}>Filters here</Text>
             <FilterContent />
 
             {/* Buttons */}
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   },
   btnsCont: {
     flexDirection: 'column',
-    gap: 20,
+    gap: 10,
     width: '100%',
     marginTop: 30,
   },
@@ -90,8 +89,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   button: {
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 8,
+    padding: 8,
     elevation: 2,
   },
   buttonClose: {
@@ -99,8 +98,8 @@ const styles = StyleSheet.create({
   },
   apply: {
     backgroundColor: Colors.floraGreen,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 8,
+    padding: 8,
     elevation: 2,
   },
   textStyle: {

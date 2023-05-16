@@ -1,13 +1,14 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import ByRatings from './ByRatings';
-import ByCity from './ByCity';
+import ByCategory from './ByCategory';
+import ByPrice from './ByPrice';
 
 const FilterContent = () => {
   return (
-    <View>
-      <ByCity />
+    <View style={{width: '100%'}}>
       <ByRatings />
+      <ByCategory />
     </View>
   );
 };

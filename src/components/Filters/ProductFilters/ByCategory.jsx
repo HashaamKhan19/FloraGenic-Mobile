@@ -2,22 +2,9 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../../utils/Colors';
-import Star from '../../../assets/svg/star.svg';
-import dimensions from '../../../utils/Dimensions';
 
-const ByRatings = () => {
-  const maxStarCount = 5;
-
-  const stars = Array.from({length: maxStarCount}, (_, index) => {
-    return (
-      <Star
-        key={index}
-        fill={Colors.orange}
-        width={dimensions.Width / 21}
-        height={dimensions.Height / 21}
-      />
-    );
-  });
+const ByCategory = () => {
+  const categories = ['Plants', 'Medicines', 'Tools', 'Decorations', 'Seeds'];
 
   return (
     <View style={{padding: 5}}>
@@ -26,27 +13,28 @@ const ByRatings = () => {
           color: Colors.black,
           fontSize: 16,
           fontWeight: 'bold',
-          marginBottom: 10,
+          marginBottom: 16,
         }}>
-        Filter By Ratings
+        Filter By Category
       </Text>
-      {stars.map((star, index) => (
+      {categories.map((category, index) => (
         <BouncyCheckbox
           key={index}
           size={22}
           fillColor={Colors.secondaryGreen}
           unfillColor="#FFFFFF"
           text={
-            <View style={{flexDirection: 'row', gap: 5}}>
-              {stars.slice(0, index + 1)}
+            <View>
+              <Text style={{color: Colors.black}}>{category}</Text>
             </View>
           }
           iconStyle={{borderColor: Colors.secondaryGreen}}
           innerIconStyle={{borderWidth: 2, borderRadius: 8}}
+          style={{marginBottom: 12}}
         />
       ))}
     </View>
   );
 };
 
-export default ByRatings;
+export default ByCategory;
