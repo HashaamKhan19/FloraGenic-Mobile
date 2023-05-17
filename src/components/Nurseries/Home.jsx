@@ -1,4 +1,10 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import SearchInput from '../Store/SearchInput';
@@ -16,7 +22,13 @@ const Home = ({navigation}) => {
           flex: 1,
           backgroundColor: Colors.white,
         }}>
-        <SearchInput />
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            placeholder="🔎︎ Search..."
+            placeholderTextColor="darkgrey"
+          />
+        </View>
 
         <View>
           <View
@@ -65,6 +77,20 @@ const styles = StyleSheet.create({
     marginRight: 20,
     backgroundColor: Colors.secondaryGreen,
     borderRadius: 10,
+  },
+  container: {
+    width: '100%',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    backgroundColor: 'white',
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+    paddingHorizontal: 14,
   },
 });
 

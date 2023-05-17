@@ -1,17 +1,26 @@
 import React from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
-import CartIcon from '../../assets/svg/cartIcon.svg';
-import HeartIcon from '../../assets/svg/heartIcon.svg';
-import dimensions from '../../utils/Dimensions';
+import CartIcon from '../assets/svg/cartIcon.svg';
+import HeartIcon from '../assets/svg/heartIcon.svg';
+import dimensions from '../utils/Dimensions';
 
 const UserProfileInfo = ({userImage, userName, userEmail}) => {
   return (
     <View style={styles.container}>
       <View style={styles.userInfo}>
-        <Image source={{uri: userImage}} style={styles.userImage} />
+        <Image
+          source={{
+            uri:
+              userImage ||
+              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+          }}
+          style={styles.userImage}
+        />
         <View style={styles.userDetails}>
-          <Text style={styles.userName}>{userName}</Text>
-          <Text style={styles.userEmail}>{userEmail}</Text>
+          <Text style={styles.userName}>{userName || 'Username'}</Text>
+          <Text style={styles.userEmail}>
+            {userEmail || 'UserEmail@gmail.com'}
+          </Text>
         </View>
       </View>
       <View style={styles.iconContainer}>

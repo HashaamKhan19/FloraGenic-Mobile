@@ -1,17 +1,9 @@
 import {View, Text} from 'react-native';
 import React from 'react';
+import Login from '../Profiling/Login';
 
 const Home = () => {
-  return (
-    <View>
-      <Text
-        style={{
-          color: 'red',
-        }}>
-        Home page of profile
-      </Text>
-    </View>
-  );
+  return <Login />;
 };
 
 export default Home;

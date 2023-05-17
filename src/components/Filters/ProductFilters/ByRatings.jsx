@@ -34,13 +34,13 @@ const ByRatings = () => {
         <BouncyCheckbox
           key={index}
           size={22}
-          fillColor={Colors.secondaryGreen}
-          unfillColor="#FFFFFF"
           text={
             <View style={{flexDirection: 'row', gap: 5}}>
               {stars.slice(0, index + 1)}
             </View>
           }
+          unfillColor="#FFFFFF"
+          fillColor={Colors.secondaryGreen}
           iconStyle={{borderColor: Colors.secondaryGreen}}
           innerIconStyle={{borderWidth: 2, borderRadius: 8}}
         />
