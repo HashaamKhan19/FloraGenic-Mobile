@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginBottom: 4,
+    marginTop: 20,
   },
   soldCont: {
     backgroundColor: Colors.lightGreen,
