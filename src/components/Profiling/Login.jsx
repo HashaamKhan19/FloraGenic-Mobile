@@ -26,7 +26,7 @@ export default function Login() {
         />
       </View>
       <View style={styles.headingDiv}>
-        <Text style={styles.mainHeading}>Create Your Account</Text>
+        <Text style={styles.mainHeading}>Login to Your Account</Text>
       </View>
 
       {/* Inputs */}
@@ -53,25 +53,18 @@ export default function Login() {
             unfillColor="#FFFFFF"
             fillColor={Colors.secondaryGreen}
             iconStyle={{borderColor: Colors.secondaryGreen}}
-            innerIconStyle={{borderWidth: 2, borderRadius: 8}}
-            // value={value}
-            // onValueChange={setValue}
+            innerIconStyle={{borderWidth: 1, borderRadius: 8}}
           />
           <Text style={styles.label}>Remember Me</Text>
         </View>
 
         {/* SignUp buttons etc */}
         <TouchableOpacity style={styles.btnCont}>
-          <Text style={styles.btnTxt}>Sign Up</Text>
+          <Text style={styles.btnTxt}>Sign In</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.normaldiv}>
-        <Text style={{color: 'grey', marginTop: 20}}>
-          Already got an account?{' '}
-          <Text style={{color: Colors.secondaryGreen, fontWeight: '600'}}>
-            Log in
-          </Text>
-        </Text>
+        <Text style={styles.frgtPsd}>Forgot the Password?</Text>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -84,6 +77,20 @@ export default function Login() {
           style={styles.sclBtn}
         />
       </TouchableOpacity>
+
+      <View style={styles.lastCont}>
+        <Text
+          style={{
+            color: Colors.darkGray,
+            marginTop: 20,
+            fontFamily: 'Urbanist-Medium',
+          }}>
+          Don't have an account?{' '}
+          <Text style={{color: Colors.secondaryGreen, fontWeight: '600'}}>
+            Sign Up
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -100,17 +107,19 @@ const styles = StyleSheet.create({
     height: 100,
   },
   mainHeading: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 26,
     lineHeight: 30,
     marginVertical: 10,
     color: Colors.black,
     alignSelf: 'center',
     letterSpacing: 0.5,
+    fontFamily: 'Urbanist-Black',
   },
   label: {
     color: Colors.black,
     fontSize: 16,
+    fontFamily: 'Urbanist-SemiBold',
   },
   cbdiv: {
     flexDirection: 'row',
@@ -141,6 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     marginBottom: 14,
+    fontFamily: 'Urbanist-Regular',
   },
   btnCont: {
     backgroundColor: Colors.secondaryGreen,
@@ -153,9 +163,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnTxt: {
-    fontWeight: 'bold',
     fontSize: 18,
     color: 'white',
+    fontFamily: 'Urbanist-SemiBold',
+  },
+  frgtPsd: {
+    color: Colors.secondaryGreen,
+    fontFamily: 'Urbanist-Black',
+    fontSize: 16,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -171,6 +186,7 @@ const styles = StyleSheet.create({
   dividerText: {
     marginHorizontal: 4,
     color: 'gray',
+    fontFamily: 'Urbanist-SemiBold',
   },
   socialBtnCont: {
     borderColor: '#F5F5F5',
@@ -186,5 +202,11 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     alignSelf: 'center',
     margin: 10,
+  },
+  lastCont: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // marginTop: 10,
   },
 });

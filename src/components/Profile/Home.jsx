@@ -1,9 +1,12 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import Login from '../Profiling/Login';
 
 const Home = () => {
-  return <Login />;
+  return (
+    <View>
+      <Text>You are not authenticated</Text>
+    </View>
+  );
 };
 
 export default Home;
