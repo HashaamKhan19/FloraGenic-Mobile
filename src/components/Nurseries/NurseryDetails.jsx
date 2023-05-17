@@ -68,9 +68,6 @@ const NurseryDetails = () => {
           onChangeText={handleSearch}
           placeholderTextColor="darkgrey"
         />
-        <TouchableOpacity onPress={handleFilter} style={styles.filterBtn}>
-          <Text style={styles.btnsTxt}>Filter</Text>
-        </TouchableOpacity>
       </View>
       <View>
         <Text style={styles.heading}>Products</Text>

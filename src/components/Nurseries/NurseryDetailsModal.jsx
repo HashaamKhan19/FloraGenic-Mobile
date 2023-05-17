@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
     height: 40,
+    marginBottom: 2,
     // backgroundColor: 'red',
   },
 });

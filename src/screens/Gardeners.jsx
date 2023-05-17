@@ -1,11 +1,16 @@
 import React from 'react';
+import {View} from 'react-native';
 import Home from '../components/Gardeners/Home';
 
-const Gardeners = () => {
+const Gardeners = ({navigation}) => {
   return (
-    <>
-      <Home />
-    </>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+      }}>
+      <Home navigation={navigation} />
+    </View>
   );
 };
 

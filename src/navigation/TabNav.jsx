@@ -18,6 +18,7 @@ import Garden from '../assets/svg/garden.svg';
 import ProductDetails from '../components/Product/ProductDetails';
 import NurseryDetails from '../components/Nurseries/NurseryDetails';
 import AllProducts from '../components/Product/AllProducts';
+import GardenerDetails from '../components/Gardeners/GardenerDetails';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -172,6 +173,11 @@ function StackNavigator() {
       <stack.Screen
         name="NurseryDetails"
         component={NurseryDetails}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="GardenerDetails"
+        component={GardenerDetails}
         options={{headerShown: false}}
       />
       <stack.Screen
