@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: 14,
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     shadowColor: '#000000',
@@ -32,33 +32,34 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   image: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     borderRadius: 4,
   },
   detailsContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 16,
   },
   name: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontFamily: 'Urbanist-Bold',
     marginBottom: 4,
     color: Colors.secondaryGreen,
   },
   location: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.black,
     marginBottom: 4,
+    fontFamily: 'Urbanist-Medium',
   },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   rating: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 6,
+    fontSize: 20,
+    fontFamily: 'Urbanist-Bold',
+    // marginLeft: 2,
     color: Colors.secondaryGreen,
   },
   ratingText: {

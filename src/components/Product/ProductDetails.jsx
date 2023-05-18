@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import Star from '../../assets/svg/star.svg';
 import HeartIcon from '../../assets/svg/heartIcon.svg';
 import Colors from '../../utils/Colors';
@@ -30,69 +37,85 @@ const ProductDetails = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <ImageCarousel images={images} />
-
-      <View style={styles.nameCont}>
-        <Text style={styles.name}>Product Name</Text>
-        <HeartIcon fill={Colors.secondaryGreen} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.imgCont}>
+        <ImageCarousel images={images} />
       </View>
 
-      <View style={styles.row}>
-        <View style={styles.soldCont}>
-          <Text style={styles.amountSold}>100 Sold</Text>
-        </View>
-
-        <View style={styles.innerRow}>
-          <Star fill={Colors.secondaryGreen} />
-          <Text style={styles.rating}>4.5</Text>
-          <Text style={styles.reviews}>(100 Reviews)</Text>
-        </View>
-      </View>
-
-      <View style={styles.line} />
-
-      <Text style={styles.heading}>Description</Text>
-      <Text style={styles.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet
-        lorem id arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu
-        neque blandit eleifend nec in mauris. Quisque id efficitur nisi.
-      </Text>
-
-      <View style={styles.quantityContainer}>
-        <Text style={styles.quantityText}>Quantity:</Text>
-        <View style={styles.quantityCont2}>
-          <TouchableOpacity onPress={decreaseQuantity}>
-            <Text style={styles.quantityButton}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.quantity}>{quantity}</Text>
-          <TouchableOpacity onPress={increaseQuantity}>
-            <Text style={styles.quantityButton}>+</Text>
+      <View style={styles.SecCont}>
+        <View style={styles.nameCont}>
+          <Text style={styles.name}>Product Name</Text>
+          <TouchableOpacity>
+            <HeartIcon fill={Colors.secondaryGreen} />
           </TouchableOpacity>
         </View>
-      </View>
 
-      <View style={styles.line} />
+        <View style={styles.row}>
+          <View style={styles.soldCont}>
+            <Text style={styles.amountSold}>100 Sold</Text>
+          </View>
 
-      <View style={styles.priceContainer}>
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalPrice}>Total Price</Text>
-          <Text style={styles.price}>$99.99</Text>
+          <View style={styles.innerRow}>
+            <Star fill={Colors.secondaryGreen} />
+            <Text style={styles.rating}>4.5</Text>
+            <Text style={styles.reviews}>(100 Reviews)</Text>
+          </View>
         </View>
-        <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
-          <Text style={styles.addToCartButtonText}>Add to Cart</Text>
-        </TouchableOpacity>
+
+        <View style={styles.line} />
+
+        <Text style={styles.heading}>Description</Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet
+          lorem id arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu
+          neque blandit eleifend nec in mauris. Quisque id efficitur nisi. Lorem
+          ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet lorem
+          id arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu neque
+          blandit eleifend nec in mauris. Quisque id efficitur nisi. Lorem ipsum
+          dolor sit amet, consectetur adipiscing elit. Donec aliquet lorem id
+          arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu neque
+          blandit eleifend nec in mauris. Quisque id efficitur nisi.
+        </Text>
+
+        <View style={styles.quantityContainer}>
+          <Text style={styles.quantityText}>Quantity:</Text>
+          <View style={styles.quantityCont2}>
+            <TouchableOpacity onPress={decreaseQuantity}>
+              <Text style={styles.quantityButton}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.quantity}>{quantity}</Text>
+            <TouchableOpacity onPress={increaseQuantity}>
+              <Text style={styles.quantityButton}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={styles.priceContainer}>
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalPrice}>Total Price</Text>
+            <Text style={styles.price}>$99.99</Text>
+          </View>
+          <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
+            <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 22,
+    flexGrow: 1,
+    // padding: 22,
     alignItems: 'center',
     backgroundColor: Colors.white,
+  },
+  SecCont: {
+    width: '100%',
+    paddingHorizontal: 22,
   },
   line: {
     borderColor: Colors.lightGray,
@@ -113,14 +136,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     borderRadius: 5,
   },
+  imgCont: {
+    width: '100%',
+    height: 400,
+    marginBottom: 10,
+  },
   image: {
     width: 200,
-    height: 320,
+    height: 400,
     marginBottom: 10,
   },
   name: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginBottom: 8,
     color: Colors.black,
   },
@@ -139,17 +167,20 @@ const styles = StyleSheet.create({
   },
   reviews: {
     color: Colors.secondaryGreen,
+    fontFamily: 'Urbanist-Regular',
   },
   rating: {
     marginRight: 8,
     color: 'black',
+    fontFamily: 'Urbanist-Bold',
   },
   amountSold: {
     color: Colors.secondaryGreen,
+    fontFamily: 'Urbanist-Regular',
   },
   heading: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginVertical: 8,
     color: 'black',
     width: '100%',
@@ -159,6 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'left',
     color: 'black',
+    fontFamily: 'Urbanist-Medium',
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -171,19 +203,20 @@ const styles = StyleSheet.create({
     marginRight: 16,
     color: 'black',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
   },
   quantityButton: {
     fontSize: 24,
     paddingHorizontal: 10,
     paddingVertical: 4,
     color: Colors.secondaryGreen,
+    fontFamily: 'Urbanist-Bold',
   },
   quantity: {
     fontSize: 18,
     paddingHorizontal: 8,
     color: Colors.secondaryGreen,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
   },
   quantityCont2: {
     flexDirection: 'row',
@@ -199,11 +232,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginVertical: 12,
+    marginVertical: 16,
+    paddingBottom: 16,
   },
   price: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginRight: 16,
     color: 'black',
   },
@@ -211,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginRight: 16,
     color: 'black',
+    fontFamily: 'Urbanist-Medium',
   },
   totalContainer: {
     flexDirection: 'column',
@@ -227,7 +262,7 @@ const styles = StyleSheet.create({
   addToCartButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
   },
 });
 

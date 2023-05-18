@@ -71,10 +71,11 @@ const styles = StyleSheet.create({
   },
   contentTxt: {
     color: Colors.black,
+    fontFamily: 'Urbanist-Regular',
   },
   contentTxtHeading: {
     color: Colors.black,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
   },
   button: {
     borderRadius: 10,
@@ -86,14 +87,14 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     textAlign: 'center',
   },
   modalText: {
     marginBottom: 20,
     textAlign: 'center',
     color: Colors.black,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     fontSize: 20,
   },
   btnsTxt: {
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: 40,
     marginBottom: 2,
+    fontFamily: 'Urbanist-Bold',
     // backgroundColor: 'red',
   },
 });

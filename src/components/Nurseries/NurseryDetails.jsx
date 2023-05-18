@@ -71,7 +71,9 @@ const NurseryDetails = () => {
       </View>
       <View>
         <Text style={styles.heading}>Products</Text>
-        <Text style={{color: Colors.black}}>Products of this nursery here</Text>
+        <Text style={{color: Colors.black, fontFamily: 'Urbanist-Regular'}}>
+          Products of this nursery here
+        </Text>
       </View>
     </View>
   );
@@ -108,6 +110,7 @@ const styles = StyleSheet.create({
   btnsTxt: {
     color: Colors.white,
     fontSize: 16,
+    fontFamily: 'Urbanist-Bold',
   },
   filterBtn: {
     height: 40,
@@ -134,10 +137,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
     paddingHorizontal: 10,
     color: Colors.black,
+    fontFamily: 'Urbanist-Medium',
   },
   heading: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginVertical: 10,
     color: Colors.black,
   },

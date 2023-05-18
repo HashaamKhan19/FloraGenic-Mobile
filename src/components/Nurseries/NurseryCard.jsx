@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginBottom: 4,
     color: Colors.secondaryGreen,
   },
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.black,
     marginBottom: 4,
+    fontFamily: 'Urbanist-Regular',
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -59,13 +60,9 @@ const styles = StyleSheet.create({
   },
   rating: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginLeft: 6,
     color: Colors.secondaryGreen,
-  },
-  ratingText: {
-    fontSize: 16,
-    color: '#888888',
   },
 });
 

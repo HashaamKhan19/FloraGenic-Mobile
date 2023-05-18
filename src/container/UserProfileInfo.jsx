@@ -66,12 +66,13 @@ const styles = {
   },
   userName: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: 'black',
+    fontFamily: 'Urbanist-Bold',
   },
   userEmail: {
     fontSize: 12,
     color: 'gray',
+    fontFamily: 'Urbanist-Regular',
   },
   iconContainer: {
     flexDirection: 'row',

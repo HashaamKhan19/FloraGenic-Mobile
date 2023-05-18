@@ -1,62 +1,54 @@
-import React, {useState} from 'react';
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import Right from '../../assets/svg/right.svg';
-import Left from '../../assets/svg/left.svg';
-import dimensions from '../../utils/Dimensions';
+import React from 'react';
+import {View, Image, StyleSheet} from 'react-native';
+import Swiper from 'react-native-swiper';
+import Colors from '../../utils/Colors';
 
 const ImageCarousel = ({images}) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const handlePrevious = () => {
-    setCurrentImageIndex(prevIndex =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1,
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentImageIndex(prevIndex =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={handlePrevious} style={styles.button}>
-        <Left
-          fill="#000"
-          width={dimensions.Width / 17}
-          height={dimensions.Height / 17}
-        />
-      </TouchableOpacity>
-      <Image source={images[currentImageIndex]} style={styles.image} />
-      <TouchableOpacity onPress={handleNext} style={styles.button}>
-        <Right
-          fill="#000"
-          size={20}
-          width={dimensions.Width / 17}
-          height={dimensions.Height / 17}
-        />
-      </TouchableOpacity>
-    </View>
+    <Swiper
+      style={styles.wrapper}
+      dotStyle={styles.dot}
+      activeDotStyle={styles.activeDot}>
+      {images.map((image, index) => (
+        <View key={index} style={styles.slide}>
+          <Image source={image} style={styles.image} />
+        </View>
+      ))}
+    </Swiper>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
+  wrapper: {},
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   image: {
-    width: 300,
-    height: 320,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
-  button: {
-    padding: 10,
+  dot: {
+    backgroundColor: Colors.gray,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
   },
-  icon: {
-    width: 20,
-    height: 20,
+  activeDot: {
+    backgroundColor: Colors.floraGreen,
+    width: 24,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
   },
 });
 

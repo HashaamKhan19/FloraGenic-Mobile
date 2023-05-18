@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     textAlign: 'center',
   },
   modalText: {
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: 40,
     marginBottom: 3,
+    fontFamily: 'Urbanist-Medium',
   },
 });
 

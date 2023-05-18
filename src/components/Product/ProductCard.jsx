@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
   container: {
     minHeight: 260,
     maxWidth: 180,
-    backgroundColor: Colors.lightGray,
+    // backgroundColor: Colors.lightGray,
+    borderColor: Colors.lightGray,
+    borderWidth: 1,
     borderRadius: 20,
     padding: 10,
     marginTop: 10,
@@ -39,9 +41,9 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: Colors.black,
     marginTop: 10,
+    fontFamily: 'Urbanist-Bold',
   },
   infoContainer: {
     flexDirection: 'row',
@@ -57,16 +59,18 @@ const styles = StyleSheet.create({
   ratings: {
     color: Colors.black,
     fontSize: 16,
+    fontFamily: 'Urbanist-Regular',
   },
   amountSold: {
     color: Colors.secondaryGreen,
     fontSize: 16,
+    fontFamily: 'Urbanist-Regular',
   },
   price: {
     fontSize: 21,
-    fontWeight: 'bold',
     color: Colors.secondaryGreen,
     marginTop: 3,
+    fontFamily: 'Urbanist-ExtraBold',
   },
   soldCont: {
     borderWidth: 1,

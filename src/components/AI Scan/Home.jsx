@@ -89,9 +89,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     color: Colors.black,
+    fontFamily: 'Urbanist-Regular',
   },
   btn: {
-    backgroundColor: Colors.gray,
+    backgroundColor: Colors.floraGreen,
     padding: 10,
     margin: 10,
     borderRadius: 5,
@@ -99,7 +100,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'center',
-    color: Colors.black,
+    color: Colors.white,
+    fontFamily: 'Urbanist-Regular',
   },
 });
 

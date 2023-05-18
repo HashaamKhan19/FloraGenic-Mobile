@@ -29,7 +29,7 @@ const Home = ({navigation}) => {
             <Text
               style={{
                 fontSize: 24,
-                fontWeight: 'bold',
+                fontFamily: 'Urbanist-Bold',
                 margin: 20,
                 color: Colors.black,
               }}>
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
     paddingHorizontal: 14,
+    fontFamily: 'Urbanist-Medium',
   },
 });
 

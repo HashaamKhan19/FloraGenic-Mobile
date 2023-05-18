@@ -38,9 +38,10 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 200,
+    height: 400,
     resizeMode: 'cover',
     marginBottom: 10,
+    borderRadius: 20,
   },
   buttonContainer: {
     // flex: 1,
@@ -62,10 +63,12 @@ const styles = StyleSheet.create({
   btnsTxt: {
     color: Colors.white,
     fontSize: 16,
+    fontFamily: 'Urbanist-Bold',
   },
   details: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.black,
+    fontFamily: 'Urbanist-Regular',
   },
   detailsCont: {
     flex: 1,

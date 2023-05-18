@@ -90,12 +90,12 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: Colors.black,
+    fontFamily: 'Urbanist-Bold',
   },
   secondaryText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     color: Colors.secondaryGreen,
   },
 });
