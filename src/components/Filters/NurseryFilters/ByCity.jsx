@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   city: {
     color: Colors.black,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     marginBottom: 10,
   },
   placeholderStyle: {

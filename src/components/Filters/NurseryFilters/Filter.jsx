@@ -74,10 +74,11 @@ const styles = StyleSheet.create({
   },
   contentTxt: {
     color: Colors.black,
+    fontFamily: 'Urbanist-Regular',
   },
   contentTxtHeading: {
     color: Colors.black,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
   },
   button: {
     borderRadius: 8,
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: Colors.black,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     fontSize: 20,
   },
   btnsTxt: {

@@ -11,8 +11,8 @@ const ByCategory = () => {
       <Text
         style={{
           color: Colors.black,
-          fontSize: 16,
-          fontWeight: 'bold',
+          fontSize: 18,
+          fontFamily: 'Urbanist-Bold',
           marginBottom: 16,
         }}>
         Filter By Category
@@ -25,7 +25,14 @@ const ByCategory = () => {
           unfillColor="#FFFFFF"
           text={
             <View>
-              <Text style={{color: Colors.black}}>{category}</Text>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontFamily: 'Urbanist-Medium',
+                  fontSize: 16,
+                }}>
+                {category}
+              </Text>
             </View>
           }
           iconStyle={{borderColor: Colors.secondaryGreen}}

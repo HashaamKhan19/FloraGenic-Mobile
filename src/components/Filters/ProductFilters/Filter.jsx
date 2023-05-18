@@ -75,43 +75,31 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 30,
   },
-  contentView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 40,
-  },
-  contentTxt: {
-    color: Colors.black,
-  },
-  contentTxtHeading: {
-    color: Colors.black,
-    fontWeight: 'bold',
-  },
   button: {
     borderRadius: 8,
     padding: 8,
     elevation: 2,
   },
   buttonClose: {
-    backgroundColor: Colors.red,
+    backgroundColor: Colors.black,
   },
   apply: {
     backgroundColor: Colors.floraGreen,
     borderRadius: 8,
     padding: 8,
     elevation: 2,
+    fontFamily: 'Urbanist-Bold',
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     textAlign: 'center',
   },
   modalText: {
     marginBottom: 20,
     textAlign: 'center',
     color: Colors.black,
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     fontSize: 20,
   },
   btnsTxt: {
@@ -119,6 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: 40,
     marginBottom: 3,
+    fontFamily: 'Urbanist-Medium',
   },
 });
 

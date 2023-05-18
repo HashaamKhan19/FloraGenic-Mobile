@@ -24,8 +24,8 @@ const ByRatings = () => {
       <Text
         style={{
           color: Colors.black,
-          fontSize: 16,
-          fontWeight: 'bold',
+          fontSize: 18,
+          fontFamily: 'Urbanist-Bold',
           marginBottom: 10,
         }}>
         Filter By Ratings

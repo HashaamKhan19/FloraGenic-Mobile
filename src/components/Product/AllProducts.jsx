@@ -28,7 +28,14 @@ const AllProducts = () => {
       </View>
 
       <View style={{padding: 10}}>
-        <Text style={{color: Colors.black}}>All Products (9)</Text>
+        <Text
+          style={{
+            color: Colors.black,
+            fontFamily: 'Urbanist-Medium',
+            fontSize: 16,
+          }}>
+          All Products (9)
+        </Text>
       </View>
     </View>
   );

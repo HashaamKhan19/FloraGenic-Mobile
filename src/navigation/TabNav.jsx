@@ -19,6 +19,10 @@ import ProductDetails from '../components/Product/ProductDetails';
 import NurseryDetails from '../components/Nurseries/NurseryDetails';
 import AllProducts from '../components/Product/AllProducts';
 import GardenerDetails from '../components/Gardeners/GardenerDetails';
+import EditProfile from '../components/Profile/EditProfile';
+import Address from '../components/Profile/Address';
+import Orders from '../components/Profile/Orders';
+import Payments from '../components/Profile/Payments';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -183,6 +187,26 @@ function StackNavigator() {
       <stack.Screen
         name="AllProducts"
         component={AllProducts}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Address"
+        component={Address}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Orders"
+        component={Orders}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Payments"
+        component={Payments}
         options={{headerShown: false}}
       />
     </stack.Navigator>
