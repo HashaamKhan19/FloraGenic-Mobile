@@ -9,13 +9,59 @@ import {
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../utils/Colors';
+import Eye from '../../assets/svg/eye.svg';
+import {Popup, notification} from '../Popups/Alert';
+import {LOGIN_QUERY} from './LoginQuery';
+import {useNavigation} from '@react-navigation/native';
+import {useMutation} from '@apollo/client';
+import {AuthContext} from '../../context/authContext';
 
 export default function Login() {
-  const [email, onChangeEmail] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
-  const [value, setValue] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(true);
-  const [isFocused, setIsFocused] = React.useState(true);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const {user, setUser} = React.useContext(AuthContext);
+
+  const navigation = useNavigation();
+
+  const [login, {data, loading, error}] = useMutation(LOGIN_QUERY, {
+    onCompleted: async data => {
+      data?.login?.userType === 'Customer' && navigation.goBack();
+
+      notification(
+        'success',
+        'Login Successfull',
+        'You are authorized to access the app',
+      );
+
+      // await AsyncStorage.setItem('token', data.login.token);
+      // await AsyncStorage.setItem('userType', data.login.userType);
+      // await AsyncStorage.setItem('id', data.login.id);
+      console.log('setting users', data);
+      setUser(() => {
+        console.log('setting users2', data.login);
+        return data.login;
+      });
+    },
+    onError: error => {
+      console.log(error);
+      notification('error', 'Login Failed', 'Please check your credentials');
+    },
+  });
+
+  const onSubmit = data => {
+    console.log('data->', data);
+    login({
+      variables: {
+        credentials: {
+          email: data.email,
+          password: data.password,
+          userType: 'Customer',
+        },
+      },
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -37,14 +83,26 @@ export default function Login() {
             placeholder="Email Address"
             keyboardType="email-address"
             placeholderTextColor={Colors.darkGray}
+            onChangeText={setEmail}
           />
 
           <TextInput
             style={styles.input}
             placeholder="Password"
-            secureTextEntry={true}
             placeholderTextColor={Colors.darkGray}
+            onChangeText={setPassword}
+            secureTextEntry={showPassword}
           />
+          <View style={{position: 'absolute', right: 24, top: 95}}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Eye
+                fill={Colors.darkGray}
+                width={20}
+                height={20}
+                style={{marginRight: 10}}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.cbdiv}>
@@ -59,7 +117,11 @@ export default function Login() {
         </View>
 
         {/* SignUp buttons etc */}
-        <TouchableOpacity style={styles.btnCont}>
+        <TouchableOpacity
+          style={styles.btnCont}
+          onPress={() => {
+            onSubmit({email, password});
+          }}>
           <Text style={styles.btnTxt}>Sign In</Text>
         </TouchableOpacity>
       </View>
@@ -101,6 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 10,
     padding: 8,
+    backgroundColor: Colors.white,
   },
   tinyLogo: {
     width: 180,
@@ -147,6 +210,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 55,
     backgroundColor: Colors.lightGray,
+    color: Colors.black,
+    fontSize: 16,
     borderRadius: 16,
     padding: 20,
     marginBottom: 14,

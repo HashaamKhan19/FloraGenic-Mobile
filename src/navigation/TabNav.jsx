@@ -23,11 +23,26 @@ import EditProfile from '../components/Profile/EditProfile';
 import Address from '../components/Profile/Address';
 import Orders from '../components/Profile/Orders';
 import Payments from '../components/Profile/Payments';
+import {AuthContext} from '../context/authContext';
+import {useContext} from 'react';
+import Login from '../components/Profiling/Login';
+import SignUp from '../components/Profiling/SignUp';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
 
 function TabNavigator() {
+  const {user} = useContext(AuthContext);
+
+  const handleTabPress = ({navigation, route}) => {
+    if (user) {
+      navigation.navigate(route.name);
+    } else {
+      navigation.navigate('Login');
+    }
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Store"
@@ -156,7 +171,16 @@ function TabNavigator() {
       <Tab.Screen name="AI Scan" component={PlantScan} />
       <Tab.Screen name="Nurseries" component={Nurseries} />
       <Tab.Screen name="Gardeners" component={Gardeners} />
-      <Tab.Screen name="Profile" component={UserProfile} />
+      <Tab.Screen
+        name="Profile"
+        component={UserProfile}
+        listeners={({navigation, route}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            handleTabPress({navigation, route});
+          },
+        })}
+      />
     </Tab.Navigator>
   );
 }
@@ -207,6 +231,16 @@ function StackNavigator() {
       <stack.Screen
         name="Payments"
         component={Payments}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="SignUp"
+        component={SignUp}
         options={{headerShown: false}}
       />
     </stack.Navigator>
