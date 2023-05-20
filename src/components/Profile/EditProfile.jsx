@@ -11,7 +11,12 @@ import {
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../utils/Colors';
 
-const EditProfile = () => {
+const EditProfile = ({
+  navigation,
+  route: {
+    params: {data},
+  },
+}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
@@ -23,53 +28,56 @@ const EditProfile = () => {
     // Logic to save the profile data
   };
 
+  console.log('user data in his profile tab->: ', data);
+
   return (
     <View style={styles.container}>
       <Image
         source={{
-          uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+          uri: data?.user?.details?.image,
         }}
         style={styles.image}
       />
 
       <TextInput
         placeholder="First Name"
-        value={firstName}
+        value={data?.user?.details?.firstName}
         onChangeText={text => setFirstName(text)}
         style={styles.input}
         placeholderTextColor={Colors.darkGray}
       />
       <TextInput
         placeholder="Last Name"
-        value={lastName}
+        value={data?.user?.details?.lastName}
         onChangeText={text => setLastName(text)}
         style={styles.input}
         placeholderTextColor={Colors.darkGray}
       />
       <TextInput
         placeholder="Email Address"
-        value={email}
+        value={data?.user?.details?.userDetails?.email}
         onChangeText={text => setEmail(text)}
         style={styles.input}
         placeholderTextColor={Colors.darkGray}
+        editable={false}
       />
-      <TextInput
+      {/* <TextInput
         placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={text => setPassword(text)}
         style={styles.input}
         placeholderTextColor={Colors.darkGray}
-      />
+      /> */}
       <TextInput
         placeholder="Phone Number"
-        value={phoneNumber}
+        value={data?.user?.details?.phoneNumber}
         onChangeText={text => setPhoneNumber(text)}
         style={styles.input}
         placeholderTextColor={Colors.darkGray}
       />
 
-      <View style={styles.cbdiv}>
+      {/* <View style={styles.cbdiv}>
         <BouncyCheckbox
           size={20}
           unfillColor="#FFFFFF"
@@ -88,7 +96,7 @@ const EditProfile = () => {
           text="Female"
           textStyle={{fontFamily: 'Urbanist-Bold', fontSize: 16}}
         />
-      </View>
+      </View> */}
 
       <View style={styles.btnCntr}>
         <TouchableOpacity style={styles.btn}>
@@ -116,6 +124,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 55,
     backgroundColor: Colors.lightGray,
+    color: Colors.black,
     borderRadius: 16,
     padding: 20,
     marginBottom: 14,

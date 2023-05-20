@@ -7,32 +7,98 @@ import Address from '../../assets/svg/address.svg';
 import Payment from '../../assets/svg/payment.svg';
 import Orders from '../../assets/svg/orders.svg';
 import Logout from '../../assets/svg/logout.svg';
+import Lock from '../../assets/svg/lock.svg';
 import {useNavigation} from '@react-navigation/native';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {notification} from '../Popups/Alert';
 import {AuthContext} from '../../context/authContext';
+import {gql, useQuery} from '@apollo/client';
+
+const GET_USER = gql`
+  query Query($userId: ID!) {
+    user(id: $userId) {
+      id
+      userType
+      details {
+        ... on Customer {
+          firstName
+          lastName
+          image
+          nationality
+          gender
+          addresses {
+            city
+            location
+            name
+          }
+          payments {
+            cardCVV
+            cardExpiryDate
+            cardHolderName
+            cardNumber
+          }
+          userDetails {
+            email
+          }
+          phoneNumber
+        }
+        ... on Gardener {
+          CNIC
+          city
+          firstName
+          gender
+          image
+          id
+          lastName
+          phoneNumber
+        }
+      }
+    }
+  }
+`;
 
 const Home = ({navigation}) => {
-  const values = ['Edit Profile', 'Address', 'Payment', 'Orders', 'Logout'];
-  const icons = [<User />, <Address />, <Payment />, <Orders />, <Logout />];
+  const values = [
+    'Edit Profile',
+    'Edit Password',
+    'Address',
+    'Payment',
+    'Orders',
+    'Logout',
+  ];
+  const icons = [
+    <User />,
+    <Lock />,
+    <Address />,
+    <Payment />,
+    <Orders />,
+    <Logout />,
+  ];
 
   const {user, setUser} = React.useContext(AuthContext);
+
+  const {loading, error, data} = useQuery(GET_USER, {
+    variables: {userId: user?.id},
+  });
 
   const handlePress = index => {
     switch (index) {
       case 0:
-        navigation.navigate('EditProfile');
+        navigation.navigate('EditProfile', {data});
         break;
       case 1:
-        navigation.navigate('Address');
+        navigation.navigate('EditPassword', {data});
         break;
       case 2:
-        navigation.navigate('Payments');
+        navigation.navigate('Address');
         break;
       case 3:
-        navigation.navigate('Orders');
+        navigation.navigate('Payments');
         break;
       case 4:
+        navigation.navigate('Orders');
+        break;
+      case 5:
         DeviceStorage.deleteItem('token');
         DeviceStorage.deleteItem('userType');
         DeviceStorage.deleteItem('id');
@@ -58,12 +124,12 @@ const Home = ({navigation}) => {
     <View style={styles.mainCntr}>
       <View style={styles.imgContainer}>
         <Image
-          source={{
-            uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-          }}
+          source={{uri: data?.user?.details?.image}}
           style={styles.image}
         />
-        <Text style={styles.username}>John Doe</Text>
+        <Text style={styles.username}>
+          {data?.user?.details?.firstName} {data?.user?.details?.lastName}
+        </Text>
       </View>
 
       {values.map((value, index) => {

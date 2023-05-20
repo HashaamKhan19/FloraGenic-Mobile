@@ -56,6 +56,11 @@ export default function Login() {
     onError: error => {
       setBtnLoading(false);
       console.log(error);
+      notification(
+        'error',
+        'Logged in Failed',
+        'Invalid Password or Email Address!',
+      );
     },
   });
 

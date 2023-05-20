@@ -27,6 +27,7 @@ import {AuthContext} from '../context/authContext';
 import {useContext} from 'react';
 import Login from '../components/Profiling/Login';
 import SignUp from '../components/Profiling/SignUp';
+import EditPassword from '../components/Profile/EditPassword';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -217,6 +218,11 @@ function StackNavigator() {
       <stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="EditPassword"
+        component={EditPassword}
         options={{headerShown: false}}
       />
       <stack.Screen
