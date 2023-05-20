@@ -10,43 +10,43 @@ import {
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../utils/Colors';
 import Eye from '../../assets/svg/eye.svg';
-import {Popup, notification} from '../Popups/Alert';
 import {LOGIN_QUERY} from './LoginQuery';
-import {useNavigation} from '@react-navigation/native';
 import {useMutation} from '@apollo/client';
 import {AuthContext} from '../../context/authContext';
+import DeviceStorage from '../../utils/DeviceStorage';
+import {useNavigation} from '@react-navigation/native';
+import {notification} from '../Popups/Alert';
 
 export default function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const {user, setUser} = React.useContext(AuthContext);
+  const {setUser} = React.useContext(AuthContext);
 
   const navigation = useNavigation();
 
   const [login, {data, loading, error}] = useMutation(LOGIN_QUERY, {
     onCompleted: async data => {
-      data?.login?.userType === 'Customer' && navigation.goBack();
+      data?.login?.token && navigation.goBack();
+
+      await DeviceStorage.saveItem('token', data?.login.token);
+      await DeviceStorage.saveItem('userType', data?.login.userType);
+      await DeviceStorage.saveItem('id', data?.login.id);
 
       notification(
         'success',
-        'Login Successfull',
-        'You are authorized to access the app',
+        'Logged in',
+        'You have been logged in to the system',
       );
 
-      // await AsyncStorage.setItem('token', data.login.token);
-      // await AsyncStorage.setItem('userType', data.login.userType);
-      // await AsyncStorage.setItem('id', data.login.id);
-      console.log('setting users', data);
       setUser(() => {
-        console.log('setting users2', data.login);
+        console.log('setting users2, please', data.login);
         return data.login;
       });
     },
     onError: error => {
       console.log(error);
-      notification('error', 'Login Failed', 'Please check your credentials');
     },
   });
 

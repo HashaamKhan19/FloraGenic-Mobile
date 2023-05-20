@@ -8,10 +8,15 @@ import Payment from '../../assets/svg/payment.svg';
 import Orders from '../../assets/svg/orders.svg';
 import Logout from '../../assets/svg/logout.svg';
 import {useNavigation} from '@react-navigation/native';
+import DeviceStorage from '../../utils/DeviceStorage';
+import {notification} from '../Popups/Alert';
+import {AuthContext} from '../../context/authContext';
 
 const Home = ({navigation}) => {
   const values = ['Edit Profile', 'Address', 'Payment', 'Orders', 'Logout'];
   const icons = [<User />, <Address />, <Payment />, <Orders />, <Logout />];
+
+  const {user, setUser} = React.useContext(AuthContext);
 
   const handlePress = index => {
     switch (index) {
@@ -28,7 +33,21 @@ const Home = ({navigation}) => {
         navigation.navigate('Orders');
         break;
       case 4:
-        console.log('User logged out');
+        DeviceStorage.deleteItem('token');
+        DeviceStorage.deleteItem('userType');
+        DeviceStorage.deleteItem('id');
+        notification(
+          'success',
+          'Logged out',
+          'You have been logged out from the system',
+        );
+        navigation.navigate('Store');
+
+        setUser(() => {
+          console.log('setting users2, please', user);
+          return null;
+        });
+        console.log('logout hogya2', user);
         break;
       default:
         break;

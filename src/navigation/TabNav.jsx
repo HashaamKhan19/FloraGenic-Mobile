@@ -27,7 +27,6 @@ import {AuthContext} from '../context/authContext';
 import {useContext} from 'react';
 import Login from '../components/Profiling/Login';
 import SignUp from '../components/Profiling/SignUp';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -36,9 +35,10 @@ function TabNavigator() {
   const {user} = useContext(AuthContext);
 
   const handleTabPress = ({navigation, route}) => {
-    if (user) {
-      navigation.navigate(route.name);
+    if (user && user.id !== null) {
+      navigation.navigate('Profile');
     } else {
+      console.log('user not found', user);
       navigation.navigate('Login');
     }
   };
