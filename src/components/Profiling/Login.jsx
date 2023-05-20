@@ -16,11 +16,18 @@ import {AuthContext} from '../../context/authContext';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {useNavigation} from '@react-navigation/native';
 import {notification} from '../Popups/Alert';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {ActivityIndicator} from 'react-native-paper';
 
 export default function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(true);
+
+  const [btnLoading, setBtnLoading] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('Customer');
 
   const {setUser} = React.useContext(AuthContext);
 
@@ -28,6 +35,7 @@ export default function Login() {
 
   const [login, {data, loading, error}] = useMutation(LOGIN_QUERY, {
     onCompleted: async data => {
+      setBtnLoading(false);
       data?.login?.token && navigation.goBack();
 
       await DeviceStorage.saveItem('token', data?.login.token);
@@ -46,6 +54,7 @@ export default function Login() {
       });
     },
     onError: error => {
+      setBtnLoading(false);
       console.log(error);
     },
   });
@@ -57,7 +66,7 @@ export default function Login() {
         credentials: {
           email: data.email,
           password: data.password,
-          userType: 'Customer',
+          userType: data.value,
         },
       },
     });
@@ -78,6 +87,61 @@ export default function Login() {
       {/* Inputs */}
       <View style={{padding: 14}}>
         <View style={styles.inputContainer}>
+          <DropDownPicker
+            open={open}
+            value={value}
+            setValue={setValue}
+            setOpen={setOpen}
+            theme="LIGHT"
+            multiple={false}
+            mode="BADGE"
+            items={[
+              {label: 'Gardener', value: 'Gardener'},
+              {label: 'Customer', value: 'Customer'},
+            ]}
+            badgeDotColors={['#62A82C', '#8ac926']}
+            style={{
+              backgroundColor: Colors.lightGray,
+              width: '100%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+              borderColor: Colors.lightGray,
+            }}
+            zIndex={1000}
+            containerStyle={{
+              width: '90%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+              zIndex: 1000,
+              borderWidth: 0,
+            }}
+            itemStyle={{
+              justifyContent: 'flex-start',
+            }}
+            dropDownStyle={{
+              backgroundColor: Colors.lightGray,
+              width: '90%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+            }}
+            placeholder="Select User Type"
+            placeholderStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+            }}
+            labelStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+            }}
+            selectedLabelStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+            }}
+          />
+
           <TextInput
             style={styles.input}
             placeholder="Email Address"
@@ -85,23 +149,24 @@ export default function Login() {
             placeholderTextColor={Colors.darkGray}
             onChangeText={setEmail}
           />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor={Colors.darkGray}
-            onChangeText={setPassword}
-            secureTextEntry={showPassword}
-          />
-          <View style={{position: 'absolute', right: 24, top: 95}}>
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <Eye
-                fill={Colors.darkGray}
-                width={20}
-                height={20}
-                style={{marginRight: 10}}
-              />
-            </TouchableOpacity>
+          <View style={styles.eyeCont}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              placeholderTextColor={Colors.darkGray}
+              onChangeText={setPassword}
+              secureTextEntry={showPassword}
+            />
+            <View style={styles.theEye}>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Eye
+                  fill={Colors.darkGray}
+                  width={20}
+                  height={20}
+                  style={{marginRight: 10}}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -120,9 +185,16 @@ export default function Login() {
         <TouchableOpacity
           style={styles.btnCont}
           onPress={() => {
-            onSubmit({email, password});
+            setBtnLoading(true);
+            onSubmit({email, password, value});
           }}>
-          <Text style={styles.btnTxt}>Sign In</Text>
+          <Text style={styles.btnTxt}>
+            {btnLoading ? (
+              <ActivityIndicator animating={true} color={Colors.white} />
+            ) : (
+              'Sign In'
+            )}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.normaldiv}>
@@ -164,6 +236,18 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     padding: 8,
     backgroundColor: Colors.white,
+  },
+  eyeCont: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  theEye: {
+    position: 'absolute',
+    right: 14,
+    bottom: 30,
   },
   tinyLogo: {
     width: 180,
@@ -216,6 +300,18 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 14,
     fontFamily: 'Urbanist-Regular',
+  },
+  passwordInput: {
+    width: '90%',
+    height: 55,
+    backgroundColor: Colors.lightGray,
+    color: Colors.black,
+    fontSize: 16,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 14,
+    fontFamily: 'Urbanist-Regular',
+    position: 'relative',
   },
   btnCont: {
     backgroundColor: Colors.secondaryGreen,

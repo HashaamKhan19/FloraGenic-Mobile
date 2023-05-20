@@ -73,18 +73,6 @@ export const LOGIN_WITH_TOKEN_QUERY = gql`
           createdAt
           updatedAt
         }
-        ... on Admin {
-          id
-          firstName
-          lastName
-          gender
-          nationality
-          phoneNumber
-          CNIC
-          image
-          createdAt
-          updatedAt
-        }
         ... on Gardener {
           id
           firstName
@@ -105,19 +93,6 @@ export const LOGIN_WITH_TOKEN_QUERY = gql`
               name
             }
           }
-        }
-        ... on NurseryOwner {
-          id
-          firstName
-          lastName
-          gender
-          nationality
-          phoneNumber
-          CNIC
-          image
-          nurseries
-          createdAt
-          updatedAt
         }
       }
       token

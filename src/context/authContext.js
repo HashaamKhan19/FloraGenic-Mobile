@@ -4,7 +4,7 @@ import DeviceStorage from '../utils/DeviceStorage';
 export const AuthContext = createContext({});
 
 const AuthProvider = ({children}) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {

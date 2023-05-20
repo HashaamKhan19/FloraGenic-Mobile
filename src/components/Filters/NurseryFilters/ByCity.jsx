@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {MultiSelect} from 'react-native-element-dropdown';
 import {PakistanCities} from './Cities';
 import Colors from '../../../utils/Colors';
 
@@ -10,26 +9,6 @@ const ByCity = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.city}>Filter By City</Text>
-      <MultiSelect
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        search
-        data={PakistanCities}
-        labelField="label"
-        valueField="value"
-        placeholder="Select item"
-        searchPlaceholder="Search..."
-        value={selected}
-        onChange={item => {
-          setSelected(item);
-        }}
-        selectedStyle={styles.selectedStyle}
-        itemTextStyle={{color: Colors.black}}
-        showsVerticalScrollIndicator={true}
-      />
     </View>
   );
 };

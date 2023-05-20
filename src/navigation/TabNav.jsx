@@ -37,8 +37,9 @@ function TabNavigator() {
   const handleTabPress = ({navigation, route}) => {
     if (user && user.id !== null) {
       navigation.navigate('Profile');
+      console.log('user found->>', user);
     } else {
-      console.log('user not found', user);
+      console.log('user not found ->', user);
       navigation.navigate('Login');
     }
   };
