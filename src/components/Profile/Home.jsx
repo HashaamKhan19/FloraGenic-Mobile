@@ -8,54 +8,9 @@ import Payment from '../../assets/svg/payment.svg';
 import Orders from '../../assets/svg/orders.svg';
 import Logout from '../../assets/svg/logout.svg';
 import Lock from '../../assets/svg/lock.svg';
-import {useNavigation} from '@react-navigation/native';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {notification} from '../Popups/Alert';
 import {AuthContext} from '../../context/authContext';
-import {gql, useQuery} from '@apollo/client';
-
-const GET_USER = gql`
-  query Query($userId: ID!) {
-    user(id: $userId) {
-      id
-      userType
-      details {
-        ... on Customer {
-          firstName
-          lastName
-          image
-          nationality
-          gender
-          addresses {
-            city
-            location
-            name
-          }
-          payments {
-            cardCVV
-            cardExpiryDate
-            cardHolderName
-            cardNumber
-          }
-          userDetails {
-            email
-          }
-          phoneNumber
-        }
-        ... on Gardener {
-          CNIC
-          city
-          firstName
-          gender
-          image
-          id
-          lastName
-          phoneNumber
-        }
-      }
-    }
-  }
-`;
 
 const Home = ({navigation}) => {
   const values = [
@@ -77,17 +32,15 @@ const Home = ({navigation}) => {
 
   const {user, setUser} = React.useContext(AuthContext);
 
-  const {loading, error, data} = useQuery(GET_USER, {
-    variables: {userId: user?.id},
-  });
+  console.log('user in homePage:->', user);
 
   const handlePress = index => {
     switch (index) {
       case 0:
-        navigation.navigate('EditProfile', {data});
+        navigation.navigate('EditProfile');
         break;
       case 1:
-        navigation.navigate('EditPassword', {data});
+        navigation.navigate('EditPassword');
         break;
       case 2:
         navigation.navigate('Address');
@@ -123,12 +76,9 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.mainCntr}>
       <View style={styles.imgContainer}>
-        <Image
-          source={{uri: data?.user?.details?.image}}
-          style={styles.image}
-        />
+        <Image source={{uri: user?.details?.image}} style={styles.image} />
         <Text style={styles.username}>
-          {data?.user?.details?.firstName} {data?.user?.details?.lastName}
+          {user?.details?.firstName} {user?.details?.lastName}
         </Text>
       </View>
 
