@@ -12,7 +12,11 @@ import HeartIcon from '../../assets/svg/heartIcon.svg';
 import Colors from '../../utils/Colors';
 import ImageCarousel from './ImageCarousel';
 
-const ProductDetails = () => {
+const ProductDetails = ({
+  route: {
+    params: {product},
+  },
+}) => {
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -30,21 +34,21 @@ const ProductDetails = () => {
     console.log('Product added to cart!');
   };
 
-  const images = [
-    require('../../assets/images/plant2.jpeg'),
-    require('../../assets/images/plant3.jpeg'),
-    require('../../assets/images/plant4.jpg'),
-  ];
+  // const images = [
+  //   require('../../assets/images/plant2.jpeg'),
+  //   require('../../assets/images/plant3.jpeg'),
+  //   require('../../assets/images/plant4.jpg'),
+  // ];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imgCont}>
-        <ImageCarousel images={images} />
+        <ImageCarousel images={product.images} />
       </View>
 
       <View style={styles.SecCont}>
         <View style={styles.nameCont}>
-          <Text style={styles.name}>Product Name</Text>
+          <Text style={styles.name}>{product.name}</Text>
           <TouchableOpacity>
             <HeartIcon fill={Colors.secondaryGreen} />
           </TouchableOpacity>
@@ -52,30 +56,24 @@ const ProductDetails = () => {
 
         <View style={styles.row}>
           <View style={styles.soldCont}>
-            <Text style={styles.amountSold}>100 Sold</Text>
+            <Text style={styles.amountSold}>{product.sold} Sold</Text>
           </View>
 
           <View style={styles.innerRow}>
             <Star fill={Colors.secondaryGreen} />
-            <Text style={styles.rating}>4.5</Text>
-            <Text style={styles.reviews}>(100 Reviews)</Text>
+            <Text style={styles.rating}>
+              {product.overallRating.toFixed(1)}
+            </Text>
+            <Text style={styles.reviews}>
+              ({product.reviews.length} Reviews)
+            </Text>
           </View>
         </View>
 
         <View style={styles.line} />
 
         <Text style={styles.heading}>Description</Text>
-        <Text style={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet
-          lorem id arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu
-          neque blandit eleifend nec in mauris. Quisque id efficitur nisi. Lorem
-          ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet lorem
-          id arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu neque
-          blandit eleifend nec in mauris. Quisque id efficitur nisi. Lorem ipsum
-          dolor sit amet, consectetur adipiscing elit. Donec aliquet lorem id
-          arcu volutpat, ac fringilla odio efficitur. Sed eu mauris eu neque
-          blandit eleifend nec in mauris. Quisque id efficitur nisi.
-        </Text>
+        <Text style={styles.description}>{product.description}</Text>
 
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityText}>Quantity:</Text>
@@ -95,7 +93,7 @@ const ProductDetails = () => {
         <View style={styles.priceContainer}>
           <View style={styles.totalContainer}>
             <Text style={styles.totalPrice}>Total Price</Text>
-            <Text style={styles.price}>$99.99</Text>
+            <Text style={styles.price}>Rs. {product.retailPrice}</Text>
           </View>
           <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>

@@ -1,11 +1,68 @@
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, {useState} from 'react';
 import SearchInput from '../Store/SearchInput';
 import Colors from '../../utils/Colors';
 import Filter from '../Filters/ProductFilters/Filter';
+import {gql, useQuery} from '@apollo/client';
+import {ActivityIndicator} from 'react-native-paper';
+import ProductCard from './ProductCard';
+import {useNavigation} from '@react-navigation/native';
+
+const GET_PRODUCTS = gql`
+  query ExampleQuery {
+    products {
+      id
+      nurseryID
+      nursery {
+        name
+        id
+        details
+        images
+      }
+      name
+      description
+      category {
+        name
+      }
+      hidden
+      retailPrice
+      wholesalePrice
+      stock
+      sold
+      images
+      overallRating
+      tags
+      createdAt
+      updatedAt
+      reviews {
+        createdAt
+        likes
+        rating
+        review
+        userID
+      }
+    }
+  }
+`;
 
 const AllProducts = () => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {loading, error, data} = useQuery(GET_PRODUCTS);
+
+  const navigation = useNavigation();
+
+  if (loading)
+    return <ActivityIndicator animating={true} color={Colors.secondaryGreen} />;
+  if (error) return <Text>Error loading Products</Text>;
+
+  // console.log('data in see all: ', data);
 
   return (
     <View style={styles.container}>
@@ -27,16 +84,28 @@ const AllProducts = () => {
         </View>
       </View>
 
-      <View style={{padding: 10}}>
-        <Text
-          style={{
-            color: Colors.black,
-            fontFamily: 'Urbanist-Medium',
-            fontSize: 16,
-          }}>
-          All Products (9)
-        </Text>
-      </View>
+      <ScrollView>
+        <View style={styles.prdctsCont}>
+          {data.products.map(product => (
+            <TouchableOpacity
+              key={product.id}
+              style={styles.productCardContainer}
+              onPress={() =>
+                navigation.navigate('ProductDetails', {
+                  product: product,
+                })
+              }>
+              <ProductCard
+                imageSource={product.images[0]}
+                name={product.name}
+                ratings={product.overallRating}
+                amountSold={product.sold}
+                price={product.retailPrice}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -46,6 +115,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  prdctsCont: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  productCardContainer: {
+    width: '49%',
+    marginBottom: 10,
   },
   secondContainer: {
     flexDirection: 'row',

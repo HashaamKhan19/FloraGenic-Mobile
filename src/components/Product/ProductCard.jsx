@@ -11,14 +11,14 @@ const ProductCard = ({imageSource, name, ratings, amountSold, price}) => {
       <View style={styles.infoContainer}>
         <View style={styles.ratingsContainer}>
           <Star fill={Colors.secondaryGreen} />
-          <Text style={styles.ratings}>{ratings}</Text>
+          <Text style={styles.ratings}>{ratings.toFixed(1)}</Text>
         </View>
         <Text style={{color: Colors.black}}>|</Text>
         <View style={styles.soldCont}>
           <Text style={styles.amountSold}>{amountSold} Sold</Text>
         </View>
       </View>
-      <Text style={styles.price}>${price}</Text>
+      <Text style={styles.price}>Rs. {price}</Text>
     </View>
   );
 };
@@ -26,7 +26,7 @@ const ProductCard = ({imageSource, name, ratings, amountSold, price}) => {
 const styles = StyleSheet.create({
   container: {
     minHeight: 260,
-    maxWidth: 180,
+    maxWidth: '100%',
     // backgroundColor: Colors.lightGray,
     borderColor: Colors.lightGray,
     borderWidth: 1,

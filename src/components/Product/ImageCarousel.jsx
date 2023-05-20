@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 import Swiper from 'react-native-swiper';
 import Colors from '../../utils/Colors';
+import {ActivityIndicator} from 'react-native-paper';
 
 const ImageCarousel = ({images}) => {
   return (
@@ -11,7 +12,18 @@ const ImageCarousel = ({images}) => {
       activeDotStyle={styles.activeDot}>
       {images.map((image, index) => (
         <View key={index} style={styles.slide}>
-          <Image source={image} style={styles.image} />
+          <Image
+            source={{uri: image}}
+            style={styles.image}
+            onLoadStart={() => {
+              return (
+                <ActivityIndicator
+                  animating={true}
+                  color={Colors.secondaryGreen}
+                />
+              );
+            }}
+          />
         </View>
       ))}
     </Swiper>
