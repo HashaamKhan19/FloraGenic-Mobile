@@ -11,17 +11,19 @@ const Cart = () => {
     <>
       <View style={styles.container}>
         <Text style={styles.heading}>My Cart Items</Text>
-      </View>
 
-      {cartItems.length === 0 && (
-        <Text style={styles.secondTxt}>No items in your cart</Text>
-      )}
-      <FlatList
-        data={cartItems}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => <CartItemCard item={item} />}
-        scrollEnabled={true}
-      />
+        {cartItems.length === 0 && (
+          <Text style={styles.secondTxt}>No items in your cart</Text>
+        )}
+        <View style={styles.listCntr}>
+          <FlatList
+            data={cartItems}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => <CartItemCard item={item} />}
+            scrollEnabled={true}
+          />
+        </View>
+      </View>
     </>
   );
 };
@@ -29,6 +31,10 @@ const Cart = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  listCntr: {
+    padding: 20,
+    marginTop: 20,
   },
   heading: {
     fontSize: 28,

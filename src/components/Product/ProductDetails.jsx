@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,16 @@ import Star from '../../assets/svg/star.svg';
 import HeartIcon from '../../assets/svg/heartIcon.svg';
 import Colors from '../../utils/Colors';
 import ImageCarousel from './ImageCarousel';
+import {notification} from '../Popups/Alert';
+import {CartContext} from '../../context/cartContext';
 
 const ProductDetails = ({
   route: {
     params: {product},
   },
 }) => {
+  const {addItem} = useContext(CartContext);
+
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -30,6 +34,17 @@ const ProductDetails = ({
   };
 
   const addToCart = () => {
+    const cartItem = {
+      id: product?.id,
+      name: product?.name,
+      image: product?.images[0],
+      quantity: quantity,
+      price: product?.retailPrice,
+      nursery: product?.nursery?.name,
+      category: product?.category?.name,
+    };
+    addItem(cartItem);
+    notification('success', 'Product added to cart!');
     console.log('Product added to cart!');
   };
 

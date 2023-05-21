@@ -1,4 +1,5 @@
 import React, {createContext, useState} from 'react';
+import {notification} from '../components/Popups/Alert';
 
 const CartContext = createContext();
 
@@ -6,7 +7,13 @@ const CartProvider = ({children}) => {
   const [cartItems, setCartItems] = useState([]);
 
   const addItem = item => {
-    setCartItems(prevItems => [...prevItems, item]);
+    const itemExists = cartItems.find(cartItem => cartItem.id === item.id);
+
+    if (itemExists) {
+      notification('warning', 'Product already exists in the cart.');
+    } else {
+      setCartItems(prevItems => [...prevItems, item]);
+    }
   };
 
   const removeItem = itemId => {

@@ -3,6 +3,9 @@ import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {CartContext} from '../../context/cartContext';
 import Minus from '../../assets/svg/minus.svg';
 import Plus from '../../assets/svg/plus.svg';
+import Trash from '../../assets/svg/trash.svg';
+import Colors from '../../utils/Colors';
+import dimensions from '../../utils/Dimensions';
 
 const CartItemCard = ({item}) => {
   const {increaseQuantity, decreaseQuantity, removeItem} =
@@ -22,29 +25,38 @@ const CartItemCard = ({item}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={item.image} style={styles.image} />
+      <Image source={{uri: item.image}} style={styles.image} />
 
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.nursery}>{item.nursery}</Text>
+        <Text style={styles.price}>Rs. {item.price}</Text>
       </View>
 
       <View style={styles.quantityContainer}>
         <TouchableOpacity onPress={handleDecreaseQuantity}>
-          <Minus size={24} fill="black" />
+          <Minus
+            width={dimensions.Width / 28}
+            height={dimensions.Height / 28}
+            fill="black"
+          />
         </TouchableOpacity>
 
         <Text style={styles.quantity}>{item.quantity}</Text>
 
         <TouchableOpacity onPress={handleIncreaseQuantity}>
-          <Plus size={24} fill="black" />
+          <Plus
+            width={dimensions.Width / 28}
+            height={dimensions.Height / 28}
+            fill="black"
+          />
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity
         style={styles.removeIconContainer}
         onPress={handleRemoveItem}>
-        <Ionicons name="trash-outline" size={24} color="black" />
+        <Trash size={24} fill={Colors.red} />
       </TouchableOpacity>
     </View>
   );
@@ -68,25 +80,38 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
     marginRight: 10,
+    height: '100%',
   },
   name: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontFamily: 'Urbanist-Medium',
+    color: Colors.black,
+  },
+  price: {
+    fontSize: 20,
+    fontFamily: 'Urbanist-Medium',
+    color: Colors.red,
+    marginTop: 4,
   },
   nursery: {
-    fontSize: 14,
-    color: 'gray',
+    fontSize: 16,
+    fontFamily: 'Urbanist-Medium',
+    color: Colors.secondaryGreen,
   },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 10,
+    marginRight: 10,
   },
   quantity: {
-    fontSize: 16,
+    fontSize: 18,
     marginHorizontal: 10,
+    fontFamily: 'Urbanist-Medium',
+    color: Colors.black,
   },
   removeIconContainer: {
-    marginLeft: 10,
+    marginHorizontal: 10,
   },
 });
 
