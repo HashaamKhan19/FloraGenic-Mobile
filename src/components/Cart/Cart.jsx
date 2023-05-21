@@ -3,9 +3,12 @@ import React, {useContext} from 'react';
 import Colors from '../../utils/Colors';
 import {CartContext} from '../../context/cartContext';
 import CartItemCard from './CartItemCard';
+import {useNavigation} from '@react-navigation/native';
 
 const Cart = () => {
   const {cartItems} = useContext(CartContext);
+
+  const navigation = useNavigation();
 
   return (
     <>
@@ -23,6 +26,12 @@ const Cart = () => {
             scrollEnabled={true}
           />
         </View>
+
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate('CheckoutPage')}>
+          <Text style={styles.btnTxt}>Checkout</Text>
+        </TouchableOpacity>
       </View>
     </>
   );

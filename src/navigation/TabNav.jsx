@@ -29,6 +29,8 @@ import Login from '../components/Profiling/Login';
 import SignUp from '../components/Profiling/SignUp';
 import EditPassword from '../components/Profile/EditPassword';
 import Cart from '../components/Cart/Cart';
+import CheckoutPage from '../components/Cart/CheckoutPage';
+import PaymentPage from '../components/Cart/PaymentPage';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -254,6 +256,16 @@ function StackNavigator() {
       <stack.Screen
         name="Cart"
         component={Cart}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="CheckoutPage"
+        component={CheckoutPage}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="PaymentPage"
+        component={PaymentPage}
         options={{headerShown: false}}
       />
     </stack.Navigator>
