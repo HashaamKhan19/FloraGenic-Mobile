@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import SearchIcon from '../../assets/svg/searchIcon.svg';
+import Colors from '../../utils/Colors';
 
-const SearchInput = () => {
+const SearchInput = ({query, setQuery, inputRef}) => {
   return (
     <View style={styles.container}>
       {/* <SearchIcon width={20} height={20} /> */}
@@ -10,6 +11,9 @@ const SearchInput = () => {
         style={styles.input}
         placeholder="🔎︎ Search..."
         placeholderTextColor="darkgrey"
+        value={query}
+        onChangeText={text => setQuery(text)}
+        ref={inputRef}
       />
     </View>
   );
@@ -30,6 +34,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 14,
     fontFamily: 'Urbanist-Light',
+    fontSize: 16,
+    color: Colors.blackishGray,
   },
 });
 

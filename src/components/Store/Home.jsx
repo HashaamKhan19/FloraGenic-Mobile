@@ -14,7 +14,7 @@ const Home = ({navigation}) => {
           flex: 1,
           backgroundColor: Colors.white,
         }}>
-        <SearchInput />
+        {/* <SearchInput /> */}
         <View style={styles.container}>
           <Text style={styles.mainText}>Special Offers</Text>
           <Text

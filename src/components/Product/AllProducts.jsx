@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import SearchInput from '../Store/SearchInput';
 import Colors from '../../utils/Colors';
 import Filter from '../Filters/ProductFilters/Filter';
@@ -54,9 +54,11 @@ const GET_PRODUCTS = gql`
 const AllProducts = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const {loading, error, data} = useQuery(GET_PRODUCTS);
+  const {data, loading, error} = useQuery(GET_PRODUCTS);
 
   const navigation = useNavigation();
+
+  const [query, setQuery] = useState('');
 
   if (loading) return;
   <View
@@ -74,11 +76,27 @@ const AllProducts = () => {
   </View>;
   if (error) return <Text>Error loading Products</Text>;
 
+  const filteredProducts = data.products?.filter(data => {
+    if (query === '') {
+      return data;
+    } else if (data?.name?.toLowerCase().includes(query?.toLowerCase())) {
+      return data;
+    }
+  });
+
+  const inputRef = useRef(null);
+
+  const removeFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchStart={() => removeFocus()}>
       <View style={styles.secondContainer}>
         <View style={styles.searchCont}>
-          <SearchInput />
+          <SearchInput query={query} setQuery={setQuery} inputRef={inputRef} />
         </View>
         <View style={styles.filterCont}>
           <TouchableOpacity
@@ -96,10 +114,13 @@ const AllProducts = () => {
 
       <ScrollView>
         <View style={styles.prdctsCont}>
-          {data.products.map(product => (
+          {filteredProducts?.map(product => (
             <TouchableOpacity
               key={product.id}
-              style={styles.productCardContainer}
+              style={[
+                styles.productCardContainer,
+                filteredProducts.length === 1 && {width: '100%'},
+              ]}
               onPress={() =>
                 navigation.navigate('ProductDetails', {
                   product: product,
@@ -129,8 +150,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productCardContainer: {
-    width: '49%',
     marginBottom: 10,
+    width: '49%',
   },
   secondContainer: {
     flexDirection: 'row',

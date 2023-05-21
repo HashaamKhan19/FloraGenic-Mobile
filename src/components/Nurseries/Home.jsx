@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import SearchInput from '../Store/SearchInput';
 import NurseryListings from './NurseryListings';
@@ -15,18 +15,31 @@ import Filter from '../Filters/NurseryFilters/Filter';
 const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [query, setQuery] = useState('');
+
+  const inputRef = useRef(null);
+
+  const removeFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
+  };
+
   return (
     <ScrollView>
       <View
         style={{
           flex: 1,
           backgroundColor: Colors.white,
-        }}>
+        }}
+        onTouchStart={() => removeFocus()}>
         <View style={styles.container}>
           <TextInput
             style={styles.input}
             placeholder="🔎︎ Search..."
             placeholderTextColor="darkgrey"
+            onChangeText={text => setQuery(text)}
+            ref={inputRef}
           />
         </View>
 
@@ -59,7 +72,11 @@ const Home = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <NurseryListings navigation={navigation} />
+          <NurseryListings
+            navigation={navigation}
+            query={query}
+            setQuery={setQuery}
+          />
         </View>
       </View>
     </ScrollView>
@@ -91,7 +108,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 10,
     paddingHorizontal: 14,
-    fontFamily: 'Urbanist-Light',
+    fontFamily: 'Urbanist-Regular',
+    color: Colors.blackishGray,
+    fontSize: 16,
   },
 });
 

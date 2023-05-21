@@ -47,6 +47,22 @@ export const GET_PROFILE_DETAILS = gql`
           image
           createdAt
           updatedAt
+          addresses {
+            name
+            location
+            pin
+            id
+            city
+            setAsDefault
+          }
+          payments {
+            id
+            cardHolderName
+            cardNumber
+            cardExpiryDate
+            cardCVV
+            userID
+          }
         }
         ... on Gardener {
           id
@@ -92,7 +108,7 @@ const AuthProvider = ({children}) => {
     setUser(null);
   };
 
-  const {loading, error, data} = useQuery(GET_PROFILE_DETAILS, {
+  const {data, loading, error} = useQuery(GET_PROFILE_DETAILS, {
     client,
     onCompleted: data => {
       console.log('user in context after calling profile :', data);

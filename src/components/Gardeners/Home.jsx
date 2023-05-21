@@ -1,22 +1,36 @@
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import Colors from '../../utils/Colors';
 import GardenerListings from './GardenerListings';
 
 const Home = ({navigation}) => {
+  const [query, setQuery] = useState('');
+
+  const inputRef = useRef(null);
+
+  const removeFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
+  };
+
   return (
     <ScrollView>
       <View
         style={{
           flex: 1,
           backgroundColor: Colors.white,
-        }}>
+        }}
+        onTouchStart={() => removeFocus()}>
         <View style={styles.container}>
           <TextInput
             style={styles.input}
             placeholder="🔎︎ Search..."
             placeholderTextColor="darkgrey"
+            value={query}
+            onChangeText={text => setQuery(text)}
+            ref={inputRef}
           />
         </View>
         <View>
@@ -36,7 +50,11 @@ const Home = ({navigation}) => {
               Gardeners
             </Text>
           </View>
-          <GardenerListings navigation={navigation} />
+          <GardenerListings
+            navigation={navigation}
+            query={query}
+            setQuery={setQuery}
+          />
         </View>
       </View>
     </ScrollView>
@@ -58,6 +76,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 14,
     fontFamily: 'Urbanist-Medium',
+    fontSize: 16,
+    color: Colors.blackishGray,
   },
 });
 

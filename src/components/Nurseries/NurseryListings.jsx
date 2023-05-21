@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import NurseryCard from './NurseryCard';
 import {gql, useQuery} from '@apollo/client';
@@ -47,8 +47,8 @@ const GET_NURSERIES = gql`
   }
 `;
 
-const NurseryListings = ({navigation}) => {
-  const {loading, error, data} = useQuery(GET_NURSERIES);
+const NurseryListings = ({navigation, query, setQuery}) => {
+  const {data, loading, error} = useQuery(GET_NURSERIES);
 
   return (
     <View style={styles.container}>
@@ -78,23 +78,31 @@ const NurseryListings = ({navigation}) => {
         </View>
       )}
 
-      {data.nurseries.map(nursery => (
-        <TouchableOpacity
-          key={nursery?.id}
-          onPress={() =>
-            navigation.navigate('NurseryDetails', {
-              nursery: nursery,
-            })
-          }>
-          <NurseryCard
+      {data?.nurseries
+        ?.filter(data => {
+          if (query === '') {
+            return data;
+          } else if (data?.name?.toLowerCase().includes(query?.toLowerCase())) {
+            return data;
+          }
+        })
+        ?.map(nursery => (
+          <TouchableOpacity
             key={nursery?.id}
-            image={nursery?.images[0]}
-            name={nursery?.name}
-            location={nursery?.address}
-            ratings={nursery?.rating}
-          />
-        </TouchableOpacity>
-      ))}
+            onPress={() =>
+              navigation.navigate('NurseryDetails', {
+                nursery: nursery,
+              })
+            }>
+            <NurseryCard
+              key={nursery?.id}
+              image={nursery?.images[0]}
+              name={nursery?.name}
+              location={nursery?.address}
+              ratings={nursery?.rating}
+            />
+          </TouchableOpacity>
+        ))}
     </View>
   );
 };
