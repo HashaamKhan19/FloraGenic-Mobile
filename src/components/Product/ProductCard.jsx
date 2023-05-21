@@ -3,22 +3,24 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import Colors from '../../utils/Colors';
 import Star from '../../assets/svg/star.svg';
 
-const ProductCard = ({imageSource, name, ratings, amountSold, price}) => {
+const ProductCard = ({data}) => {
+  console.log('Product card data:', data);
+
   return (
     <View style={styles.container}>
-      <Image source={{uri: imageSource}} style={styles.image} />
-      <Text style={styles.name}>{name}</Text>
+      <Image source={{uri: data?.images[0]}} style={styles.image} />
+      <Text style={styles.name}>{data?.name}</Text>
       <View style={styles.infoContainer}>
         <View style={styles.ratingsContainer}>
           <Star fill={Colors.secondaryGreen} />
-          <Text style={styles.ratings}>{ratings.toFixed(1)}</Text>
+          <Text style={styles.ratings}>{data?.overallRating?.toFixed(1)}</Text>
         </View>
         <Text style={{color: Colors.black}}>|</Text>
         <View style={styles.soldCont}>
-          <Text style={styles.amountSold}>{amountSold} Sold</Text>
+          <Text style={styles.amountSold}>{data?.sold} Sold</Text>
         </View>
       </View>
-      <Text style={styles.price}>Rs. {price}</Text>
+      <Text style={styles.price}>Rs. {data?.retailPrice}</Text>
     </View>
   );
 };

@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 import Colors from '../../utils/Colors';
 
-const NurseryDetailsModal = ({modalVisible, setModalVisible}) => {
+const NurseryDetailsModal = ({modalVisible, setModalVisible, nursery}) => {
+  console.log('Nursery details:', nursery);
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -24,8 +26,83 @@ const NurseryDetailsModal = ({modalVisible, setModalVisible}) => {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Nursery Details</Text>
             <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>Nursery Name: </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.name ? nursery?.name : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
               <Text style={styles.contentTxtHeading}>Nursery Email: </Text>
-              <Text style={styles.contentTxt}>123465</Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.email ? nursery?.email : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>Nursery Address: </Text>
+              <Text style={[styles.contentTxt, styles.addressText]}>
+                {nursery?.address ? nursery?.address : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>
+                Nursery Phone Number:{' '}
+              </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.phoneNumber ? nursery?.phoneNumber : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>Nursery Details: </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.details ? nursery?.details : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>
+                Nursery Opening Hours:{' '}
+              </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.openingHours
+                  ? nursery?.openingHours
+                  : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>
+                Nursery Closing Hours:{' '}
+              </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.closingHours
+                  ? nursery?.closingHours
+                  : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>Nursery Owner: </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.nurseryOwner?.firstName
+                  ? nursery?.nurseryOwner?.firstName
+                  : 'Not available'}
+                {nursery?.nurseryOwner?.lastName
+                  ? nursery?.nurseryOwner?.lastName
+                  : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>
+                Nursery Owner Phone:{' '}
+              </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.nurseryOwner?.phoneNumber
+                  ? nursery?.nurseryOwner?.phoneNumber
+                  : 'Not available'}
+              </Text>
+            </View>
+            <View style={styles.contentView}>
+              <Text style={styles.contentTxtHeading}>Nursery Website: </Text>
+              <Text style={styles.contentTxt}>
+                {nursery?.website ? nursery?.website : 'Not available'}
+              </Text>
             </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -47,6 +124,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
+  addressText: {
+    width: '70%',
+  },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
@@ -61,17 +141,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '80%',
+    width: '90%',
   },
   contentView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 40,
+    marginBottom: 12,
   },
   contentTxt: {
     color: Colors.black,
     fontFamily: 'Urbanist-Regular',
+    flexWrap: 'wrap',
+    flexShrink: 1,
   },
   contentTxtHeading: {
     color: Colors.black,

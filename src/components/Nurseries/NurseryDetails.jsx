@@ -4,31 +4,29 @@ import {
   Image,
   Text,
   TextInput,
-  Button,
-  FlatList,
   StyleSheet,
   TouchableOpacity,
+  Linking,
+  ScrollView,
 } from 'react-native';
 import Colors from '../../utils/Colors';
 import NurseryDetailsModal from './NurseryDetailsModal';
+import ImageCarousel from '../Product/ImageCarousel';
+import ProductCard from '../Product/ProductCard';
+import {useNavigation} from '@react-navigation/native';
 
-const NurseryDetails = () => {
+const NurseryDetails = ({
+  route: {
+    params: {nursery},
+  },
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const nursery = {
-    name: 'Happy Seeds Nursery',
-    image: require('../../assets/images/Nurseries/1.jpg'),
-    products: [
-      {id: 1, name: 'Product 1'},
-      {id: 2, name: 'Product 2'},
-      {id: 3, name: 'Product 3'},
-      // Add more products here
-    ],
-  };
-
-  const handleContactNursery = () => {
-    // Handle contact nursery action
-    console.log('Contact nursery');
+  const contactNursery = phoneNumber => {
+    const phoneUrl = `tel:${phoneNumber}`;
+    Linking.openURL(phoneUrl).catch(err =>
+      console.error('Failed to open Phone app:', err),
+    );
   };
 
   const handleViewNurseryDetails = () => {
@@ -36,20 +34,27 @@ const NurseryDetails = () => {
   };
 
   const handleSearch = text => {
-    // Handle search action
     console.log('Search:', text);
   };
 
   const handleFilter = () => {
-    // Handle filter action
     console.log('Filter');
   };
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Image source={nursery.image} style={styles.image} />
+      <View style={styles.imgCont}>
+        <ImageCarousel images={nursery?.images} />
+      </View>
+      {/* <Image source={{uri: nursery?.images[0]}} style={styles.image} /> */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleContactNursery} style={styles.btns}>
+        <TouchableOpacity
+          onPress={() => {
+            contactNursery(nursery?.phoneNumber);
+          }}
+          style={styles.btns}>
           <Text style={styles.btnsTxt}>Contact Nursery</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -58,6 +63,7 @@ const NurseryDetails = () => {
           <NurseryDetailsModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            nursery={nursery}
           />
         </TouchableOpacity>
       </View>
@@ -69,12 +75,38 @@ const NurseryDetails = () => {
           placeholderTextColor="darkgrey"
         />
       </View>
-      <View>
-        <Text style={styles.heading}>Products</Text>
-        <Text style={{color: Colors.black, fontFamily: 'Urbanist-Regular'}}>
-          Products of this nursery here
-        </Text>
-      </View>
+      <Text style={styles.heading}>
+        Products of {nursery?.name ? nursery?.name : 'Nursery Name'}
+      </Text>
+
+      <ScrollView>
+        <View style={styles.prdctsCont}>
+          {nursery?.products?.length === 0 && (
+            <Text
+              style={{
+                color: Colors.black,
+                textAlign: 'center',
+                marginTop: 10,
+                flex: 1,
+                fontFamily: 'Urbanist-Medium',
+              }}>
+              No products available at the moment
+            </Text>
+          )}
+          {nursery?.products?.map(product => (
+            <TouchableOpacity
+              key={product.id}
+              style={styles.productCardContainer}
+              onPress={() =>
+                navigation.navigate('ProductDetails', {
+                  product: product,
+                })
+              }>
+              <ProductCard key={product?._id} data={product} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -84,6 +116,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: Colors.white,
+  },
+  imgCont: {
+    width: '100%',
+    height: 200,
+    marginBottom: 10,
   },
   image: {
     width: '100%',
@@ -149,6 +186,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#CCCCCC',
+  },
+  prdctsCont: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  productCardContainer: {
+    width: '49%',
+    marginBottom: 10,
   },
 });
 

@@ -1,53 +1,86 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import NurseryCard from './NurseryCard';
+import {gql, useQuery} from '@apollo/client';
+import {useNavigation} from '@react-navigation/native';
+import {ActivityIndicator} from 'react-native-paper';
+import Colors from '../../utils/Colors';
+
+const GET_NURSERIES = gql`
+  query Query {
+    nurseries {
+      id
+      address
+      name
+      rating
+      phoneNumber
+      images
+      details
+      email
+      closingHours
+      nurseryOwner {
+        firstName
+        lastName
+        phoneNumber
+      }
+      products {
+        category {
+          name
+        }
+        description
+        id
+        images
+        name
+        nursery {
+          name
+        }
+        overallRating
+        sold
+        stock
+        reviews {
+          review
+        }
+        retailPrice
+      }
+      website
+    }
+  }
+`;
 
 const NurseryListings = ({navigation}) => {
-  const nurseries = [
-    {
-      id: 1,
-      name: 'Happy Seeds Nursery',
-      location: '1 Nursery Street, City',
-      ratings: '4',
-      image: require('../../assets/images/Nurseries/1.jpg'),
-    },
-    {
-      id: 2,
-      name: 'Happy Seeds Nursery',
-      location: '2 Nursery Street, City',
-      ratings: '5',
-      image: require('../../assets/images/Nurseries/2.jpg'),
-    },
-    {
-      id: 3,
-      name: 'Happy Seeds Nursery',
-      location: '3 Nursery Street, City',
-      ratings: '3',
-      image: require('../../assets/images/Nurseries/3.jpg'),
-    },
-    {
-      id: 4,
-      name: 'Happy Seeds Nursery',
-      location: '4 Nursery Street, City',
-      ratings: '1.5',
-      image: require('../../assets/images/Nurseries/4.jpg'),
-    },
-  ];
+  const {loading, error, data} = useQuery(GET_NURSERIES);
+
+  if (loading) return;
+  <View
+    style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <ActivityIndicator
+      animating={true}
+      size={'large'}
+      color={Colors.secondaryGreen}
+    />
+  </View>;
+  if (error) return <Text>Error loading Products</Text>;
 
   return (
     <View style={styles.container}>
-      {nurseries.map(nursery => (
+      {data.nurseries.map(nursery => (
         <TouchableOpacity
-          key={nursery.id}
-          onPress={() => {
-            navigation.navigate('NurseryDetails');
-          }}>
+          key={nursery?.id}
+          onPress={() =>
+            navigation.navigate('NurseryDetails', {
+              nursery: nursery,
+            })
+          }>
           <NurseryCard
-            key={nursery.id}
-            image={nursery.image}
-            name={nursery.name}
-            location={nursery.location}
-            ratings={nursery.ratings}
+            key={nursery?.id}
+            image={nursery?.images[0]}
+            name={nursery?.name}
+            location={nursery?.address}
+            ratings={nursery?.rating}
           />
         </TouchableOpacity>
       ))}

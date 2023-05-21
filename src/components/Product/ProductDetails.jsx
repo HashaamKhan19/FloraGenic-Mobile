@@ -30,25 +30,18 @@ const ProductDetails = ({
   };
 
   const addToCart = () => {
-    // Logic to add the product to the cart
     console.log('Product added to cart!');
   };
-
-  // const images = [
-  //   require('../../assets/images/plant2.jpeg'),
-  //   require('../../assets/images/plant3.jpeg'),
-  //   require('../../assets/images/plant4.jpg'),
-  // ];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imgCont}>
-        <ImageCarousel images={product.images} />
+        <ImageCarousel images={product?.images} />
       </View>
 
       <View style={styles.SecCont}>
         <View style={styles.nameCont}>
-          <Text style={styles.name}>{product.name}</Text>
+          <Text style={styles.name}>{product?.name}</Text>
           <TouchableOpacity>
             <HeartIcon fill={Colors.secondaryGreen} />
           </TouchableOpacity>
@@ -56,24 +49,30 @@ const ProductDetails = ({
 
         <View style={styles.row}>
           <View style={styles.soldCont}>
-            <Text style={styles.amountSold}>{product.sold} Sold</Text>
+            <Text style={styles.amountSold}>{product?.sold} Sold</Text>
           </View>
 
           <View style={styles.innerRow}>
             <Star fill={Colors.secondaryGreen} />
             <Text style={styles.rating}>
-              {product.overallRating.toFixed(1)}
+              {product?.overallRating?.toFixed(1)}
             </Text>
             <Text style={styles.reviews}>
-              ({product.reviews.length} Reviews)
+              ({product?.reviews?.length} Reviews)
             </Text>
           </View>
         </View>
 
         <View style={styles.line} />
 
+        <Text style={styles.heading}>Category</Text>
+        <Text style={styles.description}>{product?.category?.name}</Text>
+
         <Text style={styles.heading}>Description</Text>
-        <Text style={styles.description}>{product.description}</Text>
+        <Text style={styles.description}>{product?.description}</Text>
+
+        <Text style={styles.heading}>Seller</Text>
+        <Text style={styles.descriptionNursery}>{product?.nursery?.name}</Text>
 
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityText}>Quantity:</Text>
@@ -88,12 +87,15 @@ const ProductDetails = ({
           </View>
         </View>
 
+        <Text style={styles.totalPrice}>In Stock</Text>
+        <Text style={styles.descriptionNursery}>{product?.stock}</Text>
+
         <View style={styles.line} />
 
         <View style={styles.priceContainer}>
           <View style={styles.totalContainer}>
             <Text style={styles.totalPrice}>Total Price</Text>
-            <Text style={styles.price}>Rs. {product.retailPrice}</Text>
+            <Text style={styles.price}>Rs. {product?.retailPrice}</Text>
           </View>
           <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>
@@ -189,6 +191,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'black',
     fontFamily: 'Urbanist-Medium',
+    fontSize: 16,
+  },
+  descriptionNursery: {
+    marginBottom: 16,
+    textAlign: 'left',
+    color: Colors.secondaryGreen,
+    fontFamily: 'Urbanist-Bold',
+    fontSize: 17,
   },
   quantityContainer: {
     flexDirection: 'row',

@@ -58,11 +58,21 @@ const AllProducts = () => {
 
   const navigation = useNavigation();
 
-  if (loading)
-    return <ActivityIndicator animating={true} color={Colors.secondaryGreen} />;
+  if (loading) return;
+  <View
+    style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+    <ActivityIndicator
+      animating={true}
+      size={'large'}
+      color={Colors.secondaryGreen}
+    />
+    ;
+  </View>;
   if (error) return <Text>Error loading Products</Text>;
-
-  // console.log('data in see all: ', data);
 
   return (
     <View style={styles.container}>
@@ -95,13 +105,7 @@ const AllProducts = () => {
                   product: product,
                 })
               }>
-              <ProductCard
-                imageSource={product.images[0]}
-                name={product.name}
-                ratings={product.overallRating}
-                amountSold={product.sold}
-                price={product.retailPrice}
-              />
+              <ProductCard data={product} />
             </TouchableOpacity>
           ))}
         </View>

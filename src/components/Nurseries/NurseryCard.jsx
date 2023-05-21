@@ -6,10 +6,12 @@ import Star from '../../assets/svg/star.svg';
 const NurseryCard = ({image, name, location, ratings}) => {
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
+      <Image source={{uri: image}} style={styles.image} />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.location} numberOfLines={1} ellipsizeMode="tail">
+          {location}
+        </Text>
         <View style={styles.ratingContainer}>
           <Star fill={Colors.secondaryGreen} />
           <Text style={styles.rating}>{ratings}</Text>

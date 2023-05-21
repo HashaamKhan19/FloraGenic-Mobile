@@ -7,36 +7,6 @@ import ProductListings from '../Product/ProductListings';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Home = ({navigation}) => {
-  const products = [
-    {
-      id: 1,
-      name: 'Product 1',
-      image:
-        'https://images.unsplash.com/photo-1528475563668-e15742001b92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-      rating: 4.5,
-      amountSold: 120,
-      price: 29.99,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      image:
-        'https://images.unsplash.com/photo-1528475563668-e15742001b92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-      rating: 4.5,
-      amountSold: 120,
-      price: 29.99,
-    },
-    {
-      id: 3,
-      name: 'Product 3',
-      image:
-        'https://images.unsplash.com/photo-1528475563668-e15742001b92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-      rating: 4.5,
-      amountSold: 120,
-      price: 29.99,
-    },
-  ];
-
   return (
     <ScrollView>
       <View
@@ -57,7 +27,7 @@ const Home = ({navigation}) => {
           style={{
             marginBottom: 20,
           }}>
-          <ProductListings products={products} navigation={navigation} />
+          <ProductListings navigation={navigation} />
         </View>
 
         <View style={styles.container}>
@@ -72,7 +42,7 @@ const Home = ({navigation}) => {
           style={{
             marginBottom: 20,
           }}>
-          <ProductListings products={products} navigation={navigation} />
+          <ProductListings navigation={navigation} />
         </View>
       </View>
     </ScrollView>
