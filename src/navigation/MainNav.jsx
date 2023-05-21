@@ -1,11 +1,16 @@
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from '../context/authContext';
 import dimensions from '../utils/Dimensions';
-import PlantScan from '../screens/PlantScan';
+import Dashboard from '../components/GardenerDashboard/Dashboard';
+import Colors from '../utils/Colors';
+import DashboardIcon from '../assets/svg/dashboard.svg';
+import OrdersIcon from '../assets/svg/ordersGard.svg';
+import PaymentIcon from '../assets/svg/money.svg';
+import Orders from '../components/GardenerDashboard/Orders';
+import Payments from '../components/GardenerDashboard/Payments';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -49,118 +54,69 @@ function TabNavigator() {
             </Text>
           );
         },
-        // tabBarIcon: ({focused}) => {
-        //   if (route.name === 'Store') {
-        //     return focused ? (
-        //       <View style={styles.activeStyle}>
-        //         <Leaf
-        //           fill={Colors.floraGreen}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     ) : (
-        //       <View style={styles.inactiveStyle}>
-        //         <Leaf
-        //           fill={Colors.gray}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     );
-        //   }
-        //   if (route.name === 'AI Scan') {
-        //     return focused ? (
-        //       <View style={styles.activeStyle}>
-        //         <Scan
-        //           fill={Colors.floraGreen}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     ) : (
-        //       <View style={styles.inactiveStyle}>
-        //         <Scan
-        //           fill={Colors.gray}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     );
-        //   }
-        //   if (route.name === 'Nurseries') {
-        //     return focused ? (
-        //       <View style={styles.activeStyle}>
-        //         <Nursery
-        //           fill={Colors.floraGreen}
-        //           width={dimensions.Width / 12}
-        //           height={dimensions.Height}
-        //         />
-        //       </View>
-        //     ) : (
-        //       <View style={styles.inactiveStyle}>
-        //         <Nursery
-        //           fill={Colors.gray}
-        //           width={dimensions.Width / 12}
-        //           height={dimensions.Height}
-        //         />
-        //       </View>
-        //     );
-        //   }
-        //   if (route.name === 'Gardeners') {
-        //     return focused ? (
-        //       <View style={styles.activeStyle}>
-        //         <Garden
-        //           fill={Colors.floraGreen}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     ) : (
-        //       <View style={styles.inactiveStyle}>
-        //         <Garden
-        //           fill={Colors.gray}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     );
-        //   }
-        //   if (route.name === 'Profile') {
-        //     return focused ? (
-        //       <View style={styles.activeStyle}>
-        //         <Profile
-        //           fill={Colors.floraGreen}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     ) : (
-        //       <View style={styles.inactiveStyle}>
-        //         <Profile
-        //           fill={Colors.gray}
-        //           width={dimensions.Width / 17}
-        //           height={dimensions.Height / 17}
-        //         />
-        //       </View>
-        //     );
-        //   }
-        // },
+        tabBarIcon: ({focused}) => {
+          if (route.name === 'Dashboard') {
+            return focused ? (
+              <View style={styles.activeStyle}>
+                <DashboardIcon
+                  fill={Colors.floraGreen}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            ) : (
+              <View style={styles.inactiveStyle}>
+                <DashboardIcon
+                  fill={Colors.gray}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            );
+          }
+          if (route.name === 'Orders') {
+            return focused ? (
+              <View style={styles.activeStyle}>
+                <OrdersIcon
+                  fill={Colors.floraGreen}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            ) : (
+              <View style={styles.inactiveStyle}>
+                <OrdersIcon
+                  fill={Colors.gray}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            );
+          }
+          if (route.name === 'Payments') {
+            return focused ? (
+              <View style={styles.activeStyle}>
+                <PaymentIcon
+                  fill={Colors.floraGreen}
+                  width={dimensions.Width / 12}
+                  height={dimensions.Height}
+                />
+              </View>
+            ) : (
+              <View style={styles.inactiveStyle}>
+                <PaymentIcon
+                  fill={Colors.gray}
+                  width={dimensions.Width / 12}
+                  height={dimensions.Height}
+                />
+              </View>
+            );
+          }
+        },
       })}>
-      {/* <Tab.Screen name="Store" component={Store} />
-      <Tab.Screen name="AI Scan" component={PlantScan} />
-      <Tab.Screen name="Nurseries" component={Nurseries} />
-      <Tab.Screen name="Gardeners" component={Gardeners} /> */}
-      {/* <Tab.Screen
-        name="Profile"
-        component={UserProfile}
-        listeners={({navigation, route}) => ({
-          tabPress: e => {
-            e.preventDefault();
-            handleTabPress({navigation, route});
-          },
-        })}
-      /> */}
+      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Payments" component={Payments} />
     </Tab.Navigator>
   );
 }
@@ -169,8 +125,8 @@ function StackNavigator() {
   return (
     <stack.Navigator>
       <stack.Screen
-        name="PlantScan"
-        component={PlantScan}
+        name="TabNavigator"
+        component={TabNavigator}
         options={{headerShown: false}}
       />
     </stack.Navigator>
@@ -180,3 +136,28 @@ function StackNavigator() {
 export default function MainNav() {
   return <StackNavigator />;
 }
+
+const styles = StyleSheet.create({
+  activeStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inactiveStyle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeText: {
+    color: Colors.floraGreen,
+    fontSize: 10,
+    fontWeight: 600,
+    marginTop: -10,
+  },
+  inactiveText: {
+    color: Colors.gray,
+    fontSize: 10,
+    fontWeight: 600,
+    marginTop: -10,
+  },
+});
