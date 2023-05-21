@@ -2,15 +2,19 @@ import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Colors from '../../utils/Colors';
 
-const GardenerCard = ({image, name, location, price}) => {
+const GardenerCard = ({data}) => {
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
+      <Image source={{uri: data?.image}} style={styles.image} />
       <View style={styles.detailsContainer}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.name}>
+          {data?.firstName} {data?.lastName}
+        </Text>
+        <Text style={styles.location}>{data?.city}</Text>
         <View style={styles.ratingContainer}>
-          <Text style={styles.rating}>Rs. {price}</Text>
+          <Text style={styles.rating}>
+            Rs. {data?.price} / {data?.duration}
+          </Text>
         </View>
       </View>
     </View>

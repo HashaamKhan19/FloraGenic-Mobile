@@ -50,23 +50,34 @@ const GET_NURSERIES = gql`
 const NurseryListings = ({navigation}) => {
   const {loading, error, data} = useQuery(GET_NURSERIES);
 
-  if (loading) return;
-  <View
-    style={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-    <ActivityIndicator
-      animating={true}
-      size={'large'}
-      color={Colors.secondaryGreen}
-    />
-  </View>;
-  if (error) return <Text>Error loading Products</Text>;
-
   return (
     <View style={styles.container}>
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator
+            animating={true}
+            size={'large'}
+            color={Colors.secondaryGreen}
+          />
+        </View>
+      )}
+
+      {error && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text>Something went wrong, Could not load nurseries</Text>
+        </View>
+      )}
+
       {data.nurseries.map(nursery => (
         <TouchableOpacity
           key={nursery?.id}
