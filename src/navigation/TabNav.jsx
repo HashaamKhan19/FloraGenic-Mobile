@@ -31,6 +31,7 @@ import EditPassword from '../components/Profile/EditPassword';
 import Cart from '../components/Cart/Cart';
 import CheckoutPage from '../components/Cart/CheckoutPage';
 import PaymentPage from '../components/Cart/PaymentPage';
+import MainNav from './MainNav';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -65,7 +66,7 @@ function TabNavigator() {
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: '600',
+                fontFamily: 'Urbanist-Bold',
                 color: focused ? Colors.floraGreen : Colors.gray,
                 marginTop: -10,
                 marginBottom: 4,
@@ -290,13 +291,13 @@ const styles = StyleSheet.create({
   activeText: {
     color: Colors.floraGreen,
     fontSize: 10,
-    fontWeight: 600,
     marginTop: -10,
+    fontFamily: 'Urbanist-Medium',
   },
   inactiveText: {
     color: Colors.gray,
     fontSize: 10,
-    fontWeight: 600,
     marginTop: -10,
+    fontFamily: 'Urbanist-Regular',
   },
 });

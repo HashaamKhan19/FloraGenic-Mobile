@@ -11,6 +11,7 @@ import OrdersIcon from '../assets/svg/ordersGard.svg';
 import PaymentIcon from '../assets/svg/money.svg';
 import Orders from '../components/GardenerDashboard/Orders';
 import Payments from '../components/GardenerDashboard/Payments';
+import Login from '../components/Profiling/Login';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -45,10 +46,10 @@ function TabNavigator() {
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: '600',
                 color: focused ? Colors.floraGreen : Colors.gray,
                 marginTop: -10,
                 marginBottom: 4,
+                fontFamily: 'Urbanist-Bold',
               }}>
               {route.name}
             </Text>
@@ -129,6 +130,16 @@ function StackNavigator() {
         component={TabNavigator}
         options={{headerShown: false}}
       />
+      <stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="MainNav"
+        component={MainNav}
+        options={{headerShown: false}}
+      />
     </stack.Navigator>
   );
 }
@@ -151,13 +162,13 @@ const styles = StyleSheet.create({
   activeText: {
     color: Colors.floraGreen,
     fontSize: 10,
-    fontWeight: 600,
     marginTop: -10,
+    fontFamily: 'Urbanist-Medium',
   },
   inactiveText: {
     color: Colors.gray,
+    fontFamily: 'Urbanist-Regular',
     fontSize: 10,
-    fontWeight: 600,
     marginTop: -10,
   },
 });

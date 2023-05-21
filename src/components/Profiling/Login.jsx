@@ -55,7 +55,11 @@ export default function Login() {
         return data.login;
       });
 
-      navigation.navigate('MainNav');
+      if (data.login.userType === 'Gardener') {
+        navigation.navigate('MainNav');
+      } else {
+        navigation.navigate('TabNavigator');
+      }
     },
     onError: error => {
       setBtnLoading(false);
@@ -140,14 +144,17 @@ export default function Login() {
             placeholderStyle={{
               color: Colors.darkGray,
               fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
             }}
             labelStyle={{
               color: Colors.darkGray,
               fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
             }}
             selectedLabelStyle={{
               color: Colors.darkGray,
               fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
             }}
           />
 
