@@ -18,6 +18,9 @@ import {useNavigation} from '@react-navigation/native';
 import {notification} from '../Popups/Alert';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ActivityIndicator} from 'react-native-paper';
+import MainNav from '../../navigation/MainNav';
+import TabNav from '../../navigation/TabNav';
+import RootNav from '../../navigation/RootNav';
 
 export default function Login() {
   const [email, setEmail] = React.useState('');
@@ -36,7 +39,6 @@ export default function Login() {
   const [login, {data, loading, error}] = useMutation(LOGIN_QUERY, {
     onCompleted: async data => {
       setBtnLoading(false);
-      data?.login?.token && navigation.goBack();
 
       await DeviceStorage.saveItem('token', data?.login.token);
       await DeviceStorage.saveItem('userType', data?.login.userType);
@@ -52,6 +54,8 @@ export default function Login() {
         console.log('setting users2, please', data.login);
         return data.login;
       });
+
+      navigation.navigate('MainNav');
     },
     onError: error => {
       setBtnLoading(false);

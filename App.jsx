@@ -6,6 +6,7 @@ import AuthProvider from './src/context/authContext';
 import {AlertNotificationRoot} from 'react-native-alert-notification';
 import {IColors} from './src/utils/IColors';
 import {CartProvider} from './src/context/cartContext';
+import RootNav from './src/navigation/RootNav';
 
 const client = new ApolloClient({
   uri: 'https://floragenic.herokuapp.com/graphql',
@@ -18,7 +19,7 @@ const hello = () => {
       <AuthProvider>
         <ApolloProvider client={client}>
           <CartProvider>
-            <TabNav />
+            <RootNav />
           </CartProvider>
         </ApolloProvider>
       </AuthProvider>

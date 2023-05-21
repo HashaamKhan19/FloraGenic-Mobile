@@ -273,11 +273,7 @@ function StackNavigator() {
 }
 
 export default function TabNav() {
-  return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
-  );
+  return <StackNavigator />;
 }
 
 const styles = StyleSheet.create({
