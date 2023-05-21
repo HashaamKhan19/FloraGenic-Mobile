@@ -22,10 +22,6 @@ const CheckoutPage = () => {
   const addresses = [
     {id: 1, address: '123 Main Street'},
     {id: 2, address: '456 Elm Street'},
-    {id: 3, address: '789 Oak Street'},
-    {id: 4, address: '123 Main Street'},
-    {id: 5, address: '456 Elm Street'},
-    {id: 6, address: '789 Oak Street'},
   ];
 
   const handleAddressSelection = address => {
@@ -39,7 +35,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.addressesContainer}>
         <Text style={styles.heading}>Select Address</Text>
         {addresses.map(address => (
@@ -74,13 +70,15 @@ const CheckoutPage = () => {
         onPress={handleContinueToPayment}>
         <Text style={styles.continueButtonText}>Continue to Payment</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.white,
+    flex: 1,
   },
   addressesContainer: {
     marginBottom: 16,

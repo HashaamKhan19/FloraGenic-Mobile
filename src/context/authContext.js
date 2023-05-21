@@ -111,11 +111,11 @@ const AuthProvider = ({children}) => {
   const {data, loading, error} = useQuery(GET_PROFILE_DETAILS, {
     client,
     onCompleted: data => {
-      console.log('user in context after calling profile :', data);
+      console.log('user in context after calling profile:', data);
       setUser(prev => ({...prev, ...data.profileDetails}));
     },
     onError: error => {
-      console.log('error in context after calling profile :', error);
+      console.log('error in context after calling profile:', error);
     },
   });
 

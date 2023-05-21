@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightGray,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   image: {
     width: 80,

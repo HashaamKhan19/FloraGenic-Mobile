@@ -40,6 +40,7 @@ const Cart = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.white,
   },
   listCntr: {
     padding: 20,

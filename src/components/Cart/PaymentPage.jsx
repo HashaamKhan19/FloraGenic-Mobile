@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,18 @@ import {
   ScrollView,
 } from 'react-native';
 import Colors from '../../utils/Colors';
+import {CartContext} from '../../context/cartContext';
 
 const PaymentPage = () => {
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
   const [productDetails, setProductDetails] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const {cartItems} = useContext(CartContext);
+
   const paymentOptions = [
     {id: 1, name: 'Credit Card ending in 1234'},
     {id: 2, name: 'PayPal'},
-    {id: 3, name: 'Google Pay'},
   ];
 
   const handlePaymentOptionSelection = option => {
@@ -31,18 +33,10 @@ const PaymentPage = () => {
     setTotalPrice(total);
   };
 
-  // Example product details
-  const products = [
-    {id: 1, name: 'Product 1', quantity: 2, price: 10},
-    {id: 2, name: 'Product 2', quantity: 1, price: 15},
-    {id: 3, name: 'Product 3', quantity: 3, price: 20},
-  ];
-
-  // Update the product details and calculate total price whenever it changes
-  useState(() => {
-    setProductDetails(products);
+  useEffect(() => {
+    setProductDetails(cartItems);
     calculateTotalPrice();
-  }, []);
+  }, [cartItems]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -71,7 +65,7 @@ const PaymentPage = () => {
             <Text style={styles.productQuantity}>
               Quantity: {product.quantity}
             </Text>
-            <Text style={styles.productPrice}>Price: ${product.price}</Text>
+            <Text style={styles.productPrice}>Price: Rs. {product.price}</Text>
           </View>
         ))}
       </View>
@@ -81,7 +75,7 @@ const PaymentPage = () => {
         <Text style={styles.totalPriceValue}>Rs. {totalPrice}</Text>
       </View>
 
-      <Text style={styles.totalPriceValue}>Stripe component below</Text>
+      {/* Stripe component or other payment form goes here */}
     </ScrollView>
   );
 };
@@ -89,6 +83,8 @@ const PaymentPage = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: Colors.white,
+    flex: 1,
   },
   paymentOptionsContainer: {
     marginBottom: 16,
