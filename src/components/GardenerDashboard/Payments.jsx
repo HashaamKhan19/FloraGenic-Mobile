@@ -3,8 +3,19 @@ import React from 'react';
 
 const Payments = () => {
   return (
-    <View>
-      <Text style={{color: 'red'}}>Payments in gardener dashboard</Text>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+      <Text
+        style={{
+          color: 'black',
+          height: '100%',
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          fontFamily: 'Urbanist-Bold',
+          fontSize: 24,
+          padding: 20,
+        }}>
+        Withdraw Payments Option Coming Soon!
+      </Text>
     </View>
   );
 };
