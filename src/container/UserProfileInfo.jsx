@@ -5,6 +5,7 @@ import HeartIcon from '../assets/svg/heartIcon.svg';
 import dimensions from '../utils/Dimensions';
 import {gql, useQuery} from '@apollo/client';
 import {AuthContext} from '../context/authContext';
+import {useNavigation} from '@react-navigation/native';
 
 const GET_USER = gql`
   query Query($userId: ID!) {
@@ -52,9 +53,11 @@ const GET_USER = gql`
 const UserProfileInfo = () => {
   const {user, setUser} = React.useContext(AuthContext);
 
-  const {loading, error, data} = useQuery(GET_USER, {
+  const {data, loading, error} = useQuery(GET_USER, {
     variables: {userId: user?.id},
   });
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -78,7 +81,11 @@ const UserProfileInfo = () => {
         </View>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity style={styles.icon}>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => {
+            navigation.navigate('Cart');
+          }}>
           <CartIcon
             fill="black"
             width={dimensions.Width / 17}

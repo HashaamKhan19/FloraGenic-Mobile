@@ -28,6 +28,7 @@ import {useContext} from 'react';
 import Login from '../components/Profiling/Login';
 import SignUp from '../components/Profiling/SignUp';
 import EditPassword from '../components/Profile/EditPassword';
+import Cart from '../components/Cart/Cart';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -248,6 +249,11 @@ function StackNavigator() {
       <stack.Screen
         name="SignUp"
         component={SignUp}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Cart"
+        component={Cart}
         options={{headerShown: false}}
       />
     </stack.Navigator>
