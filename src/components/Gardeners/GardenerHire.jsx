@@ -11,19 +11,14 @@ import {
 } from 'react-native';
 import Colors from '../../utils/Colors';
 import DatePicker from 'react-native-date-picker';
+import {ActivityIndicator} from 'react-native-paper';
 
 const GardenerHire = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
 
-  const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
-
-  const calculateTotalTime = () => {
-    const diffInMs = endDate.getTime() - startDate.getTime();
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    return diffInDays.toFixed(0);
-  };
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [selectedButton, setSelectedButton] = useState('Days');
+  const [requestedTime, setRequestedTime] = useState();
 
   const inputRef = useRef(null);
 
@@ -33,6 +28,10 @@ const GardenerHire = () => {
     }
   };
 
+  const handleButtonPress = value => {
+    setSelectedButton(value);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.keyCont}
@@ -40,77 +39,58 @@ const GardenerHire = () => {
       <ScrollView
         contentContainerStyle={styles.container}
         onTouchStart={() => removeFocus()}>
-        <View style={styles.normaldiv}>
-          <Image
-            style={styles.tinyLogo}
-            source={require('../../assets/Logo/floraGenic.png')}
-          />
-        </View>
-
-        <Text style={styles.mainHeading}>
-          Hire a gardener to take care of your garden while you are away.
-        </Text>
-
         <View style={styles.datePickerContainer}>
           <Text style={styles.label}>Starting Date</Text>
-          <TouchableOpacity
-            style={styles.btnCont}
-            onPress={() => {
-              setOpen1(true);
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: 24,
             }}>
-            <Text style={styles.btnTxt}>Select Starting Date</Text>
-          </TouchableOpacity>
-          <DatePicker
-            mode="date"
-            date={new Date()}
-            textColor="#fff"
-            onConfirm={date => {
-              setOpen1(false);
-              setStartDate(date);
-            }}
-            onCancel={() => {
-              setOpen1(false);
-            }}
-            open={open1}
-            modal
-          />
-          <Text style={{color: Colors.black, fontFamily: 'Urbanist-Regular'}}>
-            {startDate.getDate()}/{startDate.getMonth() + 1}/
-            {startDate.getFullYear()}
-          </Text>
+            <DatePicker
+              mode="date"
+              date={date}
+              textColor="#000"
+              onDateChange={setDate}
+              minimumDate={new Date()}
+              fadeToColor="none"
+            />
+          </View>
         </View>
 
-        <View style={styles.datePickerContainer}>
-          <Text style={styles.label}>Ending Date</Text>
-          <TouchableOpacity
-            style={styles.btnCont}
-            onPress={() => {
-              setOpen2(true);
-            }}>
-            <Text style={styles.btnTxt}>Select Ending Date</Text>
-          </TouchableOpacity>
-          <DatePicker
-            mode="date"
-            modal
-            date={new Date()}
-            textColor="#fff"
-            onConfirm={date => {
-              setOpen1(false);
-              setEndDate(date);
-            }}
-            onCancel={() => {
-              setOpen2(false);
-            }}
-            open={open2}
+        <View style={styles.servicesContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Requested Time (in numbers)"
+            placeholderTextColor={Colors.darkGray}
+            keyboardType="numeric"
+            value={requestedTime}
+            onChangeText={setRequestedTime}
           />
-          <Text style={{color: Colors.black, fontFamily: 'Urbanist-Regular'}}>
-            {endDate.getDate()}/{endDate.getMonth() + 1}/{endDate.getFullYear()}
-          </Text>
         </View>
 
-        <View style={styles.requestedTimeContainer}>
-          <Text style={styles.label}>Requested Time:</Text>
-          <Text style={styles.totalTime}>{calculateTotalTime()} days</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              selectedButton === 'Days' && {
+                backgroundColor: Colors.secondaryGreen,
+              },
+            ]}
+            onPress={() => handleButtonPress('Days')}>
+            <Text style={styles.buttonText}>Days</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              selectedButton === 'Hours' && {
+                backgroundColor: Colors.secondaryGreen,
+              },
+            ]}
+            onPress={() => handleButtonPress('Hours')}>
+            <Text style={styles.buttonText}>Hours</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.servicesContainer}>
@@ -127,8 +107,16 @@ const GardenerHire = () => {
             styles.btnCont,
             {backgroundColor: Colors.floraGreen, marginTop: 14},
           ]}>
-          <Text style={[styles.btnTxt, {color: Colors.white}]}>
-            Proceed to Payment
+          <Text
+            style={[
+              styles.btnTxt,
+              {color: Colors.white, fontSize: 18, fontFamily: 'Urbanist-Bold'},
+            ]}>
+            {btnLoading ? (
+              <ActivityIndicator color={Colors.white} size={'large'} />
+            ) : (
+              'Hire Gardener'
+            )}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -157,16 +145,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    marginBottom: 8,
+    marginBottom: 12,
     color: Colors.black,
     fontFamily: 'Urbanist-Bold',
-    fontSize: 16,
-  },
-  requestedTimeContainer: {
-    marginVertical: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
+    fontSize: 22,
+    textAlign: 'left',
   },
   servicesContainer: {
     width: '100%',
@@ -181,10 +164,20 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     fontFamily: 'Urbanist-Regular',
   },
+  reqInput: {
+    width: '50%',
+    height: 55,
+    backgroundColor: Colors.lightGray,
+    color: Colors.black,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 14,
+    fontFamily: 'Urbanist-Regular',
+  },
   btnCont: {
     backgroundColor: Colors.lightGray,
     borderRadius: 16,
-    padding: 20,
+    padding: 16,
     marginBottom: 14,
   },
   btnTxt: {
@@ -205,6 +198,28 @@ const styles = StyleSheet.create({
   },
   keyCont: {
     flex: 1,
+  },
+  requestedTimeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 14,
+    gap: 14,
+  },
+  button: {
+    backgroundColor: Colors.darkGray,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+  },
+  buttonText: {
+    color: Colors.white,
+    fontFamily: 'Urbanist-Bold',
   },
 });
 
