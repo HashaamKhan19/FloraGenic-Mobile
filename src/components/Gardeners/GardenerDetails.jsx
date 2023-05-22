@@ -7,8 +7,11 @@ import {
   Linking,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import Colors from '../../utils/Colors';
+import {useNavigation} from '@react-navigation/native';
+import {AuthContext} from '../../context/authContext';
+import {notification} from '../Popups/Alert';
 
 const GardenerDetails = ({
   route: {
@@ -20,6 +23,27 @@ const GardenerDetails = ({
     Linking.openURL(phoneUrl).catch(err =>
       console.error('Failed to open Phone app:', err),
     );
+  };
+
+  const {user} = useContext(AuthContext);
+
+  const navigation = useNavigation();
+
+  const handleUserAuth = () => {
+    if (user) {
+      if (user.userType === 'gardener') {
+        notification(
+          'error',
+          'Not Authorized',
+          'You can not hire gardener, login as a customer to hire.',
+        );
+      } else {
+        navigation.navigate('GardenerHire', {gardener});
+      }
+    } else {
+      notification('error', 'Not Authorized', 'Login as a customer to hire.');
+      navigation.navigate('Login');
+    }
   };
 
   return (
@@ -35,7 +59,7 @@ const GardenerDetails = ({
             }}>
             <Text style={styles.btnsTxt}>Contact Gardener</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btns}>
+          <TouchableOpacity style={styles.btns} onPress={handleUserAuth}>
             <Text style={styles.btnsTxt}>Hire Gardener</Text>
           </TouchableOpacity>
         </View>
@@ -124,6 +148,7 @@ const styles = StyleSheet.create({
   detailsCont: {
     // flex: 1,
     marginTop: 10,
+    paddingLeft: 4,
   },
   desc: {
     fontFamily: 'Urbanist-Bold',
@@ -132,16 +157,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
+    paddingLeft: 4,
   },
   skillBadge: {
-    backgroundColor: Colors.lightGreen,
+    backgroundColor: Colors.floraGreen,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
     marginRight: 10,
   },
   skill: {
-    color: 'black',
+    color: Colors.white,
     fontSize: 14,
     fontFamily: 'Urbanist-Regular',
   },
@@ -149,6 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Urbanist-Bold',
     color: Colors.black,
+    paddingLeft: 4,
   },
 });
 

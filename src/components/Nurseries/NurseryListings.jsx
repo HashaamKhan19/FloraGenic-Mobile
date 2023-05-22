@@ -10,39 +10,27 @@ const GET_NURSERIES = gql`
   query Query {
     nurseries {
       id
-      address
+      nurseryOwnerID
       name
-      rating
-      phoneNumber
-      images
       details
-      email
+      blockedStatus
+      openingHours
       closingHours
+      rating
+      address
+      phoneNumber
+      email
+      website
+      images
+      createdAt
+      updatedAt
+      products {
+        name
+      }
       nurseryOwner {
         firstName
         lastName
-        phoneNumber
       }
-      products {
-        category {
-          name
-        }
-        description
-        id
-        images
-        name
-        nursery {
-          name
-        }
-        overallRating
-        sold
-        stock
-        reviews {
-          review
-        }
-        retailPrice
-      }
-      website
     }
   }
 `;

@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   View,
+  Text,
 } from 'react-native';
 import {PanGestureHandler, State} from 'react-native-gesture-handler';
 import ProductCard from './ProductCard';

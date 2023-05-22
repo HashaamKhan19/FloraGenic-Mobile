@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import GardenerCard from './GardenerCard';
 import {gql, useQuery} from '@apollo/client';
 import {ActivityIndicator} from 'react-native-paper';
