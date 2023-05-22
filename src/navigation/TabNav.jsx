@@ -33,6 +33,7 @@ import CheckoutPage from '../components/Cart/CheckoutPage';
 import PaymentPage from '../components/Cart/PaymentPage';
 import MainNav from './MainNav';
 import GardenerHire from '../components/Gardeners/GardenerHire';
+import Wishlist from '../components/Wishlist/Wishlist';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -273,6 +274,11 @@ function StackNavigator() {
       <stack.Screen
         name="GardenerHire"
         component={GardenerHire}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="WishList"
+        component={Wishlist}
         options={{headerShown: false}}
       />
     </stack.Navigator>

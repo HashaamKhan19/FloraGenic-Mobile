@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import Colors from '../../utils/Colors';
 import ImageCarousel from './ImageCarousel';
 import {notification} from '../Popups/Alert';
 import {CartContext} from '../../context/cartContext';
+import {WishlistContext} from '../../context/wishlistContext';
 
 const ProductDetails = ({
   route: {
@@ -20,8 +21,33 @@ const ProductDetails = ({
   },
 }) => {
   const {addItem} = useContext(CartContext);
+  const {addItemToWishlist, removeItemFromWishlist, wishlistItems} =
+    useContext(WishlistContext);
 
   const [quantity, setQuantity] = useState(1);
+  const [heartChecked, setHeartChecked] = useState(false);
+
+  useEffect(() => {
+    const isInWishlist = wishlistItems.some(
+      wishlistItem => wishlistItem.id === product.id,
+    );
+    setHeartChecked(isInWishlist);
+  }, [wishlistItems, product.id]);
+
+  const handleAddToWishlist = () => {
+    const isInWishlist = wishlistItems.some(
+      wishlistItem => wishlistItem.id === product.id,
+    );
+
+    if (isInWishlist) {
+      removeItemFromWishlist(product.id);
+      setHeartChecked(false);
+      return;
+    }
+
+    addItemToWishlist(product);
+    setHeartChecked(true);
+  };
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -57,8 +83,10 @@ const ProductDetails = ({
       <View style={styles.SecCont}>
         <View style={styles.nameCont}>
           <Text style={styles.name}>{product?.name}</Text>
-          <TouchableOpacity>
-            <HeartIcon fill={Colors.secondaryGreen} />
+          <TouchableOpacity onPress={handleAddToWishlist}>
+            <HeartIcon
+              fill={heartChecked ? Colors.secondaryGreen : Colors.gray}
+            />
           </TouchableOpacity>
         </View>
 
