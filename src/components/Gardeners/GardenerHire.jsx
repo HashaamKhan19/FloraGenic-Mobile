@@ -12,13 +12,92 @@ import {
 import Colors from '../../utils/Colors';
 import DatePicker from 'react-native-date-picker';
 import {ActivityIndicator} from 'react-native-paper';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  gql,
+  useMutation,
+} from '@apollo/client';
+import DeviceStorage from '../../utils/DeviceStorage';
+import {notification} from '../Popups/Alert';
+import {AuthContext} from '../../context/authContext';
 
-const GardenerHire = () => {
+const httpLink = new HttpLink({
+  uri: 'https://floragenic.herokuapp.com/graphql',
+});
+
+const authLink = new ApolloLink((operation, forward) => {
+  const token = DeviceStorage.loadItem('token');
+
+  operation.setContext({
+    headers: {
+      Authorization: token ? `${token}` : '',
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
+const HIRE_GARDENER = gql`
+  mutation GardenerOrderCreate($data: GardenerOrderCreateInput!) {
+    gardenerOrderCreate(data: $data)
+  }
+`;
+
+const GardenerHire = ({
+  route: {
+    params: {gardener},
+  },
+}) => {
+  const {user} = React.useContext(AuthContext);
+
+  const [hire, {data, loading, error}] = useMutation(HIRE_GARDENER, {
+    client,
+    onCompleted: data => {
+      setBtnLoading(false);
+      notification('success', 'Gardener Hired', 'Gardener hired successfully.');
+      console.log('Gardener Hire Mutation Response', data);
+    },
+    onError: error => {
+      setBtnLoading(false);
+      notification(
+        'error',
+        'Error Hiring Gardener',
+        'Failed to hire gardener, try again.',
+      );
+      console.log('Gardener Hire Mutation Error', error.message);
+    },
+  });
+
+  const onSubmit = data => {
+    console.log('data hiring->', data);
+    hire({
+      variables: {
+        data: {
+          gardener: gardener?.id,
+          date: data.date,
+          requestedTime: data.requestedTime,
+          duration: data.selectedButton,
+          service: data.services,
+          customer: user?.id,
+        },
+      },
+    });
+  };
+
   const [date, setDate] = useState(new Date());
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState('Days');
   const [requestedTime, setRequestedTime] = useState();
+  const [services, setServices] = useState('');
 
   const inputRef = useRef(null);
 
@@ -99,6 +178,9 @@ const GardenerHire = () => {
             placeholder="Enter Services needed"
             placeholderTextColor={Colors.darkGray}
             multiline={true}
+            numberOfLines={2}
+            value={services}
+            onChangeText={setServices}
           />
         </View>
 
@@ -106,7 +188,16 @@ const GardenerHire = () => {
           style={[
             styles.btnCont,
             {backgroundColor: Colors.floraGreen, marginTop: 14},
-          ]}>
+          ]}
+          onPress={() => {
+            setBtnLoading(true);
+            onSubmit({
+              date,
+              requestedTime,
+              selectedButton,
+              services,
+            });
+          }}>
           <Text
             style={[
               styles.btnTxt,

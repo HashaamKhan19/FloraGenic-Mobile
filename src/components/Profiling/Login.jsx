@@ -236,7 +236,9 @@ export default function Login() {
             fontFamily: 'Urbanist-Medium',
           }}>
           Don't have an account?{' '}
-          <Text style={{color: Colors.secondaryGreen, fontWeight: '600'}}>
+          <Text
+            style={{color: Colors.secondaryGreen, fontWeight: '600'}}
+            onPress={() => navigation.navigate('SignUp')}>
             Sign Up
           </Text>
         </Text>

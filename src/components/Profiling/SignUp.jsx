@@ -9,13 +9,16 @@ import {
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../utils/Colors';
+import DropDownPicker from 'react-native-dropdown-picker';
+import Eye from '../../assets/svg/eye.svg';
 
 export default function SignUp() {
   const [email, onChangeEmail] = React.useState('');
   const [password, onChangePassword] = React.useState('');
-  const [value, setValue] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(true);
   const [isFocused, setIsFocused] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('Customer');
 
   return (
     <View style={styles.container}>
@@ -32,6 +35,64 @@ export default function SignUp() {
       {/* Inputs */}
       <View style={{padding: 14}}>
         <View style={styles.inputContainer}>
+          <DropDownPicker
+            open={open}
+            value={value}
+            setValue={setValue}
+            setOpen={setOpen}
+            theme="LIGHT"
+            multiple={false}
+            mode="BADGE"
+            items={[
+              {label: 'Gardener', value: 'Gardener'},
+              {label: 'Customer', value: 'Customer'},
+            ]}
+            badgeDotColors={['#62A82C', '#8ac926']}
+            style={{
+              backgroundColor: Colors.lightGray,
+              width: '100%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+              borderColor: Colors.lightGray,
+            }}
+            zIndex={1000}
+            containerStyle={{
+              width: '90%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+              zIndex: 1000,
+              borderWidth: 0,
+            }}
+            itemStyle={{
+              justifyContent: 'flex-start',
+            }}
+            dropDownStyle={{
+              backgroundColor: Colors.lightGray,
+              width: '90%',
+              height: 55,
+              borderRadius: 16,
+              marginBottom: 14,
+            }}
+            placeholder="Select User Type"
+            placeholderStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
+            }}
+            labelStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
+            }}
+            selectedLabelStyle={{
+              color: Colors.darkGray,
+              fontFamily: 'Urbanist-Regular',
+              paddingLeft: 8,
+            }}
+          />
+
           <TextInput
             style={styles.input}
             placeholder="Email Address"
@@ -39,12 +100,24 @@ export default function SignUp() {
             placeholderTextColor={Colors.darkGray}
           />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor={Colors.darkGray}
-          />
+          <View style={styles.eyeCont}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              placeholderTextColor={Colors.darkGray}
+              secureTextEntry={showPassword}
+            />
+            <View style={styles.theEye}>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Eye
+                  fill={Colors.darkGray}
+                  width={20}
+                  height={20}
+                  style={{marginRight: 10}}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
 
         <View style={styles.cbdiv}>
@@ -64,7 +137,8 @@ export default function SignUp() {
         </TouchableOpacity>
       </View>
       <View style={styles.normaldiv}>
-        <Text style={{color: 'grey', marginTop: 20}}>
+        <Text
+          style={{color: 'grey', marginTop: 20, fontFamily: 'Urbanist-Medium'}}>
           Already got an account?{' '}
           <Text style={{color: Colors.secondaryGreen, fontWeight: '600'}}>
             Log in
@@ -92,6 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 10,
     padding: 8,
+    backgroundColor: Colors.white,
   },
   tinyLogo: {
     width: 180,
@@ -142,6 +217,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 14,
     fontFamily: 'Urbanist-Regular',
+    fontSize: 16,
   },
   btnCont: {
     backgroundColor: Colors.secondaryGreen,
@@ -154,7 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnTxt: {
-    fontWeight: 'bold',
+    fontFamily: 'Urbanist-Bold',
     fontSize: 18,
     color: 'white',
     fontFamily: 'Urbanist-Italic',
@@ -190,5 +266,29 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     alignSelf: 'center',
     margin: 10,
+  },
+  eyeCont: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  theEye: {
+    position: 'absolute',
+    right: 14,
+    bottom: 30,
+  },
+  passwordInput: {
+    width: '90%',
+    height: 55,
+    backgroundColor: Colors.lightGray,
+    color: Colors.black,
+    fontSize: 16,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 14,
+    fontFamily: 'Urbanist-Regular',
+    position: 'relative',
   },
 });
