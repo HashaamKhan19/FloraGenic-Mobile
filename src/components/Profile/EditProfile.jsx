@@ -81,7 +81,7 @@ const EditProfile = ({navigation}) => {
       notification(
         'error',
         'Invalid Phone Number',
-        'It should start with +92 31 and should be 11 digits long',
+        'Valid format is +92 31X XXXXXXX',
       );
       return false;
     } else {

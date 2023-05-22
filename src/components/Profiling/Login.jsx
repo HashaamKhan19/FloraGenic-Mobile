@@ -18,9 +18,6 @@ import {useNavigation} from '@react-navigation/native';
 import {notification} from '../Popups/Alert';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ActivityIndicator} from 'react-native-paper';
-import MainNav from '../../navigation/MainNav';
-import TabNav from '../../navigation/TabNav';
-import RootNav from '../../navigation/RootNav';
 
 export default function Login() {
   const [email, setEmail] = React.useState('');

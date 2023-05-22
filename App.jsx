@@ -7,6 +7,7 @@ import {AlertNotificationRoot} from 'react-native-alert-notification';
 import {IColors} from './src/utils/IColors';
 import {CartProvider} from './src/context/cartContext';
 import RootNav from './src/navigation/RootNav';
+import {WishlistProvider} from './src/context/wishlistContext';
 
 const client = new ApolloClient({
   uri: 'https://floragenic.herokuapp.com/graphql',
@@ -18,9 +19,11 @@ const hello = () => {
     <AlertNotificationRoot theme="light" colors={[IColors]}>
       <AuthProvider>
         <ApolloProvider client={client}>
-          <CartProvider>
-            <RootNav />
-          </CartProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <RootNav />
+            </CartProvider>
+          </WishlistProvider>
         </ApolloProvider>
       </AuthProvider>
     </AlertNotificationRoot>

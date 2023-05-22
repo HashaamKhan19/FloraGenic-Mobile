@@ -76,9 +76,15 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.mainCntr}>
       <View style={styles.imgContainer}>
-        <Image source={{uri: user?.details?.image}} style={styles.image} />
+        <Image
+          source={{
+            uri: user?.details?.image || 'https://picsum.photos/200/300',
+          }}
+          style={styles.image}
+        />
         <Text style={styles.username}>
-          {user?.details?.firstName} {user?.details?.lastName}
+          {user?.details?.firstName || 'First Name'}{' '}
+          {user?.details?.lastName || 'Last Name'}
         </Text>
       </View>
 

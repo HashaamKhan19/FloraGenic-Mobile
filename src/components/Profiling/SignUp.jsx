@@ -11,14 +11,85 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../../utils/Colors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Eye from '../../assets/svg/eye.svg';
+import {useNavigation} from '@react-navigation/native';
+import {gql, useMutation} from '@apollo/client';
+import {notification} from '../Popups/Alert';
+import {ActivityIndicator} from 'react-native-paper';
+
+const SIGN_UP_QUERY = gql`
+  mutation Register($credentials: UserRegisterInput!) {
+    register(credentials: $credentials)
+  }
+`;
 
 export default function SignUp() {
-  const [email, onChangeEmail] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(true);
   const [isFocused, setIsFocused] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('Customer');
+  const [btnLoading, setBtnLoading] = React.useState(false);
+
+  const navigation = useNavigation();
+
+  const [signUp, {data, loading, error}] = useMutation(SIGN_UP_QUERY, {
+    onCompleted: res => {
+      setBtnLoading(false);
+      console.log('res after signup: ', res);
+      notification(
+        'success',
+        'Account Created',
+        'Account created successfully.',
+      );
+      navigation.navigate('Login');
+    },
+    onError: error => {
+      setBtnLoading(false);
+      console.log('error after signup: ', error);
+      notification(
+        'error',
+        'Error Creating Account',
+        'Failed to create account, try again.',
+      );
+    },
+  });
+
+  const onSubmit = data => {
+    //validations
+    if (data.email === '') {
+      notification('error', 'Error', 'Email is required.');
+      return;
+    }
+    if (data.password === '') {
+      notification('error', 'Error', 'Password is required.');
+      return;
+    }
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(data.email)) {
+      notification('error', 'Error', 'Invalid email.');
+      return;
+    }
+
+    if (data.password.length < 4) {
+      notification(
+        'error',
+        'Error',
+        'Password should be greater than 4 characters.',
+      );
+      return;
+    }
+
+    signUp({
+      variables: {
+        credentials: {
+          email: data.email,
+          password: data.password,
+          userType: data.userType,
+        },
+      },
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -98,6 +169,8 @@ export default function SignUp() {
             placeholder="Email Address"
             keyboardType="email-address"
             placeholderTextColor={Colors.darkGray}
+            value={email}
+            onChangeText={setEmail}
           />
 
           <View style={styles.eyeCont}>
@@ -106,6 +179,8 @@ export default function SignUp() {
               placeholder="Password"
               placeholderTextColor={Colors.darkGray}
               secureTextEntry={showPassword}
+              value={password}
+              onChangeText={setPassword}
             />
             <View style={styles.theEye}>
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
@@ -132,15 +207,32 @@ export default function SignUp() {
         </View>
 
         {/* SignUp buttons etc */}
-        <TouchableOpacity style={styles.btnCont}>
-          <Text style={styles.btnTxt}>Sign Up</Text>
+        <TouchableOpacity
+          style={styles.btnCont}
+          onPress={() => {
+            setBtnLoading(true);
+            onSubmit({
+              email,
+              password,
+              userType: value,
+            });
+          }}>
+          <Text style={styles.btnTxt}>
+            {btnLoading ? (
+              <ActivityIndicator animating={true} color={Colors.white} />
+            ) : (
+              'Sign Up'
+            )}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.normaldiv}>
         <Text
           style={{color: 'grey', marginTop: 20, fontFamily: 'Urbanist-Medium'}}>
           Already got an account?{' '}
-          <Text style={{color: Colors.secondaryGreen, fontWeight: '600'}}>
+          <Text
+            style={{color: Colors.secondaryGreen, fontWeight: '600'}}
+            onPress={() => navigation.navigate('Login')}>
             Log in
           </Text>
         </Text>
@@ -218,6 +310,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     fontFamily: 'Urbanist-Regular',
     fontSize: 16,
+    color: Colors.black,
   },
   btnCont: {
     backgroundColor: Colors.secondaryGreen,
