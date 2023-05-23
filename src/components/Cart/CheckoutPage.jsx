@@ -11,19 +11,80 @@ import Colors from '../../utils/Colors';
 import CartItemCard from './CartItemCard';
 import {useNavigation} from '@react-navigation/native';
 import {ShopContext} from '../../context/shopContextProvider';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  gql,
+  useQuery,
+} from '@apollo/client';
+import DeviceStorage from '../../utils/DeviceStorage';
+import {ActivityIndicator} from 'react-native-paper';
+
+const httpLink = new HttpLink({
+  uri: 'https://floragenic.herokuapp.com/graphql',
+});
+
+const authLink = new ApolloLink(async (operation, forward) => {
+  const token = await DeviceStorage.loadItem('token');
+
+  operation.setContext({
+    headers: {
+      Authorization: token ? `${token}` : '',
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
+const GET_ADDRESSES = gql`
+  query Addresses {
+    addresses {
+      id
+      userID
+      name
+      location
+      pin
+      city
+      setAsDefault
+    }
+  }
+`;
 
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [defaultAddress, setDefaultAddress] = useState(false);
+
+  const {data, loading, error} = useQuery(GET_ADDRESSES, {
+    client,
+    onCompleted: data => {
+      console.log(data.addresses);
+      if (data.addresses && data.addresses.length > 0) {
+        // Find the address with setAsDefault = true
+        const defaultAddress = data.addresses.find(
+          address => address.setAsDefault,
+        );
+        if (defaultAddress) {
+          setSelectedAddress(defaultAddress);
+          setDefaultAddress(true);
+        }
+      }
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
 
   const navigation = useNavigation();
 
-  const {cartItems, addToCart, removeFromCart, processing} =
+  const {cartItems, addToCart, removeFromCart, processing, totalPrice} =
     useContext(ShopContext);
-
-  const addresses = [
-    {id: 1, address: '123 Main Street'},
-    {id: 2, address: '456 Elm Street'},
-  ];
 
   const handleAddressSelection = address => {
     setSelectedAddress(address);
@@ -36,9 +97,34 @@ const CheckoutPage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.addressesContainer}>
+      <ScrollView contentContainerStyle={styles.addressesContainer}>
         <Text style={styles.heading}>Select Address</Text>
-        {addresses.map(address => (
+
+        {loading && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: 50,
+            }}>
+            <ActivityIndicator size="large" color={Colors.secondaryGreen} />
+          </View>
+        )}
+
+        {error && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 50,
+            }}>
+            <Text>Something went wrong, Could not load addresses</Text>
+          </View>
+        )}
+
+        {data?.addresses?.map(address => (
           <TouchableOpacity
             key={address.id}
             style={[
@@ -48,10 +134,14 @@ const CheckoutPage = () => {
                 styles.selectedAddressItem,
             ]}
             onPress={() => handleAddressSelection(address)}>
-            <Text style={styles.addressText}>{address.address}</Text>
+            <Text style={styles.addressText}>{address.name}</Text>
+            <Text style={styles.addressText}>{address.location}</Text>
+            {setDefaultAddress && address.setAsDefault && (
+              <Text style={styles.defaultAddressText}>Default Address</Text>
+            )}
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       <View style={styles.orderListContainer}>
         <Text style={styles.heading}>Order List</Text>
@@ -62,6 +152,14 @@ const CheckoutPage = () => {
             renderItem={({item}) => <CartItemCard item={item} />}
             scrollEnabled={true}
           />
+        </View>
+      </View>
+
+      <View style={styles.orderSummaryContainer}>
+        <Text style={styles.heading}>Order Summary</Text>
+        <View style={styles.orderItem}>
+          <Text style={styles.orderText}>Total Price</Text>
+          <Text style={styles.orderText}>Rs. {totalPrice}</Text>
         </View>
       </View>
 
@@ -127,6 +225,19 @@ const styles = StyleSheet.create({
   listCntr: {
     marginBottom: 16,
     marginTop: 16,
+  },
+  defaultAddressText: {
+    color: Colors.floraGreen,
+    fontSize: 14,
+    fontFamily: 'Urbanist-Regular',
+  },
+  orderSummaryContainer: {
+    marginBottom: 16,
+  },
+  orderText: {
+    fontSize: 18,
+    fontFamily: 'Urbanist-Bold',
+    color: Colors.black,
   },
 });
 
