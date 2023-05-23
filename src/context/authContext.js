@@ -114,7 +114,7 @@ const AuthProvider = ({children}) => {
       setUser(prev => ({...prev, ...data.profileDetails}));
     },
     onError: error => {
-      console.log('error in context after calling profile:', error);
+      console.log('error in context after calling profile: ', error);
     },
   });
 

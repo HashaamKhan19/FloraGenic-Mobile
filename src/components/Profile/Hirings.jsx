@@ -96,20 +96,27 @@ const Hirings = () => {
     },
     onError: error => {
       setDataLoading(false);
+      console.log(error);
     },
   });
 
   const renderGardenerCard = ({item}) => {
+    if (dataLoading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 50,
+          }}>
+          <ActivityIndicator size="large" color={Colors.secondaryGreen} />
+        </View>
+      );
+    }
+
     return (
       <ScrollView>
-        {dataLoading && (
-          <ActivityIndicator
-            animating={true}
-            size={'large'}
-            color={Colors.secondaryGreen}
-          />
-        )}
-
         {error && (
           <View
             style={{

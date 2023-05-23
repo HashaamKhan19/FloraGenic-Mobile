@@ -1,4 +1,12 @@
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import React from 'react';
 import Colors from '../../utils/Colors';
 import User from '../../assets/svg/user.svg';
@@ -69,8 +77,26 @@ const Home = ({navigation}) => {
     }
   };
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  console.log(
+    'user in homeBLABLABLABLA using deviceStrg:',
+    DeviceStorage.loadItem('user'),
+  );
+
   return (
-    <View style={styles.mainCntr}>
+    <ScrollView
+      contentContainerStyle={styles.mainCntr}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.imgContainer}>
         <Image
           source={{
@@ -104,7 +130,7 @@ const Home = ({navigation}) => {
           </TouchableOpacity>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 

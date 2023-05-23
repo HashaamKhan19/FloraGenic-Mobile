@@ -36,6 +36,7 @@ import GardenerHire from '../components/Gardeners/GardenerHire';
 import Wishlist from '../components/Wishlist/Wishlist';
 import Hirings from '../components/Profile/Hirings';
 import HiringDetails from '../components/Profile/HiringDetails';
+import AddAddress from '../components/Profile/AddAddress';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -289,6 +290,11 @@ function StackNavigator() {
       <stack.Screen
         name="HiringDetails"
         component={HiringDetails}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="AddAddress"
+        component={AddAddress}
         options={{headerShown: false}}
       />
     </stack.Navigator>

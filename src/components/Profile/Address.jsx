@@ -6,29 +6,115 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import Colors from '../../utils/Colors';
 import Edit from '../../assets/svg/edit.svg';
 import Delete from '../../assets/svg/delete.svg';
 import GroupAddress from '../../assets/svg/groupAddress.svg';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  gql,
+  useQuery,
+} from '@apollo/client';
+import DeviceStorage from '../../utils/DeviceStorage';
+import {ActivityIndicator} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
-const addresses = [
-  {id: 1, name: 'Address 1', location: 'Location 1'},
-  {id: 2, name: 'Address 2', location: 'Location 2'},
-  {id: 3, name: 'Address 3', location: 'Location 3'},
-];
+const httpLink = new HttpLink({
+  uri: 'https://floragenic.herokuapp.com/graphql',
+});
+
+const authLink = new ApolloLink(async (operation, forward) => {
+  const token = await DeviceStorage.loadItem('token');
+
+  operation.setContext({
+    headers: {
+      Authorization: token ? `${token}` : '',
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
+const GET_ADDRESSES = gql`
+  query Addresses {
+    addresses {
+      id
+      userID
+      name
+      location
+      pin
+      city
+      setAsDefault
+    }
+  }
+`;
 
 const Address = () => {
-  const handleAddAddress = () => {
-    console.log('Address added xD');
-  };
+  const navigation = useNavigation();
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const {data, loading, error} = useQuery(GET_ADDRESSES, {
+    client,
+    onCompleted: data => {
+      console.log(data.addresses);
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
 
   return (
     <View style={styles.screenContainer}>
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 50,
+          }}>
+          <ActivityIndicator size="large" color={Colors.secondaryGreen} />
+        </View>
+      )}
+
+      {error && (
+        <View
+          style={{
+            flex: 1,
+
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 50,
+          }}>
+          <Text>Something went wrong, Could not load addresses</Text>
+        </View>
+      )}
+
       <ScrollView
         contentContainerStyle={styles.scrollViewContainer}
-        showsVerticalScrollIndicator={false}>
-        {addresses.map(address => (
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        {data?.addresses?.map(address => (
           <View key={address.id} style={styles.cardContainer}>
             <GroupAddress />
             <View style={styles.detailsContainer}>
@@ -48,9 +134,14 @@ const Address = () => {
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddAddress}>
-        <Text style={styles.addButtonText}>Add Address</Text>
-      </TouchableOpacity>
+
+      {!loading && (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('AddAddress')}>
+          <Text style={styles.addButtonText}>Add Address</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
