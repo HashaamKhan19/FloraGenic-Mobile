@@ -53,6 +53,10 @@ const HIRED_GARDENERS = gql`
       gardener {
         firstName
         lastName
+        city
+        experience
+        image
+        phoneNumber
       }
       service
       date
