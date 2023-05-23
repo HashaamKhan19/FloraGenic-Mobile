@@ -48,7 +48,7 @@ export default function Login() {
       );
 
       setUser(() => {
-        console.log('setting users2, please', data.login);
+        console.log(data.login);
         return data.login;
       });
 

@@ -18,11 +18,13 @@ import {
   HttpLink,
   InMemoryCache,
   gql,
+  useMutation,
   useQuery,
 } from '@apollo/client';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {notification} from '../Popups/Alert';
 
 const httpLink = new HttpLink({
   uri: 'https://floragenic.herokuapp.com/graphql',
@@ -59,6 +61,20 @@ const GET_ADDRESSES = gql`
   }
 `;
 
+const SET_AS_DEFAULT_ADDRESS = gql`
+  mutation SetDefaultAddress($setDefaultAddressId: ID!) {
+    setDefaultAddress(id: $setDefaultAddressId) {
+      id
+      userID
+      name
+      location
+      pin
+      city
+      setAsDefault
+    }
+  }
+`;
+
 const Address = () => {
   const navigation = useNavigation();
 
@@ -81,6 +97,22 @@ const Address = () => {
     },
   });
 
+  const [setDefaultAddress, {loading: setDefaultLoading}] = useMutation(
+    SET_AS_DEFAULT_ADDRESS,
+    {
+      client,
+      onCompleted: data => {
+        notification('success', 'Address set as default');
+        console.log(data.setDefaultAddress);
+      },
+      onError: error => {
+        notification('Error', 'Something went wrong', error);
+      },
+    },
+  );
+
+  const [selectedAddressId, setSelectedAddressId] = React.useState(null);
+
   return (
     <View style={styles.screenContainer}>
       {loading && (
@@ -99,7 +131,6 @@ const Address = () => {
         <View
           style={{
             flex: 1,
-
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 50,
@@ -120,14 +151,31 @@ const Address = () => {
             <View style={styles.detailsContainer}>
               <View>
                 <Text style={styles.name}>{address.name}</Text>
-                <Text style={styles.location}>{address.location}</Text>
+                <Text style={styles.location}>{address.location}, </Text>
               </View>
               <View style={styles.btnsCont}>
-                <TouchableOpacity>
-                  <Edit />
+                <TouchableOpacity style={styles.defaultBtn}>
+                  {address.setAsDefault ? (
+                    <Text style={styles.defaultTxt}>Default</Text>
+                  ) : (
+                    <Text
+                      style={styles.defaultTxt}
+                      onPress={() => {
+                        setSelectedAddressId(address.id);
+                        setDefaultAddress({
+                          variables: {setDefaultAddressId: address.id},
+                        });
+                      }}>
+                      {setDefaultLoading && selectedAddressId === address.id ? (
+                        <ActivityIndicator size="small" color={Colors.white} />
+                      ) : (
+                        'Set as default'
+                      )}
+                    </Text>
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <Delete />
+                  <Delete fill={Colors.black} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -162,9 +210,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 19,
     paddingHorizontal: 21,
-    backgroundColor: Colors.lightGray,
     borderRadius: 22,
     marginBottom: 20,
+    backgroundColor: Colors.lightGray,
   },
   detailsContainer: {
     flex: 1,
@@ -205,6 +253,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.white,
     fontFamily: 'Urbanist-Bold',
+  },
+  defaultBtn: {
+    backgroundColor: Colors.secondaryGreen,
+    borderRadius: 100,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  defaultTxt: {
+    fontSize: 14,
+    color: Colors.white,
+    fontFamily: 'Urbanist-Regular',
   },
 });
 

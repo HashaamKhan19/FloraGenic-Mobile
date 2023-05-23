@@ -12,11 +12,15 @@ import {
   HttpLink,
   InMemoryCache,
   gql,
+  useMutation,
 } from '@apollo/client';
 import DeviceStorage from '../../utils/DeviceStorage';
 import Colors from '../../utils/Colors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {PakistanCities} from '../Filters/NurseryFilters/Cities';
+import {ActivityIndicator} from 'react-native-paper';
+import {notification} from '../Popups/Alert';
+import {useNavigation} from '@react-navigation/native';
 
 const httpLink = new HttpLink({
   uri: 'https://floragenic.herokuapp.com/graphql',
@@ -49,13 +53,31 @@ const AddAddress = () => {
   const [addressName, setAddressName] = React.useState('');
   const [location, setLocation] = React.useState('');
   const [city, setCity] = React.useState('');
-  const [btnLoading, setBtnLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(null);
   const [defaultValue, setDefaultValue] = React.useState(false);
+
+  const navigation = useNavigation();
+
+  const handleDefaulter = () => {
+    setDefaultValue(!defaultValue);
+  };
+
+  const [addAddress, {loading: addLoading}] = useMutation(ADD_ADDRESS, {
+    client,
+    onCompleted: data => {
+      navigation.goBack();
+      notification('success', 'Address added successfully');
+    },
+    onError: error => {
+      console.log('error adding', error);
+      notification('Error', 'Something went wrong', error);
+    },
+  });
 
   return (
     <View style={styles.container}>
+      <Text style={styles.mainHeading}>Add Address</Text>
+
       <TextInput
         placeholder="Address Name"
         value={addressName}
@@ -72,14 +94,13 @@ const AddAddress = () => {
       />
       <DropDownPicker
         open={open}
-        value={value}
-        setValue={setValue}
+        value={city}
+        setValue={setCity}
         setOpen={setOpen}
         theme="LIGHT"
         multiple={false}
-        mode="BADGE"
+        mode="SIMPLE"
         items={PakistanCities}
-        badgeDotColors={['#62A82C', '#8ac926']}
         style={{
           backgroundColor: Colors.lightGray,
           width: '100%',
@@ -107,7 +128,7 @@ const AddAddress = () => {
           borderRadius: 16,
           marginBottom: 14,
         }}
-        placeholder="Select User Type"
+        placeholder="Choose City"
         placeholderStyle={{
           color: Colors.darkGray,
           fontFamily: 'Urbanist-Regular',
@@ -118,24 +139,53 @@ const AddAddress = () => {
           fontFamily: 'Urbanist-Regular',
           paddingLeft: 8,
         }}
-        selectedLabelStyle={{
-          color: Colors.darkGray,
-          fontFamily: 'Urbanist-Regular',
-          paddingLeft: 8,
-        }}
+        autoScroll={true}
       />
-      <TouchableOpacity>
-        <Text style={styles.btnTxt}>Set as Default</Text>
+      <TouchableOpacity
+        style={[
+          styles.btnCnt,
+          {
+            backgroundColor: defaultValue
+              ? Colors.floraGreen
+              : Colors.lightGray,
+          },
+        ]}
+        onPress={handleDefaulter}>
+        <Text
+          style={[
+            styles.btnTxt,
+            {
+              color: defaultValue ? Colors.white : Colors.black,
+            },
+          ]}>
+          Set as Default
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.btn}
         onPress={() => {
-          setBtnLoading(true);
-          onSubmit({addressName, location, city});
+          addAddress({
+            variables: {
+              input: {
+                name: addressName,
+                location,
+                city,
+                setAsDefault: defaultValue,
+                pin: 'JAJAJA',
+              },
+            },
+          });
         }}>
-        <Text style={styles.btnTxt}>
-          {btnLoading ? (
+        <Text
+          style={[
+            styles.btnTxt,
+            {
+              color: Colors.white,
+              fontFamily: 'Urbanist-Bold',
+            },
+          ]}>
+          {addLoading ? (
             <ActivityIndicator animating={true} color={Colors.white} />
           ) : (
             'Add Address'
@@ -173,9 +223,23 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   btnTxt: {
-    color: Colors.white,
+    color: Colors.black,
     fontSize: 16,
     fontFamily: 'Urbanist-Regular',
+  },
+  btnCnt: {
+    width: '90%',
+    height: 55,
+    backgroundColor: Colors.lightGray,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mainHeading: {
+    fontSize: 24,
+    fontFamily: 'Urbanist-Bold',
+    color: Colors.black,
+    marginVertical: 20,
   },
 });
 
