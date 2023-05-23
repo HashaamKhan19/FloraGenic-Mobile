@@ -8,16 +8,17 @@ import {
   FlatList,
 } from 'react-native';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/shopContextProvider';
 import CartItemCard from './CartItemCard';
 import {useNavigation} from '@react-navigation/native';
+import {ShopContext} from '../../context/shopContextProvider';
 
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
 
   const navigation = useNavigation();
 
-  const {cartItems} = useContext(CartContext);
+  const {cartItems, addToCart, removeFromCart, processing} =
+    useContext(ShopContext);
 
   const addresses = [
     {id: 1, address: '123 Main Street'},

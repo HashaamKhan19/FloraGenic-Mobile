@@ -1,13 +1,13 @@
 import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
 import React, {useContext} from 'react';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/shopContextProvider';
 import CartItemCard from './CartItemCard';
 import {useNavigation} from '@react-navigation/native';
+import {ShopContext} from '../../context/shopContextProvider';
 
 const Cart = () => {
-  const {cartItems} = useContext(CartContext);
-
+  const {cartItems, addToCart, removeFromCart, processing} =
+    useContext(ShopContext);
   const navigation = useNavigation();
 
   return (
@@ -19,19 +19,23 @@ const Cart = () => {
           <Text style={styles.secondTxt}>No items in your cart</Text>
         )}
         <View style={styles.listCntr}>
-          <FlatList
-            data={cartItems}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => <CartItemCard item={item} />}
-            scrollEnabled={true}
-          />
+          {!processing && (
+            <FlatList
+              data={cartItems}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => <CartItemCard item={item} />}
+              scrollEnabled={true}
+            />
+          )}
         </View>
 
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate('CheckoutPage')}>
-          <Text style={styles.btnTxt}>Checkout</Text>
-        </TouchableOpacity>
+        {cartItems.length > 0 && (
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate('CheckoutPage')}>
+            <Text style={styles.btnTxt}>Checkout</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

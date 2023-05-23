@@ -1,56 +1,70 @@
 import React, {useContext} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import {CartContext} from '../../context/shopContextProvider';
+import {ShopContext} from '../../context/shopContextProvider';
 import Minus from '../../assets/svg/minus.svg';
 import Plus from '../../assets/svg/plus.svg';
 import Trash from '../../assets/svg/trash.svg';
 import Colors from '../../utils/Colors';
 import dimensions from '../../utils/Dimensions';
+import {ActivityIndicator} from 'react-native-paper';
 
 const CartItemCard = ({item}) => {
-  const {increaseQuantity, decreaseQuantity, removeItem} =
-    useContext(CartContext);
+  const {addToCart, removeFromCart, processing} = useContext(ShopContext);
 
   const handleIncreaseQuantity = () => {
-    increaseQuantity(item.id);
+    addToCart(item.productDetails.id, 1);
   };
 
   const handleDecreaseQuantity = () => {
-    decreaseQuantity(item.id);
+    if (item.quantity > 1) {
+      addToCart(item.productDetails.id, -1);
+    }
   };
 
   const handleRemoveItem = () => {
-    removeItem(item.id);
+    removeFromCart(item.id);
   };
+
+  console.log('item in cart item card: ', item);
 
   return (
     <View style={styles.container}>
-      <Image source={{uri: item.image}} style={styles.image} />
+      <Image
+        source={{uri: item.productDetails.images[0]}}
+        style={styles.image}
+      />
 
       <View style={styles.detailsContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.nursery}>{item.nursery}</Text>
-        <Text style={styles.price}>Rs. {item.price}</Text>
+        <Text style={styles.name}>{item.productDetails.name}</Text>
+        <Text style={styles.price}>Rs. {item.productDetails.retailPrice}</Text>
       </View>
 
       <View style={styles.quantityContainer}>
-        <TouchableOpacity onPress={handleDecreaseQuantity}>
-          <Minus
-            width={dimensions.Width / 28}
-            height={dimensions.Height / 28}
-            fill="black"
-          />
-        </TouchableOpacity>
+        {processing ? (
+          <TouchableOpacity>
+            <ActivityIndicator size={'small'} color="black" />
+          </TouchableOpacity>
+        ) : (
+          <>
+            <TouchableOpacity onPress={handleDecreaseQuantity}>
+              <Minus
+                width={dimensions.Width / 28}
+                height={dimensions.Height / 28}
+                fill="black"
+              />
+            </TouchableOpacity>
 
-        <Text style={styles.quantity}>{item.quantity}</Text>
+            <Text style={styles.quantity}>{item.quantity}</Text>
 
-        <TouchableOpacity onPress={handleIncreaseQuantity}>
-          <Plus
-            width={dimensions.Width / 28}
-            height={dimensions.Height / 28}
-            fill="black"
-          />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={handleIncreaseQuantity}>
+              <Plus
+                width={dimensions.Width / 28}
+                height={dimensions.Height / 28}
+                fill="black"
+              />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <TouchableOpacity
@@ -81,14 +95,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     height: '100%',
+    justifyContent: 'center',
   },
   name: {
-    fontSize: 24,
-    fontFamily: 'Urbanist-Medium',
+    fontSize: 26,
+    fontFamily: 'Urbanist-SemiBold',
     color: Colors.black,
   },
   price: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Urbanist-Medium',
     color: Colors.red,
     marginTop: 4,

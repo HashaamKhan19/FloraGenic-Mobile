@@ -14,6 +14,7 @@ import ImageCarousel from './ImageCarousel';
 import {notification} from '../Popups/Alert';
 import {WishlistContext} from '../../context/wishlistContext';
 import {ShopContext} from '../../context/shopContextProvider';
+import {ActivityIndicator} from 'react-native-paper';
 
 const ProductDetails = ({
   route: {
@@ -61,7 +62,7 @@ const ProductDetails = ({
     }
   };
 
-  // console.log('cartItems', cartItems);
+  console.log('cartItems after adding through PD: ', cartItems);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -133,9 +134,14 @@ const ProductDetails = ({
             style={styles.addToCartButton}
             onPress={() => {
               addToCart(product?.id, quantity);
-              notification('success', 'Added to Cart');
             }}>
-            <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+            <Text style={styles.addToCartButtonText}>
+              {processing ? (
+                <ActivityIndicator size={'small'} color="white" />
+              ) : (
+                'Add to Cart'
+              )}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

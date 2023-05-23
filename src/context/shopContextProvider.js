@@ -61,6 +61,7 @@ const ShopContextProvider = props => {
     client,
     onCompleted: data => {
       setCartItems(data.cartItemCreate);
+      notification('success', 'Added to cart');
       setProcessing(false);
     },
     onError: error => {

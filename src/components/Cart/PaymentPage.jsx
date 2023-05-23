@@ -7,14 +7,15 @@ import {
   ScrollView,
 } from 'react-native';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/shopContextProvider';
+import {ShopContext} from '../../context/shopContextProvider';
 
 const PaymentPage = () => {
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
   const [productDetails, setProductDetails] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const {cartItems} = useContext(CartContext);
+  const {cartItems, addToCart, removeFromCart, processing} =
+    useContext(ShopContext);
 
   const paymentOptions = [
     {id: 1, name: 'Credit Card ending in 1234'},
