@@ -4,10 +4,10 @@ import Colors from '../../utils/Colors';
 import User from '../../assets/svg/user.svg';
 import ChevronRight from '../../assets/svg/chevronRight.svg';
 import Address from '../../assets/svg/address.svg';
-import Payment from '../../assets/svg/payment.svg';
 import Orders from '../../assets/svg/orders.svg';
 import Logout from '../../assets/svg/logout.svg';
 import Lock from '../../assets/svg/lock.svg';
+import Hiring from '../../assets/svg/hiring.svg';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {notification} from '../Popups/Alert';
 import {AuthContext} from '../../context/authContext';
@@ -17,7 +17,7 @@ const Home = ({navigation}) => {
     'Edit Profile',
     'Edit Password',
     'Address',
-    'Payment',
+    'Hirings',
     'Orders',
     'Logout',
   ];
@@ -25,14 +25,12 @@ const Home = ({navigation}) => {
     <User />,
     <Lock />,
     <Address />,
-    <Payment />,
+    <Hiring />,
     <Orders />,
     <Logout />,
   ];
 
   const {user, setUser} = React.useContext(AuthContext);
-
-  console.log('user in homePage:->', user);
 
   const handlePress = index => {
     switch (index) {
@@ -46,7 +44,7 @@ const Home = ({navigation}) => {
         navigation.navigate('Address');
         break;
       case 3:
-        navigation.navigate('Payments');
+        navigation.navigate('Hirings');
         break;
       case 4:
         navigation.navigate('Orders');
@@ -63,10 +61,8 @@ const Home = ({navigation}) => {
         navigation.navigate('Store');
 
         setUser(() => {
-          console.log('setting users2, please', user);
           return null;
         });
-        console.log('logout hogya2', user);
         break;
       default:
         break;

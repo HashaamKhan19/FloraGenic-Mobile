@@ -81,7 +81,12 @@ const ProductListings = ({products, navigation}) => {
             alignItems: 'center',
             marginTop: 50,
           }}>
-          <ActivityIndicator animating={true} color={Colors.secondaryGreen} />
+          <ActivityIndicator
+            animating={true}
+            size={'large'}
+            color={Colors.secondaryGreen}
+            style={{alignSelf: 'center'}}
+          />
         </View>
       )}
 

@@ -73,8 +73,6 @@ const EditProfile = ({navigation}) => {
     setImage(user?.details?.image);
   }, []);
 
-  console.log('user in edit profile:->', user);
-
   const validatePhoneNumber = () => {
     const reg = /^\+92 31[3-7] \d{7}$/;
     if (reg.test(phoneNumber) === false) {
@@ -122,8 +120,6 @@ const EditProfile = ({navigation}) => {
     onCompleted: async data => {
       setBtnLoading(false);
 
-      console.log('data in onCompleted:->', data);
-
       setUser(prevUser => ({
         ...prevUser,
         details: {
@@ -157,8 +153,6 @@ const EditProfile = ({navigation}) => {
   });
 
   const onSubmit = data => {
-    console.log('data updation:->', data);
-
     if (!validateFirstName() || !validateLastName() || !validatePhoneNumber()) {
       setBtnLoading(false);
       return;

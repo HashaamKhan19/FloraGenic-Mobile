@@ -11,8 +11,6 @@ import {
 import Colors from '../../utils/Colors';
 
 const NurseryDetailsModal = ({modalVisible, setModalVisible, nursery}) => {
-  console.log('Nursery details:', nursery);
-
   return (
     <View style={styles.centeredView}>
       <Modal

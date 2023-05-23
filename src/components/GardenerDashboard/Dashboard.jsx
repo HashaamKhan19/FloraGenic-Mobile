@@ -59,10 +59,8 @@ const Dashboard = () => {
     navigation.navigate('Login');
 
     setUser(() => {
-      console.log('gardener khali kara raha', user);
       return null;
     });
-    console.log('Gardener Logout Hogya', user);
   };
 
   return (

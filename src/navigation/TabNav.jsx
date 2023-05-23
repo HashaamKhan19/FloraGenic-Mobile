@@ -34,6 +34,8 @@ import PaymentPage from '../components/Cart/PaymentPage';
 import MainNav from './MainNav';
 import GardenerHire from '../components/Gardeners/GardenerHire';
 import Wishlist from '../components/Wishlist/Wishlist';
+import Hirings from '../components/Profile/Hirings';
+import HiringDetails from '../components/Profile/HiringDetails';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -44,9 +46,7 @@ function TabNavigator() {
   const handleTabPress = ({navigation, route}) => {
     if (user && user.id !== null) {
       navigation.navigate('Profile');
-      console.log('user found->>', user);
     } else {
-      console.log('user not found ->', user);
       navigation.navigate('Login');
     }
   };
@@ -279,6 +279,16 @@ function StackNavigator() {
       <stack.Screen
         name="WishList"
         component={Wishlist}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="Hirings"
+        component={Hirings}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="HiringDetails"
+        component={HiringDetails}
         options={{headerShown: false}}
       />
     </stack.Navigator>

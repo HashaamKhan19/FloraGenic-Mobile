@@ -71,7 +71,6 @@ const ProductDetails = ({
     };
     addItem(cartItem);
     notification('success', 'Product added to cart!');
-    console.log('Product added to cart!');
   };
 
   return (

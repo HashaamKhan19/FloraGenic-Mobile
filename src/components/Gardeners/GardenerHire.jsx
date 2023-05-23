@@ -22,14 +22,14 @@ import {
 } from '@apollo/client';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {notification} from '../Popups/Alert';
-import {AuthContext} from '../../context/authContext';
+import {useNavigation} from '@react-navigation/native';
 
 const httpLink = new HttpLink({
   uri: 'https://floragenic.herokuapp.com/graphql',
 });
 
-const authLink = new ApolloLink((operation, forward) => {
-  const token = DeviceStorage.loadItem('token');
+const authLink = new ApolloLink(async (operation, forward) => {
+  const token = await DeviceStorage.loadItem('token');
 
   operation.setContext({
     headers: {
@@ -56,14 +56,14 @@ const GardenerHire = ({
     params: {gardener},
   },
 }) => {
-  const {user} = React.useContext(AuthContext);
+  const navigation = useNavigation();
 
   const [hire, {data, loading, error}] = useMutation(HIRE_GARDENER, {
     client,
     onCompleted: data => {
       setBtnLoading(false);
       notification('success', 'Gardener Hired', 'Gardener hired successfully.');
-      console.log('Gardener Hire Mutation Response', data);
+      navigation.navigate('Gardeners');
     },
     onError: error => {
       setBtnLoading(false);
@@ -72,21 +72,19 @@ const GardenerHire = ({
         'Error Hiring Gardener',
         'Failed to hire gardener, try again.',
       );
-      console.log('Gardener Hire Mutation Error', error.message);
+      console.log(error);
     },
   });
 
   const onSubmit = data => {
-    console.log('data hiring->', data);
     hire({
       variables: {
         data: {
           gardener: gardener?.id,
           date: data.date,
-          requestedTime: data.requestedTime,
+          requestedTime: parseInt(data.requestedTime),
           duration: data.selectedButton,
           service: data.services,
-          customer: user?.id,
         },
       },
     });
