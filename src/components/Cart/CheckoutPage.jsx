@@ -91,7 +91,6 @@ const CheckoutPage = () => {
   };
 
   const handleContinueToPayment = () => {
-    // Handle the action when the "Continue to Payment" button is pressed
     navigation.navigate('PaymentPage');
   };
 
