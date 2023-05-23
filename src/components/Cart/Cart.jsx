@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
 import React, {useContext} from 'react';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/cartContext';
+import {CartContext} from '../../context/shopContextProvider';
 import CartItemCard from './CartItemCard';
 import {useNavigation} from '@react-navigation/native';
 

@@ -40,7 +40,7 @@ const Home = ({navigation}) => {
 
   const {user, setUser} = React.useContext(AuthContext);
 
-  const handlePress = index => {
+  const handlePress = async index => {
     switch (index) {
       case 0:
         navigation.navigate('EditProfile');
@@ -58,9 +58,9 @@ const Home = ({navigation}) => {
         navigation.navigate('Orders');
         break;
       case 5:
-        DeviceStorage.deleteItem('token');
-        DeviceStorage.deleteItem('userType');
-        DeviceStorage.deleteItem('id');
+        await DeviceStorage.deleteItem('token');
+        await DeviceStorage.deleteItem('userType');
+        await DeviceStorage.deleteItem('id');
         notification(
           'success',
           'Logged out',
@@ -85,11 +85,6 @@ const Home = ({navigation}) => {
       setRefreshing(false);
     }, 2000);
   }, []);
-
-  console.log(
-    'user in homeBLABLABLABLA using deviceStrg:',
-    DeviceStorage.loadItem('user'),
-  );
 
   return (
     <ScrollView

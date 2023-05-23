@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/cartContext';
+import {CartContext} from '../../context/shopContextProvider';
 
 const PaymentPage = () => {
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);

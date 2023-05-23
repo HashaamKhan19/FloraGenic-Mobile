@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import {CartContext} from '../../context/cartContext';
+import {CartContext} from '../../context/shopContextProvider';
 import Minus from '../../assets/svg/minus.svg';
 import Plus from '../../assets/svg/plus.svg';
 import Trash from '../../assets/svg/trash.svg';

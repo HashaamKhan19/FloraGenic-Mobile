@@ -12,15 +12,17 @@ import HeartIcon from '../../assets/svg/heartIcon.svg';
 import Colors from '../../utils/Colors';
 import ImageCarousel from './ImageCarousel';
 import {notification} from '../Popups/Alert';
-import {CartContext} from '../../context/cartContext';
 import {WishlistContext} from '../../context/wishlistContext';
+import {ShopContext} from '../../context/shopContextProvider';
 
 const ProductDetails = ({
   route: {
     params: {product},
   },
 }) => {
-  const {addItem} = useContext(CartContext);
+  const {cartItems, addToCart, removeFromCart, processing} =
+    useContext(ShopContext);
+
   const {addItemToWishlist, removeItemFromWishlist, wishlistItems} =
     useContext(WishlistContext);
 
@@ -59,19 +61,7 @@ const ProductDetails = ({
     }
   };
 
-  const addToCart = () => {
-    const cartItem = {
-      id: product?.id,
-      name: product?.name,
-      image: product?.images[0],
-      quantity: quantity,
-      price: product?.retailPrice,
-      nursery: product?.nursery?.name,
-      category: product?.category?.name,
-    };
-    addItem(cartItem);
-    notification('success', 'Product added to cart!');
-  };
+  // console.log('cartItems', cartItems);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -139,7 +129,12 @@ const ProductDetails = ({
             <Text style={styles.totalPrice}>Total Price</Text>
             <Text style={styles.price}>Rs. {product?.retailPrice}</Text>
           </View>
-          <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={() => {
+              addToCart(product?.id, quantity);
+              notification('success', 'Added to Cart');
+            }}>
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>
           </TouchableOpacity>
         </View>

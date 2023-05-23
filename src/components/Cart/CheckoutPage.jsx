@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import Colors from '../../utils/Colors';
-import {CartContext} from '../../context/cartContext';
+import {CartContext} from '../../context/shopContextProvider';
 import CartItemCard from './CartItemCard';
 import {useNavigation} from '@react-navigation/native';
 

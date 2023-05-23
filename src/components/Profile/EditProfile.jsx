@@ -74,7 +74,7 @@ const EditProfile = ({navigation}) => {
   }, []);
 
   const validatePhoneNumber = () => {
-    const reg = /^\+92 31[3-7] \d{7}$/;
+    const reg = /^\+92 3[1-6][3-7] \d{7}$/;
     if (reg.test(phoneNumber) === false) {
       notification(
         'error',

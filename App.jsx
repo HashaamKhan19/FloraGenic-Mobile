@@ -5,7 +5,7 @@ import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import AuthProvider from './src/context/authContext';
 import {AlertNotificationRoot} from 'react-native-alert-notification';
 import {IColors} from './src/utils/IColors';
-import {CartProvider} from './src/context/cartContext';
+import ShopContextProvider from './src/context/shopContextProvider';
 import RootNav from './src/navigation/RootNav';
 import {WishlistProvider} from './src/context/wishlistContext';
 
@@ -20,9 +20,9 @@ const hello = () => {
       <AuthProvider>
         <ApolloProvider client={client}>
           <WishlistProvider>
-            <CartProvider>
+            <ShopContextProvider>
               <RootNav />
-            </CartProvider>
+            </ShopContextProvider>
           </WishlistProvider>
         </ApolloProvider>
       </AuthProvider>
