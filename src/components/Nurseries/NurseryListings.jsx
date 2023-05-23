@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import NurseryCard from './NurseryCard';
 import {gql, useQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
@@ -38,8 +45,21 @@ const GET_NURSERIES = gql`
 const NurseryListings = ({navigation, query, setQuery}) => {
   const {data, loading, error} = useQuery(GET_NURSERIES);
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       {loading && (
         <View
           style={{
@@ -91,7 +111,7 @@ const NurseryListings = ({navigation, query, setQuery}) => {
             />
           </TouchableOpacity>
         ))}
-    </View>
+    </ScrollView>
   );
 };
 

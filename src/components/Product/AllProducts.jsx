@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import SearchInput from '../Store/SearchInput';
@@ -60,6 +61,15 @@ const AllProducts = () => {
 
   const [query, setQuery] = useState('');
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   if (loading) return;
   <View
     style={{
@@ -112,7 +122,10 @@ const AllProducts = () => {
         </View>
       </View>
 
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.prdctsCont}>
           {filteredProducts?.map(product => (
             <TouchableOpacity

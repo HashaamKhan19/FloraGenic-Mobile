@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import GardenerCard from './GardenerCard';
 import {gql, useQuery} from '@apollo/client';
 import {ActivityIndicator} from 'react-native-paper';
@@ -35,8 +42,21 @@ const GET_GARDENERS = gql`
 const GardenerListings = ({navigation, query, setQuery}) => {
   const {data, loading, error} = useQuery(GET_GARDENERS);
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       {loading && (
         <View
           style={{
@@ -85,7 +105,7 @@ const GardenerListings = ({navigation, query, setQuery}) => {
             <GardenerCard data={gardener} />
           </TouchableOpacity>
         ))}
-    </View>
+    </ScrollView>
   );
 };
 

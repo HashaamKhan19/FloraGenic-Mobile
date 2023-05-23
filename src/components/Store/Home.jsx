@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import React from 'react';
 
 import SearchInput from './SearchInput';
@@ -7,8 +7,20 @@ import ProductListings from '../Product/ProductListings';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Home = ({navigation}) => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View
         style={{
           flex: 1,
