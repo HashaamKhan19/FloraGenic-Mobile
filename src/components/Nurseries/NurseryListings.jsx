@@ -32,7 +32,38 @@ const GET_NURSERIES = gql`
       createdAt
       updatedAt
       products {
+        id
+        nurseryID
         name
+        description
+        category {
+          name
+        }
+        hidden
+        retailPrice
+        wholesalePrice
+        stock
+        sold
+        images
+        overallRating
+        tags
+        reviews {
+          id
+          userID
+          productID
+          productType
+          rating
+          review
+          likes
+          createdAt
+          updatedAt
+          totalReviews
+        }
+        createdAt
+        updatedAt
+        nursery {
+          name
+        }
       }
       nurseryOwner {
         firstName

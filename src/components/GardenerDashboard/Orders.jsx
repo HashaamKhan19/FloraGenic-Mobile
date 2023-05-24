@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Colors from '../../utils/Colors';
+import {AuthContext} from '../../context/authContext';
 
 const Orders = () => {
   const [activeOrders, setActiveOrders] = useState([
@@ -41,6 +42,10 @@ const Orders = () => {
     } else if (activeTab === 'completed') {
       orders = completedOrders;
     }
+
+    const {user} = useContext(AuthContext);
+
+    console.log('token of gardener: ', user?.token);
 
     return (
       <FlatList

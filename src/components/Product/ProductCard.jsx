@@ -4,6 +4,8 @@ import Colors from '../../utils/Colors';
 import Star from '../../assets/svg/star.svg';
 
 const ProductCard = ({data}) => {
+  console.log('data image masla: ', data);
+
   return (
     <View style={styles.container}>
       <Image source={{uri: data?.images[0]}} style={styles.image} />

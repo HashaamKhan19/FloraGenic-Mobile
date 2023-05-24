@@ -61,7 +61,10 @@ const NurseryDetailsModal = ({modalVisible, setModalVisible, nursery}) => {
               </Text>
               <Text style={styles.contentTxt}>
                 {nursery?.openingHours
-                  ? nursery?.openingHours
+                  ? new Date(nursery.openingHours).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : 'Not available'}
               </Text>
             </View>
@@ -71,7 +74,10 @@ const NurseryDetailsModal = ({modalVisible, setModalVisible, nursery}) => {
               </Text>
               <Text style={styles.contentTxt}>
                 {nursery?.closingHours
-                  ? nursery?.closingHours
+                  ? new Date(nursery.closingHours).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : 'Not available'}
               </Text>
             </View>

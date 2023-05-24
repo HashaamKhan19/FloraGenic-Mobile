@@ -1,36 +1,27 @@
 import React, {useState} from 'react';
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Colors from '../../utils/Colors';
+import {gql, useQuery} from '@apollo/client';
 
-const SkillsComponent = () => {
-  const [selectedSkills, setSelectedSkills] = useState([]);
-  const [newSkill, setNewSkill] = useState('');
+const GET_SKILLS = gql`
+  query Query {
+    skills {
+      id
+      name
+      description
+      image
+    }
+  }
+`;
 
-  const skills = [
-    'Skill 1',
-    'Skill 2',
-    'Skill 3',
-    'Skill 4',
-    'Skill 5',
-    'Skill 6',
-    'Skill 7',
-    'Skill 8',
-    'Skill 9',
-    'Skill 10',
-    'Skill 11',
-  ];
+const SkillsComponent = ({skills, setSkills}) => {
+  const {data, loading, error} = useQuery(GET_SKILLS);
 
   const handleSkillSelect = skill => {
-    if (selectedSkills.includes(skill)) {
-      setSelectedSkills(selectedSkills.filter(s => s !== skill));
+    if (skills.includes(skill?.id)) {
+      setSkills(skills.filter(s => s !== skill?.id));
     } else {
-      setSelectedSkills([...selectedSkills, skill]);
+      setSkills([...skills, skill?.id]);
     }
   };
 
@@ -40,20 +31,20 @@ const SkillsComponent = () => {
         <Text style={styles.inputLabel}>Select Skills</Text>
       </View>
       <View style={styles.skillsContainer}>
-        {skills.map(skill => (
+        {data?.skills?.map(skill => (
           <TouchableOpacity
-            key={skill}
+            key={skill?.id}
             style={[
               styles.skillItem,
-              selectedSkills.includes(skill) && styles.selectedSkillItem,
+              skills.includes(skill?.id) && styles.selectedSkillItem,
             ]}
             onPress={() => handleSkillSelect(skill)}>
             <Text
               style={[
                 styles.skillText,
-                selectedSkills.includes(skill) && styles.selectedSkillText,
+                skills.includes(skill?.id) && styles.selectedSkillText,
               ]}>
-              {skill}
+              {skill?.name}
             </Text>
           </TouchableOpacity>
         ))}

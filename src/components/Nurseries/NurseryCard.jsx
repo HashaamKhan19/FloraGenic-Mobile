@@ -4,6 +4,8 @@ import Colors from '../../utils/Colors';
 import Star from '../../assets/svg/star.svg';
 
 const NurseryCard = ({image, name, location, ratings}) => {
+  console.log('NurseryCard.jsx: NurseryCard: image: ', image);
+
   return (
     <View style={styles.container}>
       <Image source={{uri: image}} style={styles.image} />

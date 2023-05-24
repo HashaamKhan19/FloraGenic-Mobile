@@ -17,6 +17,47 @@ import {useNavigation} from '@react-navigation/native';
 import {notification} from '../Popups/Alert';
 import DeviceStorage from '../../utils/DeviceStorage';
 import {AuthContext} from '../../context/authContext';
+import storage from '@react-native-firebase/storage';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  gql,
+  useMutation,
+} from '@apollo/client';
+import {ActivityIndicator} from 'react-native-paper';
+import ImageCropPicker from 'react-native-image-crop-picker';
+
+const UPDATE_GARDENER = gql`
+  mutation GardenerCreate($data: GardenerCreateInput!) {
+    gardenerCreate(data: $data) {
+      id
+    }
+  }
+`;
+
+const httpLink = new HttpLink({
+  uri: 'https://floragenic.herokuapp.com/graphql',
+});
+
+const authLink = new ApolloLink(async (operation, forward) => {
+  const token = await DeviceStorage.loadItem('token');
+  console.log('token of gardener: ', token);
+
+  operation.setContext({
+    headers: {
+      Authorization: token ? `${token}` : '',
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -25,7 +66,7 @@ const Dashboard = () => {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(user?.email);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
@@ -38,6 +79,7 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const [value2, setValue2] = useState('');
   const [open2, setOpen2] = useState(false);
+  const [image, setImage] = useState();
 
   const inputRef = useRef(null);
 
@@ -47,10 +89,10 @@ const Dashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    DeviceStorage.deleteItem('token');
-    DeviceStorage.deleteItem('userType');
-    DeviceStorage.deleteItem('id');
+  const handleLogout = async () => {
+    await DeviceStorage.deleteItem('token');
+    await DeviceStorage.deleteItem('userType');
+    await DeviceStorage.deleteItem('id');
     notification(
       'success',
       'Logged out',
@@ -61,6 +103,84 @@ const Dashboard = () => {
     setUser(() => {
       return null;
     });
+  };
+
+  const [update, {data, loading, error}] = useMutation(UPDATE_GARDENER, {
+    client,
+    onCompleted: async data => {
+      console.log(data);
+      notification(
+        'success',
+        'Profile Updated',
+        'Profile has been updated successfully!',
+      );
+    },
+    onError: error => {
+      console.log(error.message);
+      notification(
+        'error',
+        'Updation Failed',
+        'Profile updation failed, please try again!',
+      );
+    },
+  });
+
+  const onSubmit = data => {
+    console.log('data inside onSubmit: ', {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      city: data.city,
+      price: parseInt(data.price),
+      duration: data.duration,
+      experience: parseInt(data.experience),
+      CNIC: data.cnic,
+      skills: data.skills,
+      gender: 'Male',
+      image: image,
+    });
+    update({
+      variables: {
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phoneNumber: data.phoneNumber,
+          city: data.city,
+          price: parseInt(data.price),
+          duration: data.duration,
+          experience: parseInt(data.experience),
+          CNIC: data.cnic,
+          skills: data.skills,
+          gender: 'Male',
+          image: image,
+        },
+      },
+    });
+  };
+
+  const pickImage = async () => {
+    try {
+      const image = await ImageCropPicker.openPicker({
+        cropping: true,
+      });
+
+      // Create a unique filename for the image
+      const filename = `${Date.now()}.jpg`;
+      // Upload the image to Firebase Storage
+      const reference = storage().ref(filename);
+
+      // uploads file
+      await reference.putFile(image.path);
+      const url = await reference.getDownloadURL();
+      // setLoading(false);
+      setImage(url);
+      console.log('image url: ', url);
+      notification('success', 'Image uploaded successfully!');
+    } catch (error) {
+      console.log('Error uploading image:', error);
+      notification('error', 'Image upload failed!');
+    }
   };
 
   return (
@@ -80,7 +200,7 @@ const Dashboard = () => {
           </View>
 
           <Image
-            source={{uri: 'https://picsum.photos/200/300'}}
+            source={{uri: image || 'https://picsum.photos/200/300'}}
             style={{
               width: '100%',
               height: 300,
@@ -89,6 +209,22 @@ const Dashboard = () => {
               borderRadius: 20,
             }}
           />
+
+          <TouchableOpacity
+            style={[
+              styles.btn,
+              {
+                backgroundColor: Colors.lightGray,
+                marginTop: 0,
+              },
+            ]}
+            onPress={() => {
+              pickImage();
+            }}>
+            <Text style={[styles.btnTxt, {color: Colors.black}]}>
+              Upload Image
+            </Text>
+          </TouchableOpacity>
 
           <TextInput
             style={styles.input}
@@ -111,6 +247,7 @@ const Dashboard = () => {
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
+            editable={false}
           />
           <TextInput
             style={styles.input}
@@ -122,8 +259,8 @@ const Dashboard = () => {
           />
           <DropDownPicker
             open={open}
-            value={value}
-            setValue={setValue}
+            value={city}
+            setValue={setCity}
             setOpen={setOpen}
             theme="LIGHT"
             multiple={false}
@@ -187,8 +324,8 @@ const Dashboard = () => {
           />
           <DropDownPicker
             open={open2}
-            value={value2}
-            setValue={setValue2}
+            value={duration}
+            setValue={setDuration}
             setOpen={setOpen2}
             theme="LIGHT"
             multiple={false}
@@ -197,8 +334,8 @@ const Dashboard = () => {
             }}
             mode="SIMPLE"
             items={[
-              {label: 'Hourly', value: 'Hourly'},
               {label: 'Daily', value: 'Daily'},
+              {label: 'Hourly', value: 'Hourly'},
               {label: 'Weekly', value: 'Weekly'},
               {label: 'Monthly', value: 'Monthly'},
             ]}
@@ -230,7 +367,7 @@ const Dashboard = () => {
               marginBottom: 14,
               borderWidth: 0,
             }}
-            placeholder="Enter Price Duration"
+            placeholder="Enter Duration"
             placeholderStyle={{
               color: Colors.darkGray,
               fontFamily: 'Urbanist-Regular',
@@ -263,7 +400,33 @@ const Dashboard = () => {
             onChangeText={setCnic}
             keyboardType="numeric"
           />
-          <SkillsComponent />
+
+          <SkillsComponent skills={skills} setSkills={setSkills} />
+
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              onSubmit({
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                city,
+                price,
+                duration,
+                experience,
+                cnic,
+                skills,
+              });
+            }}>
+            <Text style={styles.btnTxt}>
+              {loading ? (
+                <ActivityIndicator size={'small'} color={Colors.white} />
+              ) : (
+                'Update Profile'
+              )}
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -303,6 +466,20 @@ const styles = StyleSheet.create({
     color: Colors.red,
     marginBottom: 14,
     textAlign: 'center',
+  },
+  btn: {
+    width: '100%',
+    height: 55,
+    backgroundColor: Colors.secondaryGreen,
+    borderRadius: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 24,
+  },
+  btnTxt: {
+    fontSize: 16,
+    fontFamily: 'Urbanist-Bold',
+    color: Colors.white,
   },
 });
 
