@@ -19,8 +19,8 @@ const PlantDetails = ({
   const [isPlantInfoOpen, setPlantInfoOpen] = useState(true);
   const [isDiseaseInfoOpen, setDiseaseInfoOpen] = useState(false);
 
-  const [InfoDetailsOpen, setInfoDetailsOpen] = useState(false);
-  const [DiseaseDetailsOpen, setDiseaseDetailsOpen] = useState(false);
+  const [InfoDetailsOpen, setInfoDetailsOpen] = useState(true);
+  const [DiseaseDetailsOpen, setDiseaseDetailsOpen] = useState(true);
 
   const toggleInfoDetails = () => {
     setInfoDetailsOpen(!InfoDetailsOpen);
@@ -37,11 +37,7 @@ const PlantDetails = ({
     setPlantInfoOpen(false);
   };
 
-  console.log(
-    'data in plant details page: ',
-    plantData?.predictions?.plant_species?.quickFacts,
-  );
-  console.log('url ', image);
+  console.log('disease in plant: ', plantData);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -77,13 +73,19 @@ const PlantDetails = ({
             </TouchableOpacity>
             {InfoDetailsOpen && (
               <ScrollView contentContainerStyle={styles.detailsCont}>
-                <Text style={styles.detailsTxt}>
-                  Plant name: {plantData?.predictions?.plant_species?.Species}
-                </Text>
-                <Text style={styles.detailsTxt}>
-                  Confidence:{' '}
-                  {plantData?.predictions?.plant_species?.Probability} %
-                </Text>
+                {plantData?.predictions?.plant_species?.Species ? (
+                  <Text style={styles.detailsTxt}>
+                    Plant name: {plantData?.predictions?.plant_species?.Species}
+                  </Text>
+                ) : (
+                  <Text style={styles.detailsTxt}>Plant name: Unknown</Text>
+                )}
+                {plantData?.predictions?.plant_species?.Probability && (
+                  <Text style={styles.detailsTxt}>
+                    Confidence:{' '}
+                    {plantData?.predictions?.plant_species?.Probability} %
+                  </Text>
+                )}
 
                 {plantData?.predictions?.plant_species?.quickFacts?.map(
                   (obj, index) => {
@@ -109,7 +111,7 @@ const PlantDetails = ({
           </>
         )}
         {isDiseaseInfoOpen && (
-          <>
+          <View style={{marginBottom: 350}}>
             <TouchableOpacity
               onPress={toggleInfoDetails}
               style={styles.accordionBtn}>
@@ -119,13 +121,44 @@ const PlantDetails = ({
               </View>
             </TouchableOpacity>
             {DiseaseDetailsOpen && (
-              <View style={styles.detailsCont}>
-                <Text style={styles.detailsTxt}>
-                  Disease Information Details
-                </Text>
-              </View>
+              <ScrollView contentContainerStyle={styles.detailsCont}>
+                <Text style={styles.detailsTxt}>Detected Plants:</Text>
+                {plantData?.predictions?.plant_disease?.map((obj, index) => {
+                  console.log('obj: ', obj);
+                  return (
+                    <View>
+                      {
+                        <Text style={styles.detailsHeadingTxt}>
+                          {obj.class}
+                        </Text>
+                      }
+                      {!obj.diseaseData?.length ? (
+                        <Text style={styles.detailsTxt}>No disease found</Text>
+                      ) : (
+                        obj.diseaseData?.map((disease, index) => {
+                          return (
+                            <View key={index} style={{marginVertical: 10}}>
+                              <Text
+                                style={{
+                                  ...styles.detailsTxt,
+                                  color: Colors.floraGreen,
+                                  marginBottom: 5,
+                                }}>
+                                {disease?.heading}:
+                              </Text>
+                              <Text style={styles.detailsTxt}>
+                                {disease?.text}
+                              </Text>
+                            </View>
+                          );
+                        })
+                      )}
+                    </View>
+                  );
+                })}
+              </ScrollView>
             )}
-          </>
+          </View>
         )}
       </View>
     </ScrollView>
@@ -193,6 +226,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Urbanist-SemiBold',
     color: Colors.black,
+  },
+  detailsHeadingTxt: {
+    fontSize: 20,
+    fontFamily: 'Urbanist-SemiBold',
+    color: Colors.red,
   },
   detailsCont: {
     padding: 16,
