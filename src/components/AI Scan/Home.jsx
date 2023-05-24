@@ -6,11 +6,17 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {notification} from '../Popups/Alert';
 import {ActivityIndicator} from 'react-native-paper';
+import axios from 'axios';
+import Camera from '../../assets/svg/camera.svg';
+import Device from '../../assets/svg/device.svg';
+import {useNavigation} from '@react-navigation/native';
 
 const Home = () => {
   const [image, setImage] = useState(null);
 
   const [loading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
 
   const pickImage = async () => {
     try {
@@ -26,11 +32,28 @@ const Home = () => {
       // uploads file
       await reference.putFile(image.path);
       const url = await reference.getDownloadURL();
-      setLoading(false);
+      // setLoading(false);
       setImage(url);
       notification('success', 'Image uploaded successfully!');
+
+      await axios
+        .post('https://floragenic.herokuapp.com/ai-scan', {
+          image_url: url,
+        })
+        .then(res => {
+          console.log(res.data);
+          setLoading(false);
+          navigation.navigate('PlantDetails', {data: res.data});
+        })
+        .catch(err => {
+          console.log(err);
+          setLoading(false);
+
+          console.log('error me agya begharat axios k andr  :');
+        });
     } catch (error) {
       console.log('Error uploading image:', error);
+      setLoading(false);
       notification('error', 'Image upload failed!');
     }
   };
@@ -49,11 +72,27 @@ const Home = () => {
       // uploads file
       await reference.putFile(image.path);
       const url = await reference.getDownloadURL();
-      setLoading(false);
+      // setLoading(false);
       setImage(url);
       notification('success', 'Image uploaded successfully!');
+
+      await axios
+        .post('https://floragenic.herokuapp.com/ai-scan', {
+          image_url: url,
+        })
+        .then(res => {
+          console.log(res.data);
+          setLoading(false);
+          navigation.navigate('PlantDetails', {data: res.data, image: url});
+        })
+        .catch(err => {
+          console.log(err);
+          setLoading(false);
+          console.log('error me agya begharat axios ke');
+        });
     } catch (error) {
       console.log('Error uploading image:', error);
+      setLoading(false);
       notification('error', 'Image upload failed!');
     }
   };
@@ -71,7 +110,10 @@ const Home = () => {
       {!loading ? (
         <View style={styles.container}>
           <TouchableOpacity style={styles.btn} onPress={openCamera}>
-            <Text style={styles.title}>Select from Camera</Text>
+            <View style={styles.insideBtn}>
+              <Camera />
+              <Text style={styles.title}>Select from Camera</Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -79,7 +121,10 @@ const Home = () => {
             onPress={() => {
               pickImage();
             }}>
-            <Text style={styles.title}>Select from Gallery</Text>
+            <View style={styles.insideBtn}>
+              <Device />
+              <Text style={styles.title}>Select from Gallery</Text>
+            </View>
           </TouchableOpacity>
         </View>
       ) : (
@@ -125,16 +170,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Urbanist-Regular',
   },
   btn: {
-    backgroundColor: Colors.floraGreen,
-    padding: 10,
+    backgroundColor: Colors.lightGray,
+    padding: 30,
     margin: 10,
-    borderRadius: 5,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: Colors.secondaryGreen,
   },
   title: {
     fontSize: 20,
     textAlign: 'center',
-    color: Colors.white,
+    color: Colors.black,
     fontFamily: 'Urbanist-Regular',
+  },
+  insideBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
   },
 });
 

@@ -37,6 +37,7 @@ import Wishlist from '../components/Wishlist/Wishlist';
 import Hirings from '../components/Profile/Hirings';
 import HiringDetails from '../components/Profile/HiringDetails';
 import AddAddress from '../components/Profile/AddAddress';
+import PlantDetails from '../components/AI Scan/PlantDetails';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -295,6 +296,11 @@ function StackNavigator() {
       <stack.Screen
         name="AddAddress"
         component={AddAddress}
+        options={{headerShown: false}}
+      />
+      <stack.Screen
+        name="PlantDetails"
+        component={PlantDetails}
         options={{headerShown: false}}
       />
     </stack.Navigator>

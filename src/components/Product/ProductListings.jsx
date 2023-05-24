@@ -85,7 +85,6 @@ const ProductListings = ({products, navigation}) => {
             animating={true}
             size={'large'}
             color={Colors.secondaryGreen}
-            style={{alignSelf: 'center'}}
           />
         </View>
       )}
