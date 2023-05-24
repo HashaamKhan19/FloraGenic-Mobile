@@ -43,7 +43,7 @@ const Home = () => {
         .then(res => {
           console.log(res.data);
           setLoading(false);
-          navigation.navigate('PlantDetails', {data: res.data});
+          navigation.navigate('PlantDetails', {data: res.data, url: url});
         })
         .catch(err => {
           console.log(err);
@@ -83,7 +83,7 @@ const Home = () => {
         .then(res => {
           console.log(res.data);
           setLoading(false);
-          navigation.navigate('PlantDetails', {data: res.data, image: url});
+          navigation.navigate('PlantDetails', {data: res.data, url: url});
         })
         .catch(err => {
           console.log(err);
