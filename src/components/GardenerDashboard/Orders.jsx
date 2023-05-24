@@ -2,6 +2,63 @@ import React, {useContext, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Colors from '../../utils/Colors';
 import {AuthContext} from '../../context/authContext';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  gql,
+  useMutation,
+  useQuery,
+} from '@apollo/client';
+import DeviceStorage from '../../utils/DeviceStorage';
+
+const GET_ORDERS = gql`
+  query GardenerOrders {
+    gardenerOrders {
+      id
+      customer {
+        firstName
+        lastName
+        phoneNumber
+      }
+      gardener {
+        id
+        firstName
+        lastName
+      }
+      service
+      date
+      requestedTime
+      duration
+      status
+      totalPrice
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const httpLink = new HttpLink({
+  uri: 'https://floragenic.herokuapp.com/graphql',
+});
+
+const authLink = new ApolloLink(async (operation, forward) => {
+  const token = await DeviceStorage.loadItem('token');
+
+  operation.setContext({
+    headers: {
+      Authorization: token ? `${token}` : '',
+    },
+  });
+
+  return forward(operation);
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 const Orders = () => {
   const [activeOrders, setActiveOrders] = useState([
@@ -43,9 +100,11 @@ const Orders = () => {
       orders = completedOrders;
     }
 
-    const {user} = useContext(AuthContext);
+    const {data, loading, error} = useQuery(GET_ORDERS, {
+      client: client,
+    });
 
-    console.log('token of gardener: ', user?.token);
+    console.log('data of orders: ', data);
 
     return (
       <FlatList

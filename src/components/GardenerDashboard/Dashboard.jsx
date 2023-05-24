@@ -25,6 +25,7 @@ import {
   InMemoryCache,
   gql,
   useMutation,
+  useQuery,
 } from '@apollo/client';
 import {ActivityIndicator} from 'react-native-paper';
 import ImageCropPicker from 'react-native-image-crop-picker';
@@ -33,6 +34,36 @@ const UPDATE_GARDENER = gql`
   mutation GardenerCreate($data: GardenerCreateInput!) {
     gardenerCreate(data: $data) {
       id
+    }
+  }
+`;
+
+const GET_GARDENER = gql`
+  query ProfileDetails {
+    profileDetails {
+      email
+      details {
+        ... on Gardener {
+          id
+          firstName
+          lastName
+          gender
+          phoneNumber
+          city
+          CNIC
+          price
+          duration
+          rating
+          experience
+          image
+          createdAt
+          updatedAt
+          skills {
+            id
+            name
+          }
+        }
+      }
     }
   }
 `;
@@ -66,7 +97,7 @@ const Dashboard = () => {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState(user?.email);
+  const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
@@ -74,7 +105,7 @@ const Dashboard = () => {
   const [duration, setDuration] = useState('');
   const [experience, setExperience] = useState('');
   const [cnic, setCnic] = useState('');
-  const [skills, setSkills] = useState('');
+  const [skills, setSkills] = useState([]);
   const [value, setValue] = useState('');
   const [open, setOpen] = useState(false);
   const [value2, setValue2] = useState('');
@@ -88,6 +119,30 @@ const Dashboard = () => {
       inputRef.current.blur();
     }
   };
+
+  console.log('user: id: : : ', user?.id);
+
+  const {
+    data: getData,
+    loading: loadingData,
+    error: errorData,
+  } = useQuery(GET_GARDENER, {
+    client: client,
+    onCompleted: async getData => {
+      console.log('data ni upload hora: ', getData);
+      setEmail(getData.profileDetails.email);
+      setFirstName(getData.profileDetails.details.firstName);
+      setLastName(getData.profileDetails.details.lastName);
+      setPhoneNumber(getData.profileDetails.details.phoneNumber);
+      setCity(getData.profileDetails.details.city);
+      setPrice(getData.profileDetails.details.price);
+      setDuration(getData.profileDetails.details.duration);
+      setExperience(getData.profileDetails.details.experience);
+      setCnic(getData.profileDetails.details.CNIC);
+      setSkills(getData.profileDetails.details.skills);
+      setImage(getData.profileDetails.details.image);
+    },
+  });
 
   const handleLogout = async () => {
     await DeviceStorage.deleteItem('token');
@@ -126,20 +181,6 @@ const Dashboard = () => {
   });
 
   const onSubmit = data => {
-    console.log('data inside onSubmit: ', {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      city: data.city,
-      price: parseInt(data.price),
-      duration: data.duration,
-      experience: parseInt(data.experience),
-      CNIC: data.cnic,
-      skills: data.skills,
-      gender: 'Male',
-      image: image,
-    });
     update({
       variables: {
         data: {
