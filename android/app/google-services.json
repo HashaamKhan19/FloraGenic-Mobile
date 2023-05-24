@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1035749110455",
+    "project_id": "floragenic-ml",
+    "storage_bucket": "floragenic-ml.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035749110455:android:b840cc3850f00477d91332",
+        "android_client_info": {
+          "package_name": "com.floragenicmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035749110455-hjv00kio43i97rcji749b5qj1aq70ub4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-6eKMlqB7AcryZC3EYbn-syit8fOJhUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035749110455-hjv00kio43i97rcji749b5qj1aq70ub4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

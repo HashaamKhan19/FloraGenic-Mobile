@@ -1,47 +1,60 @@
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  PermissionsAndroid,
-  View,
-  Image,
-} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Colors from '../../utils/Colors';
 import Hand from '../../assets/svg/hand.svg';
+import ImageCropPicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import {notification} from '../Popups/Alert';
+import {ActivityIndicator} from 'react-native-paper';
 
 const Home = () => {
-  const [cameraPhoto, setCameraPhoto] = useState();
   const [image, setImage] = useState(null);
 
-  let options = {
-    saveToPhotos: true,
-    mediaType: 'photo',
-  };
+  const [loading, setLoading] = useState(false);
 
-  const openCamera = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      const result = await launchCamera(options);
-      setCameraPhoto(result.assets[0].uri);
-      const result1 = await TextRecognition.recognize(result.assets[0].uri);
+  const pickImage = async () => {
+    try {
+      const image = await ImageCropPicker.openPicker({
+        cropping: true,
+      });
+
+      // Create a unique filename for the image
+      const filename = `${Date.now()}.jpg`;
+      // Upload the image to Firebase Storage
+      const reference = storage().ref(filename);
+      setLoading(true);
+      // uploads file
+      await reference.putFile(image.path);
+      const url = await reference.getDownloadURL();
+      setLoading(false);
+      setImage(url);
+      notification('success', 'Image uploaded successfully!');
+    } catch (error) {
+      console.log('Error uploading image:', error);
+      notification('error', 'Image upload failed!');
     }
   };
 
-  const selectImage = async () => {
+  const openCamera = async () => {
     try {
-      const response = await launchImageLibrary({mediaType: 'photo'});
-      if (!response.didCancel) {
-        setImage(response);
-        convertBinary(response);
-      } else {
-        console.log('Image selection cancelled.');
-      }
+      const image = await ImageCropPicker.openCamera({
+        cropping: true,
+      });
+
+      // Create a unique filename for the image
+      const filename = `${Date.now()}.jpg`;
+      // Upload the image to Firebase Storage
+      const reference = storage().ref(filename);
+      setLoading(true);
+      // uploads file
+      await reference.putFile(image.path);
+      const url = await reference.getDownloadURL();
+      setLoading(false);
+      setImage(url);
+      notification('success', 'Image uploaded successfully!');
     } catch (error) {
-      console.log(error.response.data);
+      console.log('Error uploading image:', error);
+      notification('error', 'Image upload failed!');
     }
   };
 
@@ -55,15 +68,35 @@ const Home = () => {
           plant!
         </Text>
       </View>
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.btn} onPress={openCamera}>
-          <Text style={styles.title}>Select from Camera</Text>
-        </TouchableOpacity>
+      {!loading ? (
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.btn} onPress={openCamera}>
+            <Text style={styles.title}>Select from Camera</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={selectImage}>
-          <Text style={styles.title}>Select from Gallery</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              pickImage();
+            }}>
+            <Text style={styles.title}>Select from Gallery</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}>
+          <ActivityIndicator
+            animating={true}
+            size={'large'}
+            color={Colors.floraGreen}
+          />
+        </View>
+      )}
     </>
   );
 };
