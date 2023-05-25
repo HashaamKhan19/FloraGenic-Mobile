@@ -38,6 +38,9 @@ import Hirings from '../components/Profile/Hirings';
 import HiringDetails from '../components/Profile/HiringDetails';
 import AddAddress from '../components/Profile/AddAddress';
 import PlantDetails from '../components/AI Scan/PlantDetails';
+import SensorIcon from '../assets/svg/sensor.svg';
+import Sensor from '../screens/Sensor';
+import {notification} from '../components/Popups/Alert';
 
 const Tab = createBottomTabNavigator();
 const stack = createStackNavigator();
@@ -49,6 +52,15 @@ function TabNavigator() {
     if (user && user.id !== null) {
       navigation.navigate('Profile');
     } else {
+      navigation.navigate('Login');
+    }
+  };
+
+  const handleSensorPress = ({navigation, route}) => {
+    if (user && user.id !== null) {
+      navigation.navigate('Sensor');
+    } else {
+      notification('Unauthorized', 'Please login to view sensor data');
       navigation.navigate('Login');
     }
   };
@@ -175,12 +187,41 @@ function TabNavigator() {
               </View>
             );
           }
+          if (route.name === 'Sensor') {
+            return focused ? (
+              <View style={styles.activeStyle}>
+                <SensorIcon
+                  fill={Colors.floraGreen}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            ) : (
+              <View style={styles.inactiveStyle}>
+                <SensorIcon
+                  fill={Colors.gray}
+                  width={dimensions.Width / 17}
+                  height={dimensions.Height / 17}
+                />
+              </View>
+            );
+          }
         },
       })}>
       <Tab.Screen name="Store" component={Store} />
       <Tab.Screen name="AI Scan" component={PlantScan} />
       <Tab.Screen name="Nurseries" component={Nurseries} />
       <Tab.Screen name="Gardeners" component={Gardeners} />
+      <Tab.Screen
+        name="Sensor"
+        component={Sensor}
+        listeners={({navigation, route}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            handleSensorPress({navigation, route});
+          },
+        })}
+      />
       <Tab.Screen
         name="Profile"
         component={UserProfile}
